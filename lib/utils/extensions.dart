@@ -1,4 +1,7 @@
 import 'package:datebasejointest/data_models/product.dart';
+//自分で追加
+import 'package:datebasejointest/models/db/product_info_database.dart';
+import 'package:uuid/uuid.dart';
 
 ///一つのリストに対してキーを加えて２つのリストへ変換する作業
 extension ConvertToProductRecord on List<Product>{
