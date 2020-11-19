@@ -11,7 +11,7 @@ extension ConvertToProductRecord on List<Product>{
 //    final productId = Uuid().v1();
 
     ///List<Product>を一つ一つProductRecordとProductImageRecordに分解する
-    products.map((product) {
+    products.forEach((product) {
       productRecords.add(
         ProductRecord(
           productId: product.productId ?? '',
@@ -26,7 +26,7 @@ extension ConvertToProductRecord on List<Product>{
   ///productIdは引継ぎつつ、imageIdを新たに追加
   List<ProductRecordImage> toProductRecordImage(List<Product> products) {
     final productRecordImages = <ProductRecordImage>[];
-    products.map((product) {
+    products.forEach((product) {
       productRecordImages.add(
           ProductRecordImage(
             productId: product.productId ?? '',

@@ -1,12 +1,18 @@
+import 'package:datebasejointest/view_model/home_view_model.dart';
 import 'package:datebasejointest/views/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'models/db/product_info_database.dart';
 
 MyProductInfoDB myProductInfoDB;
 
 void main() {
   myProductInfoDB = MyProductInfoDB();
-  runApp(MyApp());
+  runApp(
+      ChangeNotifierProvider<HomeViewModel>(
+        create: (context)=>HomeViewModel(),
+        child: MyApp(),
+      ));
 }
 
 class MyApp extends StatelessWidget {

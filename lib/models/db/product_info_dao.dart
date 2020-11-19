@@ -13,10 +13,19 @@ class ProductInfoDao extends DatabaseAccessor<MyProductInfoDB> with _$ProductInf
 ///1.extension:List<Product>=>List<ProductRecord>,List<ProductRecordImages>に分ける
 ///2.dao:分けた２つのリストをそれぞれDB格納
   //todo 格納する前にDBをclear
-Future<void> insertProductDB(List<ProductRecord> productRecords)async{
+
+Future<void> clearProductDB(){
+  return delete(productRecords).go();
+}
+
+  Future<void> clearImageDB(){
+    return delete(productRecordImages).go();
+  }
+
+  Future<void> insertProductDB(List<ProductRecord> products)async{
   //2行以上なのでbatch
   await batch((batch) {
-    batch.insertAll(productRecords, productRecords);
+    batch.insertAll(productRecords, products);
   });
 }
 
@@ -34,10 +43,10 @@ Future<List<JoinedProduct>> getJoinedProduct() async{
   final query = select(productRecords).join([
     innerJoin(productRecordImages, productRecordImages.productId.equalsExp(productRecords.productId)),
   ]);
-//  print('query:$query');
+  print('query:$query');
   return  (query.get() as List<TypedResult>) .map((typedResult){
 //    return (typedResult ).map((row){
-      return  JoinedProduct(
+    return  JoinedProduct(
         productRecord: typedResult.readTable(productRecords),
         productRecordImage: typedResult.readTable(productRecordImages),
       );
@@ -51,12 +60,25 @@ Future<List<JoinedProduct>> getJoinedProduct() async{
   ///２つのテーブル格納と内部結合読込＆リスト格納をtransactionでまとめる
   ///(transactionならtry-catch何回も書かなくて楽ちん）
   Future<List<JoinedProduct>> insertAndJoinFromDB(
-      List<ProductRecord> productRecords,List<ProductRecordImage> productImages)=>
+      List<ProductRecord> products,List<ProductRecordImage> productImages)=>
       transaction(()async{
-        await insertProductDB();
-        await insertImageDB();
-        await getJoinedProduct();
+        await clearProductDB();
+        await clearImageDB();
+        await insertProductDB(products);
+        await insertImageDB(productImages);
+        return getJoinedProduct();
       });
+
+
+  Future<void> insertDB(
+      List<ProductRecord> products,List<ProductRecordImage> productImages)=>
+      transaction(()async{
+        await clearProductDB();
+        await clearImageDB();
+        await insertProductDB(products);
+        await insertImageDB(productImages);
+      });
+
 
 
 }

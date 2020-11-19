@@ -10,6 +10,7 @@ class HomeViewModel extends ChangeNotifier{
   List<Product> get products => _products;
 
   Future<void> getProductInfo() async{
+
     await _homeRepository.getProductInfo(_products);
     notifyListeners();
   }
