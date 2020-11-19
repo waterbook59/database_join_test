@@ -32,11 +32,11 @@ List<Product> variableProducts = [
   ),
   Product(
       productId: Uuid().v1(),
-      name: 'ハガキ',
-      description: 'すごいハガキ',
+      name: 'スマホ',
+      description: 'すごいスマホ',
       productImage: ProductImage(
-        small: 'ハガキ小画像',
-        medium: 'ハガキ中画像',
+        small: 'スマホ小画像',
+        medium: 'スマホ中画像',
       )
   ),
 

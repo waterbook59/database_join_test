@@ -1,7 +1,11 @@
 import 'package:datebasejointest/views/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'models/db/product_info_database.dart';
+
+MyProductInfoDB myProductInfoDB;
 
 void main() {
+  myProductInfoDB = MyProductInfoDB();
   runApp(MyApp());
 }
 

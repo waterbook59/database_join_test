@@ -29,10 +29,18 @@ class ProductRecordImages extends Table{
 }
 
 //結合用テーブル
+//todo UuidそのままだとStringなので、TextColumnで紐付けできるか..ダメならUuidつける時にintへ変換かける
 class ProductWithImages extends Table{
   IntColumn get idProductWithImage => integer().autoIncrement()();
-  IntColumn get product => integer()();
-  IntColumn get image => integer()();
+  TextColumn get product => text()();
+  TextColumn get image => text()();
+}
+
+///テーブルじゃなくてクラス
+class JoinedProduct{
+  final ProductRecord productRecord;
+  final ProductRecordImage productRecordImage;
+  JoinedProduct({this.productRecord,this.productRecordImage});
 }
 
 

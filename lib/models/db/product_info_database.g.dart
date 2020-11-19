@@ -560,8 +560,8 @@ class $ProductRecordImagesTable extends ProductRecordImages
 class ProductWithImage extends DataClass
     implements Insertable<ProductWithImage> {
   final int idProductWithImage;
-  final int product;
-  final int image;
+  final String product;
+  final String image;
   ProductWithImage(
       {@required this.idProductWithImage,
       @required this.product,
@@ -571,12 +571,14 @@ class ProductWithImage extends DataClass
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
     return ProductWithImage(
       idProductWithImage: intType.mapFromDatabaseResponse(
           data['${effectivePrefix}id_product_with_image']),
       product:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}product']),
-      image: intType.mapFromDatabaseResponse(data['${effectivePrefix}image']),
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}product']),
+      image:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}image']),
     );
   }
   @override
@@ -586,10 +588,10 @@ class ProductWithImage extends DataClass
       map['id_product_with_image'] = Variable<int>(idProductWithImage);
     }
     if (!nullToAbsent || product != null) {
-      map['product'] = Variable<int>(product);
+      map['product'] = Variable<String>(product);
     }
     if (!nullToAbsent || image != null) {
-      map['image'] = Variable<int>(image);
+      map['image'] = Variable<String>(image);
     }
     return map;
   }
@@ -612,8 +614,8 @@ class ProductWithImage extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return ProductWithImage(
       idProductWithImage: serializer.fromJson<int>(json['idProductWithImage']),
-      product: serializer.fromJson<int>(json['product']),
-      image: serializer.fromJson<int>(json['image']),
+      product: serializer.fromJson<String>(json['product']),
+      image: serializer.fromJson<String>(json['image']),
     );
   }
   @override
@@ -621,12 +623,13 @@ class ProductWithImage extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'idProductWithImage': serializer.toJson<int>(idProductWithImage),
-      'product': serializer.toJson<int>(product),
-      'image': serializer.toJson<int>(image),
+      'product': serializer.toJson<String>(product),
+      'image': serializer.toJson<String>(image),
     };
   }
 
-  ProductWithImage copyWith({int idProductWithImage, int product, int image}) =>
+  ProductWithImage copyWith(
+          {int idProductWithImage, String product, String image}) =>
       ProductWithImage(
         idProductWithImage: idProductWithImage ?? this.idProductWithImage,
         product: product ?? this.product,
@@ -656,8 +659,8 @@ class ProductWithImage extends DataClass
 
 class ProductWithImagesCompanion extends UpdateCompanion<ProductWithImage> {
   final Value<int> idProductWithImage;
-  final Value<int> product;
-  final Value<int> image;
+  final Value<String> product;
+  final Value<String> image;
   const ProductWithImagesCompanion({
     this.idProductWithImage = const Value.absent(),
     this.product = const Value.absent(),
@@ -665,14 +668,14 @@ class ProductWithImagesCompanion extends UpdateCompanion<ProductWithImage> {
   });
   ProductWithImagesCompanion.insert({
     this.idProductWithImage = const Value.absent(),
-    @required int product,
-    @required int image,
+    @required String product,
+    @required String image,
   })  : product = Value(product),
         image = Value(image);
   static Insertable<ProductWithImage> custom({
     Expression<int> idProductWithImage,
-    Expression<int> product,
-    Expression<int> image,
+    Expression<String> product,
+    Expression<String> image,
   }) {
     return RawValuesInsertable({
       if (idProductWithImage != null)
@@ -683,7 +686,9 @@ class ProductWithImagesCompanion extends UpdateCompanion<ProductWithImage> {
   }
 
   ProductWithImagesCompanion copyWith(
-      {Value<int> idProductWithImage, Value<int> product, Value<int> image}) {
+      {Value<int> idProductWithImage,
+      Value<String> product,
+      Value<String> image}) {
     return ProductWithImagesCompanion(
       idProductWithImage: idProductWithImage ?? this.idProductWithImage,
       product: product ?? this.product,
@@ -698,10 +703,10 @@ class ProductWithImagesCompanion extends UpdateCompanion<ProductWithImage> {
       map['id_product_with_image'] = Variable<int>(idProductWithImage.value);
     }
     if (product.present) {
-      map['product'] = Variable<int>(product.value);
+      map['product'] = Variable<String>(product.value);
     }
     if (image.present) {
-      map['image'] = Variable<int>(image.value);
+      map['image'] = Variable<String>(image.value);
     }
     return map;
   }
@@ -734,11 +739,11 @@ class $ProductWithImagesTable extends ProductWithImages
   }
 
   final VerificationMeta _productMeta = const VerificationMeta('product');
-  GeneratedIntColumn _product;
+  GeneratedTextColumn _product;
   @override
-  GeneratedIntColumn get product => _product ??= _constructProduct();
-  GeneratedIntColumn _constructProduct() {
-    return GeneratedIntColumn(
+  GeneratedTextColumn get product => _product ??= _constructProduct();
+  GeneratedTextColumn _constructProduct() {
+    return GeneratedTextColumn(
       'product',
       $tableName,
       false,
@@ -746,11 +751,11 @@ class $ProductWithImagesTable extends ProductWithImages
   }
 
   final VerificationMeta _imageMeta = const VerificationMeta('image');
-  GeneratedIntColumn _image;
+  GeneratedTextColumn _image;
   @override
-  GeneratedIntColumn get image => _image ??= _constructImage();
-  GeneratedIntColumn _constructImage() {
-    return GeneratedIntColumn(
+  GeneratedTextColumn get image => _image ??= _constructImage();
+  GeneratedTextColumn _constructImage() {
+    return GeneratedTextColumn(
       'image',
       $tableName,
       false,
@@ -816,6 +821,9 @@ abstract class _$MyProductInfoDB extends GeneratedDatabase {
   $ProductWithImagesTable _productWithImages;
   $ProductWithImagesTable get productWithImages =>
       _productWithImages ??= $ProductWithImagesTable(this);
+  ProductInfoDao _productInfoDao;
+  ProductInfoDao get productInfoDao =>
+      _productInfoDao ??= ProductInfoDao(this as MyProductInfoDB);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
