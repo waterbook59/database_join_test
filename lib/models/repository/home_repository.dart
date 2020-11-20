@@ -3,6 +3,7 @@ import 'package:datebasejointest/data_models/product.dart';
 import 'package:datebasejointest/main.dart';
 import 'package:datebasejointest/models/db/product_info_database.dart';
 import 'package:datebasejointest/utils/extensions.dart';
+import 'package:moor/moor.dart';//TypedResult用にインポート
 
 class HomeRepository{
 
@@ -15,6 +16,7 @@ class HomeRepository{
     final productInfoDao = myProductInfoDB.productInfoDao;
     //List<JoinedProduct>を想定
     var results = <JoinedProduct>[];
+    var joinTable = <TypedResult>[];
 
     try{
       //2.モデルクラス(List<Product>)をDBのテーブルクラスへ変換
@@ -25,10 +27,12 @@ class HomeRepository{
       print('productRecords:$productRecords');
       print('productRecordImages:$productRecordImages');
       //todo 3.2つのテーブルをDBへinsert&結合クラスに変換・読込
-//      await productInfoDao.insertDB(productRecords, productRecordImages);
-      //結合(getJoinedProduct())のところでエラー
-      results = await productInfoDao.insertAndJoinFromDB(productRecords,productRecordImages);
-      print('List<JoinedProduct:$results>');
+      await productInfoDao.insertDB(productRecords, productRecordImages);
+//      joinTable =await productInfoDao.insertAndTableDB(productRecords, productRecordImages);
+//      print('query.getの結果：${joinTable.toString()}');
+      //結合(getJoinedProduct())のところでエラー:transactionの中でtransactionを行ってはいけない？
+      results = await productInfoDao.getJoinedProduct();
+      print('List<JoinedProduct:${results[3].productRecord.description}>');
 
     }on Exception catch (error) {
       print('error:$error');
