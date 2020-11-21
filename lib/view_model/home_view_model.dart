@@ -53,6 +53,8 @@ class HomeViewModel extends ChangeNotifier{
 
   Future<void> getProductInfo() async{
     await _homeRepository.getProductInfo(_products);
+    _productNameController.text = _products[0].name;
+    _productUrl = _products[0].productImage.medium;
     notifyListeners();
   }
 
