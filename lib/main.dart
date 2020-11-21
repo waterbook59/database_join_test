@@ -1,6 +1,9 @@
 import 'package:datebasejointest/view_model/home_view_model.dart';
 import 'package:datebasejointest/views/home_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'localize/japanese_cupertion_localizations.dart' as jcl;
 import 'package:provider/provider.dart';
 import 'models/db/product_info_database.dart';
 
@@ -20,6 +23,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        ///DefaultCupertinoLocalizations.delegateとjcl記載ならcupertinoTabbar使用でエラー
+        ///GlobalCupertionLocalizations.delegate記載ならエラーにはならないが、pickerは年が右に...
+        ///picker日本語化とcupertinoTabbarの両立ができない
+//        GlobalCupertinoLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+        jcl.JapaneseCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'),
+        const Locale('ja', 'JP'),
+      ],
+      locale: Locale('ja', 'JP'),
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -37,7 +55,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeScreen(title: 'Flutter Demo Home Page'),
+      home: HomeScreen(),
     );
   }
 }

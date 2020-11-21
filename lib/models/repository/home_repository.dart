@@ -1,8 +1,11 @@
 
+import 'dart:io';
+
 import 'package:datebasejointest/data_models/product.dart';
 import 'package:datebasejointest/main.dart';
 import 'package:datebasejointest/models/db/product_info_database.dart';
 import 'package:datebasejointest/utils/extensions.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:moor/moor.dart';//TypedResult用にインポート
 
 class HomeRepository{
@@ -40,8 +43,18 @@ class HomeRepository{
       print('error:$error');
     }
     return products;
-
-
   }
+
+  Future<File>pickImage() async{
+    final imagePicker = ImagePicker();
+    final pickImage = await imagePicker.getImage(source: ImageSource.camera);
+    return File(pickImage.path);
+  }
+
+  //todo 登録
+  Future<void> registerProductData() async{
+    print('registerProductDataで商品情報登録');
+  }
+
 
 }
