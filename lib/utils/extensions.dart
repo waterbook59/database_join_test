@@ -1,9 +1,10 @@
 import 'package:datebasejointest/data_models/product.dart';
+import 'package:datebasejointest/data_models/product_image.dart';
 //自分で追加
 import 'package:datebasejointest/models/db/product_info_database.dart';
 import 'package:uuid/uuid.dart';
 
-///一つのリストに対してキーを加えて２つのリストへ変換する作業
+///一つのリスト(List<Product>)に対してキーを加えて２つのリストへ変換する作業
 extension ConvertToProductRecord on List<Product>{
 
   List<ProductRecord> toProductRecord(List<Product> products) {
@@ -38,5 +39,28 @@ extension ConvertToProductRecord on List<Product>{
     });
     return productRecordImages;
   }
+
+}
+
+///JoinedProductをモデルクラスのProductへ変換する作業
+extension ConvertToProduct on List<JoinedProduct>{
+
+  List<Product> toProduct(List<JoinedProduct> joinedProducts) {
+    final products = <Product>[];
+    joinedProducts.forEach((joinedProduct) {
+    products.add(
+        Product(
+          productId: joinedProduct.productRecord.productId,
+          name: joinedProduct.productRecord.name,
+          productImage: ProductImage(
+            small: joinedProduct.productRecordImage.small,
+            medium: joinedProduct.productRecordImage.medium,
+          ),
+          description: joinedProduct.productRecord.description,
+        )
+    );
+    });
+    return products;
+        }
 
 }

@@ -26,13 +26,15 @@ class HomeRepository{
       print('products:$products');
       print('productRecords:$productRecords');
       print('productRecordImages:$productRecordImages');
-      //todo 3.2つのテーブルをDBへinsert&結合クラスに変換・読込
+      /// 3.2つのテーブルをDBへinsert
       await productInfoDao.insertDB(productRecords, productRecordImages);
 //      joinTable =await productInfoDao.insertAndTableDB(productRecords, productRecordImages);
 //      print('query.getの結果：${joinTable.toString()}');
-      //結合(getJoinedProduct())のところでエラー:transactionの中でtransactionを行ってはいけない？
+      ///4.テーブル内部結合してJoinedProductへ格納＆読込(transactionの中でやるとエラーなので上のinsertと切り離して実施）
       results = await productInfoDao.getJoinedProduct();
-      print('List<JoinedProduct:${results[3].productRecord.description}>');
+//      print('List<JoinedProduct:${results[3].productRecord.description}>');
+      ///5.JoinedProductクラスに格納されたデータをProductへ再格納して返す(extensions:)
+      products = results.toProduct(results);
 
     }on Exception catch (error) {
       print('error:$error');
