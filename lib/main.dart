@@ -1,3 +1,4 @@
+import 'package:datebasejointest/di/providers.dart';
 import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:datebasejointest/views/home_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,17 +8,21 @@ import 'localize/japanese_cupertion_localizations.dart' as jcl;
 import 'package:provider/provider.dart';
 import 'models/db/product_info_database.dart';
 
-MyProductInfoDB myProductInfoDB;
+//MyProductInfoDB myProductInfoDB;
 
 void main() {
-  myProductInfoDB = MyProductInfoDB();
+//  myProductInfoDB = MyProductInfoDB();
   runApp(
-
-    //todo MultiProviderへ変更
-      ChangeNotifierProvider<DataRegistrationViewModel>(
-        create: (context)=>DataRegistrationViewModel(),
-        child: MyApp(),
-      ));
+// MultiProviderへ変更
+//      ChangeNotifierProvider<DataRegistrationViewModel>(
+////        create: (context)=>DataRegistrationViewModel(),
+////        child: MyApp(),
+////      )
+  MultiProvider(
+    providers: globalProviders,
+    child: MyApp(),
+  )
+  );
 }
 
 class MyApp extends StatelessWidget {
