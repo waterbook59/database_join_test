@@ -12,6 +12,8 @@ MyProductInfoDB myProductInfoDB;
 void main() {
   myProductInfoDB = MyProductInfoDB();
   runApp(
+
+    //todo MultiProviderへ変更
       ChangeNotifierProvider<DataRegistrationViewModel>(
         create: (context)=>DataRegistrationViewModel(),
         child: MyApp(),
@@ -26,10 +28,6 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-        ///DefaultCupertinoLocalizations.delegateとjcl記載ならcupertinoTabbar使用でエラー
-        ///GlobalCupertionLocalizations.delegate記載ならエラーにはならないが、pickerは年が右に...
-        ///picker日本語化とcupertinoTabbarの両立ができない
-//        GlobalCupertinoLocalizations.delegate,
         DefaultCupertinoLocalizations.delegate,
         jcl.JapaneseCupertinoLocalizations.delegate,
       ],
