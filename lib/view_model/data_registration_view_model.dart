@@ -7,7 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DataRegistrationViewModel extends ChangeNotifier{
-  final DataRepository _dataRepository =DataRepository();
+  //diあり
+  DataRegistrationViewModel({DataRepository repository})
+      : _dataRepository = repository;
+  final DataRepository _dataRepository;
+
+  //diなし
+//  final DataRepository _dataRepository =DataRepository();
 
   final List<Product> _products = variableProducts;
   List<Product> get products => _products;

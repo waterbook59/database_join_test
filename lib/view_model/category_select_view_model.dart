@@ -4,11 +4,13 @@ import 'package:datebasejointest/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class CategorySelectViewModel extends ChangeNotifier{
-//  CategorySelectViewModel({BarcodeRepository repository})
-//      : _barcodeRepository = repository;
-//  final BarcodeRepository _barcodeRepository;
+  //diあり
+  CategorySelectViewModel({MenuRepository repository})
+      : _menuRepository = repository;
+  final MenuRepository _menuRepository;
 
-  final MenuRepository _menuRepository =MenuRepository();
+//diなし
+//  final MenuRepository _menuRepository =MenuRepository();
 
 
 //  bool _isSelected =false;
