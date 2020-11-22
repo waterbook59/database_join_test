@@ -1,13 +1,20 @@
-import 'package:datebasejointest/data_models/category_list.dart';
+import 'package:datebasejointest/data_models/menu/category_list.dart';
+import 'package:datebasejointest/models/repository/data_repository.dart';
 import 'package:datebasejointest/models/repository/menu_repository.dart';
 import 'package:datebasejointest/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class CategorySelectViewModel extends ChangeNotifier{
   //diあり
-  CategorySelectViewModel({MenuRepository repository})
-      : _menuRepository = repository;
-  final MenuRepository _menuRepository;
+//  CategorySelectViewModel({MenuRepository repository})
+//      : _menuRepository = repository;
+//  final MenuRepository _menuRepository;
+
+//  CategorySelectViewModel({DataRepository repository})
+//      : _menuRepository = repository;
+//  final DataRepository _menuRepository;
+
+
 
 //diなし
 //  final MenuRepository _menuRepository =MenuRepository();

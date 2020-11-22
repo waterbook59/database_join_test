@@ -1,5 +1,5 @@
 
-import 'package:datebasejointest/data_models/category_list.dart';
+import 'package:datebasejointest/data_models/menu/category_list.dart';
 import 'package:datebasejointest/utils/constants.dart';
 import 'package:datebasejointest/view_model/category_select_view_model.dart';
 import 'package:datebasejointest/views/category_select/category_select_screen.dart';

@@ -1,4 +1,4 @@
-import 'package:datebasejointest/data_models/category_list.dart';
+import 'package:datebasejointest/data_models/menu/category_list.dart';
 import 'package:flutter/material.dart';
 
 class CategoryItem extends StatelessWidget {

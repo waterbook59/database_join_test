@@ -29,9 +29,16 @@ List<SingleChildWidget> dependentModels = [
   ProxyProvider<MyProductInfoDB,ProductInfoDao>(
     update: (_, db, dao)=>ProductInfoDao(db),
   ),
-//  ProxyProvider<BarcodeDao,BarcodeRepository>(
-//    update: (_, dao, repository)=>BarcodeRepository(dao: dao),
+//  ProxyProvider<ProductInfoDao,MenuRepository>(
+//    update: (_, dao, repository)=>MenuRepository(productInfoDao: dao),
 //  ),
+
+//todo Proxyprovider2にしてApiService加える
+  ProxyProvider<ProductInfoDao,DataRepository>(
+    update: (_, dao, repository)=>DataRepository(productInfoDao: dao),
+  ),
+
+//todo menuRepository=>database
 //  ProxyProvider<ProductApiService,BarcodeRepository>(
 //    update: (_, productApiService, repository)=>BarcodeRepository(
 //        productApiService: productApiService),
@@ -43,7 +50,7 @@ List<SingleChildWidget> viewModels =[
 
   ChangeNotifierProvider<CategorySelectViewModel>(
     create: (context)=> CategorySelectViewModel(
-      repository:Provider.of<MenuRepository>(context, listen: false),
+//      repository:Provider.of<MenuRepository>(context, listen: false),
     ),
   ),
   ChangeNotifierProvider<DataRegistrationViewModel>(
@@ -51,5 +58,6 @@ List<SingleChildWidget> viewModels =[
       repository:Provider.of<DataRepository>(context, listen: false),
     ),
   ),
+
 
 ];
