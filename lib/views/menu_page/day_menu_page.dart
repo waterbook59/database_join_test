@@ -10,16 +10,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 //import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 
-class MenuPage extends StatefulWidget {
-  MenuPage({this.categoryResult});
+class DayMenuPage extends StatefulWidget {
+  DayMenuPage({this.categoryResult});
 
   List<Category> categoryResult;
 
   @override
-  _MenuPageState createState() => _MenuPageState();
+  _DayMenuPageState createState() => _DayMenuPageState();
 }
 
-class _MenuPageState extends State<MenuPage> {
+class _DayMenuPageState extends State<DayMenuPage> {
   @override
   void initState() {
 //    print('カテゴリー選択から得たデータ：${widget.categoryResult}');
@@ -36,7 +36,7 @@ class _MenuPageState extends State<MenuPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Configurable Expansion Tile Demo'),
+        title: Text('DayMenu'),
       ),
       floatingActionButton: const FloatingActionButton(
         //todo

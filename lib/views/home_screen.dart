@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'data_list_page/data_list_page.dart';
 import 'data_registration/data_registration_page.dart';
-import 'menu_page/menu_page.dart';
+import 'menu_page/day_menu_page.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -14,7 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    MenuPage(),//メニュー
+    DayMenuPage(),//メニュー
     DataRegistrationPage(),//データ登録
     DataListPage(),//登録データ一覧
 
