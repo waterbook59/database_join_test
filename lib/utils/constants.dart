@@ -39,5 +39,11 @@ List<Product> variableProducts = [
         medium: 'スマホ中画像',
       )
   ),
-
 ];
+
+enum MealType{
+  breakfast,
+  lunch,
+  snack,
+  dinner
+}

@@ -8,7 +8,7 @@ import 'package:datebasejointest/utils/extensions.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:moor/moor.dart';//TypedResult用にインポート
 
-class HomeRepository{
+class DataRepository{
 
   Future<List<Product>> getProductInfo(List<Product> products) async{
 

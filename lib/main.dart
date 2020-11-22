@@ -1,4 +1,4 @@
-import 'package:datebasejointest/view_model/home_view_model.dart';
+import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:datebasejointest/views/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +12,8 @@ MyProductInfoDB myProductInfoDB;
 void main() {
   myProductInfoDB = MyProductInfoDB();
   runApp(
-      ChangeNotifierProvider<HomeViewModel>(
-        create: (context)=>HomeViewModel(),
+      ChangeNotifierProvider<DataRegistrationViewModel>(
+        create: (context)=>DataRegistrationViewModel(),
         child: MyApp(),
       ));
 }

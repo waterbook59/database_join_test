@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:datebasejointest/data_models/product.dart';
-import 'package:datebasejointest/models/repository/home_repository.dart';
+import 'package:datebasejointest/models/repository/data_repository.dart';
 import 'package:datebasejointest/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class HomeViewModel extends ChangeNotifier{
-  final HomeRepository _homeRepository =HomeRepository();
+class DataRegistrationViewModel extends ChangeNotifier{
+  final DataRepository _dataRepository =DataRepository();
 
   final List<Product> _products = variableProducts;
   List<Product> get products => _products;
@@ -52,14 +52,14 @@ class HomeViewModel extends ChangeNotifier{
 
 
   Future<void> getProductInfo() async{
-    await _homeRepository.getProductInfo(_products);
+    await _dataRepository.getProductInfo(_products);
     _productNameController.text = _products[0].name;
     _productUrl = _products[0].productImage.medium;
     notifyListeners();
   }
 
   Future<void> registerProductData() async {
-    await _homeRepository.registerProductData();
+    await _dataRepository.registerProductData();
     notifyListeners();
   }
 
@@ -108,7 +108,7 @@ class HomeViewModel extends ChangeNotifier{
     isImagePicked = false;
     notifyListeners();
 
-    imageFile = await _homeRepository.pickImage();
+    imageFile = await _dataRepository.pickImage();
 //    print('pickedImage:${imageFile.path}');
 
     if (imageFile != null) isImagePicked = true;
