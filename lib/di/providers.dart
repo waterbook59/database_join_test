@@ -33,7 +33,8 @@ List<SingleChildWidget> dependentModels = [
 //    update: (_, dao, repository)=>MenuRepository(productInfoDao: dao),
 //  ),
 
-//todo Proxyprovider2にしてApiService加える
+//todo Proxyprovider2にしてApiService加える,
+//todo もっと進んだらApiService,ProductInfoDao,StuffInfoDaoをDataRepositoryにまとめる
   ProxyProvider<ProductInfoDao,DataRepository>(
     update: (_, dao, repository)=>DataRepository(productInfoDao: dao),
   ),
@@ -48,6 +49,7 @@ List<SingleChildWidget> dependentModels = [
 //chapter98 RepositoryにChangeNotifierProxyProvider
 List<SingleChildWidget> viewModels =[
 
+  //todo カテゴリや使う商品と登録データを紐づけるので、repositoryはDataRepositoryに集約
   ChangeNotifierProvider<CategorySelectViewModel>(
     create: (context)=> CategorySelectViewModel(
 //      repository:Provider.of<MenuRepository>(context, listen: false),

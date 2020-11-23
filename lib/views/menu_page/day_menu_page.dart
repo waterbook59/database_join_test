@@ -19,11 +19,32 @@ class DayMenuPage extends StatefulWidget {
   _DayMenuPageState createState() => _DayMenuPageState();
 }
 
-class _DayMenuPageState extends State<DayMenuPage> {
+class _DayMenuPageState extends State<DayMenuPage> with TickerProviderStateMixin {
+
+  TabController _tabController;
+//  List<String> _titles = [
+//    "1日目",
+//    "2日目",
+//    "3日目",
+//  ];
+
+  final _tab = <Tab> [
+    Tab( text:'1日目', icon: Icon(Icons.directions_car)),
+    Tab( text:'2日目', icon: Icon(Icons.directions_bike)),
+    Tab( text:'3日目', icon: Icon(Icons.directions_boat)),
+  ];
+
   @override
   void initState() {
 //    print('カテゴリー選択から得たデータ：${widget.categoryResult}');
+    _tabController = TabController(vsync: this, length: _tab.length);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -37,6 +58,10 @@ class _DayMenuPageState extends State<DayMenuPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('DayMenu'),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: _tab,
+        ),
       ),
       floatingActionButton: const FloatingActionButton(
         //todo
