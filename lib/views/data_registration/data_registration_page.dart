@@ -109,6 +109,7 @@ class DataRegistrationPage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadiusDirectional.circular(15)),
                       child: const Text('保存'),
+                      //todo 文字=>DB,カメラ画像=>model.imageFileをsavedFileとしてドキュメントへ保存
                       onPressed: () => registerProductData(context),
                     ),
                   ],

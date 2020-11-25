@@ -52,7 +52,8 @@ class DataRegistrationViewModel extends ChangeNotifier{
 //  List<Product> _products = <Product>[];
 //  List<Product> get products => _products;
 
-  //カメラから取得した画像
+  //todo カメラから取得した画像File(imageFile)を保存ボタンを押したらローカル保存するメソッドへ渡す
+  ///カメラ画像は撮影時用の一時的フォルダパスに保存されている(たぶんキャッシュ保存の状態)
   File imageFile;
   bool isImagePicked = false;
 

@@ -93,7 +93,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 height: 50,
-                                child: Center(child: Text('メニュー')))),
+                                child: Center(child: Text('朝のメニュー')))),
                         header: Flexible(
                           child: Container(
                               decoration: BoxDecoration(
@@ -163,7 +163,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 height: 50,
-                                child: Center(child: Text('メニュー')))),
+                                child: Center(child: Text('昼のメニュー')))),
                         header: Flexible(
                           child: Container(
                               decoration: BoxDecoration(
@@ -181,7 +181,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                     return Column(
                                         children: [
                                           MealTimePart(
-                                            mealTime: '朝',
+                                            mealTime: '昼',
                                             backgroundColor: Colors.orangeAccent,
                                             ///ここでMealType.breakfastを渡す
                                             onAdd: () {
@@ -233,7 +233,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 height: 50,
-                                child: Center(child: Text('メニュー')))),
+                                child: Center(child: Text('間食メニュー')))),
                         header: Flexible(
                           child: Container(
                               decoration: BoxDecoration(
@@ -303,7 +303,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 height: 50,
-                                child: Center(child: Text('メニュー')))),
+                                child: Center(child: Text('夜のメニュー')))),
                         header: Flexible(
                           child: Container(
                               decoration: BoxDecoration(
