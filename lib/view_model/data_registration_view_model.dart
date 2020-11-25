@@ -52,9 +52,9 @@ class DataRegistrationViewModel extends ChangeNotifier{
 //  List<Product> _products = <Product>[];
 //  List<Product> get products => _products;
 
-  //todo カメラから取得した画像File(imageFile)を保存ボタンを押したらローカル保存するメソッドへ渡す
-  ///カメラ画像は撮影時用の一時的フォルダパスに保存されている(たぶんキャッシュ保存の状態)
-  File imageFile;
+  //カメラ・ギャラリーから取得した画像File(imageFile)を保存ボタンを押したらキャッシュからローカル保存するメソッドへ渡す
+  File imageFromCamera;
+  File imageFromGallery;
   bool isImagePicked = false;
 
 
@@ -111,15 +111,24 @@ class DataRegistrationViewModel extends ChangeNotifier{
 //    super.dispose();
 //  }
 
-  Future<void> pickImage() async {
+  Future<void> getImageFromCamera() async {
     isImagePicked = false;
     notifyListeners();
 
-    imageFile = await _dataRepository.pickImage();
+    imageFromCamera = await _dataRepository.getImageFromCamera();
 //    print('pickedImage:${imageFile.path}');
 
-    if (imageFile != null) isImagePicked = true;
+    if (imageFromCamera != null) isImagePicked = true;
     notifyListeners();
+  }
+
+  Future<void> getImageFromGallery() async{
+    isImagePicked = false;
+    notifyListeners();
+    imageFromGallery = await _dataRepository.getImageFromGallery();
+    if (imageFromGallery != null) isImagePicked = true;
+    notifyListeners();
+
   }
 
 

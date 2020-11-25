@@ -1,9 +1,9 @@
 import 'package:datebasejointest/utils/constants.dart';
 
 class FoodStuff{
-  String foodstuffId;
-  String image;
-  String imageUrl;
+  String foodstuffId;//UuidでつけるかautoIncrement
+  String localImagePath;//カメラ・ギャラリーのイメージパス
+  String imageUrl;//network経由のproductImage
   String name;
   String category;
   String validDate;

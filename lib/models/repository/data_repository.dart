@@ -54,16 +54,26 @@ final ProductInfoDao _productInfoDao;
     return products;
   }
 
-  Future<File>pickImage() async{
+  Future<File> getImageFromCamera() async{
     final imagePicker = ImagePicker();
-    final pickImage = await imagePicker.getImage(source: ImageSource.camera);
-    return File(pickImage.path);
+    final cameraImageFile = await imagePicker.getImage(source: ImageSource.camera);
+    return File(cameraImageFile.path);
   }
+
+  Future<File> getImageFromGallery() async{
+    final imagePicker = ImagePicker();
+    final galleryPickedFile =
+    await imagePicker.getImage(source: ImageSource.gallery);
+    return File(galleryPickedFile.path);
+  }
+
 
   //todo 登録
   Future<void> registerProductData() async{
     print('registerProductDataで商品情報登録');
   }
+
+
 
 
 }

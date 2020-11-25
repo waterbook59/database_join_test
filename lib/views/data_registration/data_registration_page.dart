@@ -2,6 +2,7 @@ import 'package:datebasejointest/style.dart';
 import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:datebasejointest/views/components/button_with_icon.dart';
 import 'package:datebasejointest/views/components/camera_icon_part.dart';
+import 'package:datebasejointest/views/components/gallery_part.dart';
 import 'package:datebasejointest/views/components/imgae_from_url.dart';
 import 'package:datebasejointest/views/components/picker_form_part.dart';
 import 'package:datebasejointest/views/components/product_text_part.dart';
@@ -33,11 +34,34 @@ class DataRegistrationPage extends StatelessWidget {
                       height: 10,
                     ),
                     ///商品画像：自分でカメラで撮影
-                    CameraIconPart(
-                      onTap: () => openCamera(context),
-                      displayImage: model.isImagePicked
-                          ? Image.file(model.imageFile)
-                          : Image.asset(cameraIcon),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          CameraIconPart(
+                            onTap: () => getImageFromCamera(context),
+                            displayImage: model.isImagePicked
+                                ? model.imageFromCamera==null
+                                    ?Container()
+                                    :Image.file(model.imageFromCamera)
+                                : Image.asset(cameraIcon),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          GalleryPart(
+                            onTap: () => getImageFromGallery(context),
+                            displayImage: model.isImagePicked
+                              ? model.imageFromGallery==null
+                                  ?Container()
+                                  :Image.file(model.imageFromGallery)
+                              : Icon(Icons.folder),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                        ],
+                      ),
                     ),
                     ///商品画像：バーコード検索結果
                     SizedBox(
@@ -132,10 +156,16 @@ class DataRegistrationPage extends StatelessWidget {
     await viewModel.getProductInfo();
   }
 
-  Future<void> openCamera(BuildContext context) async{
+  Future<void> getImageFromCamera(BuildContext context) async{
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);
-    await viewModel.pickImage();
+    await viewModel.getImageFromCamera();
+  }
+
+  Future<void> getImageFromGallery(BuildContext context) async{
+    final viewModel =
+    Provider.of<DataRegistrationViewModel>(context, listen: false);
+    await viewModel.getImageFromGallery();
   }
 
   Future<void> registerProductData(BuildContext context) async {
@@ -143,6 +173,8 @@ class DataRegistrationPage extends StatelessWidget {
     Provider.of<DataRegistrationViewModel>(context, listen: false);
     await viewModel.registerProductData();
   }
+
+
 
 
 }
