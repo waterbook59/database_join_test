@@ -1,5 +1,6 @@
 import 'package:datebasejointest/style.dart';
 import 'package:datebasejointest/view_model/data_registration_view_model.dart';
+import 'package:datebasejointest/views/components/barcode_part.dart';
 import 'package:datebasejointest/views/components/button_with_icon.dart';
 import 'package:datebasejointest/views/components/camera_icon_part.dart';
 import 'package:datebasejointest/views/components/gallery_part.dart';
@@ -34,38 +35,117 @@ class DataRegistrationPage extends StatelessWidget {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      ///商品画像：自分でカメラで撮影
+                      const SizedBox(height: 15,),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
+                        child: Wrap(
+//                       alignment: WrapAlignment.center
+                          spacing: 10,
                           children: [
-                            CameraIconPart(
-                              onTap: () => getImageFromCamera(context),
-                              displayImage: model.isImagePicked
-                                  ? model.imageFromCamera==null
-                                      ?Container()
-                                      :Image.file(model.imageFromCamera)
-                                  : Image.asset(cameraIcon),
+                            ///商品画像：自分でカメラで撮影
+                            model.isImagePickedFromCamera
+                            ///   画像が取れたらキャッシュの画面を表示
+                            ? model.imageFromCamera==null
+                               ? Container()
+                               : Container(
+                                  decoration: BoxDecoration(
+                                  border:  Border.all(color: Colors.blueAccent),
                             ),
-                            SizedBox(
-                              width: 15,
+                                child:  SizedBox(
+                                width: 90,
+                                height: 90,
+                                child: Image.file(model.imageFromCamera)
+                                )
+                            )
+                            ///初期タップでカメラ起動または他で選択済みの時
+                                :(model.isImagePickedFromGallery||model.isImagePickedFromNetwork)
+                            ///ギャラリーまたはnetworkの画像がキャッシュに入った時
+                            //todo 完全にカメラアイコンを消すのではなく小さく表示して選択肢として残す
+                            ? Container()
+                            ///初期タップでカメラ起動
+                            :Container(
+                              decoration: BoxDecoration(
+                              border:  Border.all(color: Colors.blueAccent),
                             ),
-                            GalleryPart(
-                              onTap: () => getImageFromGallery(context),
-                              displayImage: model.isImagePicked
-                                ? model.imageFromGallery==null
-                                    ?Container()
-                                    :Image.file(model.imageFromGallery)
-                                : Icon(Icons.folder),
+                               child: InkWell(
+                                onTap: () => getImageFromCamera(context),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: SizedBox(
+                                    width: 90,
+                                    height: 90,
+                                    child: Image.asset(cameraIcon),
                             ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                          ],
+                          ),
                         ),
+                    ),
+                          ///商品画像：自分でカメラで撮影
+//                          CameraIconPart(
+//                            onTap: () => getImageFromCamera(context),
+//                            displayImage: model.isImagePicked
+//                                ? model.imageFromCamera==null
+//                                ?Container()
+//                                :Image.file(model.imageFromCamera)
+//                                : Image.asset(cameraIcon),
+//                    ),
+
+                          ///商品画像：ギャラリーから選択
+                            model.isImagePickedFromGallery
+                                ? model.imageFromGallery==null
+                                ? Container()
+                                : Container(
+                                decoration: BoxDecoration(
+                                  border:  Border.all(color: Colors.blueAccent),
+                                ),
+                                child:  SizedBox(
+                                    width: 90,
+                                    height: 90,
+                                    child: Image.file(model.imageFromGallery)
+                                )
+                            )
+                            ///初期タップでフォルダ選択起動
+                                : Container(
+                              decoration: BoxDecoration(
+                                border:  Border.all(color: Colors.blueAccent),
+                              ),
+                              child: InkWell(
+                                onTap: () => getImageFromGallery(context),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: SizedBox(
+                                    width: 90,
+                                    height: 90,
+                                    child:Icon(Icons.folder),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            ///商品画像：ギャラリーから選択
+//                            GalleryPart(
+//                              onTap: () => getImageFromGallery(context),
+//                              displayImage: model.isImagePickedFromGallery
+//                                  ? model.imageFromGallery==null
+//                                  ?Container()
+//                                  :Image.file(model.imageFromGallery)
+//                                  : Icon(Icons.folder),
+//                            ),
+
+
+                            ///商品画像：networkから選択
+                          BarcodePart(
+                            onTap: () => _getProductInfo(context),
+                            displayImage: model.isImagePickedFromNetwork
+                                ? model.imageFromNetwork==null
+                                ?Container()
+                                :Image.file(model.imageFromNetwork)
+                                :FaIcon(FontAwesomeIcons.barcode),
+                          ),
+
+                  ],
+                  )
+
+
                       ),
                       ///商品画像：バーコード検索結果
                       SizedBox(

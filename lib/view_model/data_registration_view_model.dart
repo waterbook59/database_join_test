@@ -55,7 +55,13 @@ class DataRegistrationViewModel extends ChangeNotifier{
   //カメラ・ギャラリーから取得した画像File(imageFile)を保存ボタンを押したらキャッシュからローカル保存するメソッドへ渡す
   File imageFromCamera;
   File imageFromGallery;
-  bool isImagePicked = false;
+  File imageFromNetwork;
+  ///３つ別々より１つの方が良い?
+  bool isImagePickedFromCamera = false;
+  bool isImagePickedFromGallery = false;
+  bool isImagePickedFromNetwork = false;
+
+//  File get imageFromNetwork => null;
 
 
   Future<void> getProductInfo() async{
@@ -112,21 +118,21 @@ class DataRegistrationViewModel extends ChangeNotifier{
 //  }
 
   Future<void> getImageFromCamera() async {
-    isImagePicked = false;
+    isImagePickedFromCamera = false;
     notifyListeners();
 
     imageFromCamera = await _dataRepository.getImageFromCamera();
 //    print('pickedImage:${imageFile.path}');
 
-    if (imageFromCamera != null) isImagePicked = true;
+    if (imageFromCamera != null) isImagePickedFromCamera = true;
     notifyListeners();
   }
 
   Future<void> getImageFromGallery() async{
-    isImagePicked = false;
+    isImagePickedFromGallery = false;
     notifyListeners();
     imageFromGallery = await _dataRepository.getImageFromGallery();
-    if (imageFromGallery != null) isImagePicked = true;
+    if (imageFromGallery != null) isImagePickedFromGallery = true;
     notifyListeners();
 
   }

@@ -55,13 +55,14 @@ final ProductInfoDao _productInfoDao;
     return products;
   }
 
+//todo FutureOr<File>で対応可能か調べる
   Future<File> getImageFromCamera() async{
     final imagePicker = ImagePicker();
     final cameraImageFile = await imagePicker.getImage(source: ImageSource.camera);
     ///if (pickedFile != null)を記述しておかないと、
     ///画像ライブラリの選択画面で「キャンセル」を押した際にエラーになってしまう!!
     if(cameraImageFile !=null){
-      File(cameraImageFile.path);
+     return File(cameraImageFile.path);
     }
   }
 
