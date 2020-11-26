@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:datebasejointest/data_models/product.dart';
@@ -57,14 +58,23 @@ final ProductInfoDao _productInfoDao;
   Future<File> getImageFromCamera() async{
     final imagePicker = ImagePicker();
     final cameraImageFile = await imagePicker.getImage(source: ImageSource.camera);
-    return File(cameraImageFile.path);
+    ///if (pickedFile != null)を記述しておかないと、
+    ///画像ライブラリの選択画面で「キャンセル」を押した際にエラーになってしまう!!
+    if(cameraImageFile !=null){
+      File(cameraImageFile.path);
+    }
   }
 
   Future<File> getImageFromGallery() async{
     final imagePicker = ImagePicker();
     final galleryPickedFile =
     await imagePicker.getImage(source: ImageSource.gallery);
-    return File(galleryPickedFile.path);
+    ///if (pickedFile != null)を記述しておかないと、
+    ///画像ライブラリの選択画面で「キャンセル」を押した際にエラーになってしまう!!
+    if(galleryPickedFile !=null){
+     return File(galleryPickedFile.path);
+    }
+
   }
 
 
