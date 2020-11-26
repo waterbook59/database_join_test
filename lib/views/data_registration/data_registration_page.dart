@@ -19,6 +19,7 @@ class DataRegistrationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      ///image_pickerでカメラまたはギャラリーキャンセル時にエラーが出るのでWillPopScope(true?)で戻らせない
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -31,7 +32,7 @@ class DataRegistrationPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const SizedBox(
-                      height: 10,
+                      height: 15,
                     ),
                     ///商品画像：自分でカメラで撮影
                     Padding(
@@ -65,8 +66,8 @@ class DataRegistrationPage extends StatelessWidget {
                     ),
                     ///商品画像：バーコード検索結果
                     SizedBox(
-                        width: 80,
-                        height: 80,
+                        width: 90,
+                        height: 90,
                         //todo バーコード検索結果から表示、タップでカメラ起動
                         child: ImageFromUrl(
                           imageUrl: model.productUrl,

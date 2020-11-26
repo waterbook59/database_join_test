@@ -18,8 +18,8 @@ class GalleryPart extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: SizedBox(
-            width: 100,
-            height: 100,
+            width: 90,
+            height: 90,
             //todo タップでカメラ起動 or 保存先から選択
             child: displayImage,
           ),
