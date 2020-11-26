@@ -124,7 +124,10 @@ class DataRegistrationViewModel extends ChangeNotifier{
     imageFromCamera = await _dataRepository.getImageFromCamera();
 //    print('pickedImage:${imageFile.path}');
 
-    if (imageFromCamera != null) isImagePickedFromCamera = true;
+    if (imageFromCamera != null){
+      isImagePickedFromCamera = true;
+      isImagePickedFromGallery = false;
+    }
     notifyListeners();
   }
 
@@ -132,9 +135,11 @@ class DataRegistrationViewModel extends ChangeNotifier{
     isImagePickedFromGallery = false;
     notifyListeners();
     imageFromGallery = await _dataRepository.getImageFromGallery();
-    if (imageFromGallery != null) isImagePickedFromGallery = true;
+    if (imageFromGallery != null) {
+      isImagePickedFromGallery = true;
+      isImagePickedFromCamera = false;
+    }
     notifyListeners();
-
   }
 
 

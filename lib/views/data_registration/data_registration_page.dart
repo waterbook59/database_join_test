@@ -2,6 +2,7 @@ import 'package:datebasejointest/style.dart';
 import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:datebasejointest/views/components/barcode_part.dart';
 import 'package:datebasejointest/views/components/button_with_icon.dart';
+import 'package:datebasejointest/views/components/cached_camera_image.dart';
 import 'package:datebasejointest/views/components/camera_icon_part.dart';
 import 'package:datebasejointest/views/components/gallery_part.dart';
 import 'package:datebasejointest/views/components/imgae_from_url.dart';
@@ -47,47 +48,34 @@ class DataRegistrationPage extends StatelessWidget {
                             ///   画像が取れたらキャッシュの画面を表示
                             ? model.imageFromCamera==null
                                ? Container()
-                               : Container(
-                                  decoration: BoxDecoration(
-                                  border:  Border.all(color: Colors.blueAccent),
-                            ),
-                                child:  SizedBox(
-                                width: 90,
-                                height: 90,
-                                child: Image.file(model.imageFromCamera)
-                                )
+                               : CachedCameraImage(
+                              onTap: () => getImageFromCamera(context),
+                              displayImage: Image.file(model.imageFromCamera),
                             )
+
+//                            Container(
+//                                  decoration: BoxDecoration(
+//                                  border:  Border.all(color: Colors.blueAccent),
+//                            ),
+//                                child:  SizedBox(
+//                                width: 90,
+//                                height: 90,
+//                                child: Image.file(model.imageFromCamera)
+//                                )
+//                            )
                             ///初期タップでカメラ起動または他で選択済みの時
-                                :(model.isImagePickedFromGallery||model.isImagePickedFromNetwork)
+                            :
+                            (model.isImagePickedFromGallery||model.isImagePickedFromNetwork)
                             ///ギャラリーまたはnetworkの画像がキャッシュに入った時
                             //todo 完全にカメラアイコンを消すのではなく小さく表示して選択肢として残す
-                            ? Container()
-                            ///初期タップでカメラ起動
-                            :Container(
-                              decoration: BoxDecoration(
-                              border:  Border.all(color: Colors.blueAccent),
-                            ),
-                               child: InkWell(
-                                onTap: () => getImageFromCamera(context),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: SizedBox(
-                                    width: 90,
-                                    height: 90,
-                                    child: Image.asset(cameraIcon),
-                            ),
-                          ),
-                        ),
-                    ),
-                          ///商品画像：自分でカメラで撮影
-//                          CameraIconPart(
-//                            onTap: () => getImageFromCamera(context),
-//                            displayImage: model.isImagePicked
-//                                ? model.imageFromCamera==null
-//                                ?Container()
-//                                :Image.file(model.imageFromCamera)
-//                                : Image.asset(cameraIcon),
-//                    ),
+                                ? Container()//小さいCameraIconPartへ変更
+                                :///初期タップでカメラ起動
+                                  CameraIconPart(
+                                    onTap: () => getImageFromCamera(context),
+                                    displayImage: Image.asset(cameraIcon),
+                                  ),
+
+
 
                           ///商品画像：ギャラリーから選択
                             model.isImagePickedFromGallery
