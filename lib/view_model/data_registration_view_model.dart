@@ -118,8 +118,8 @@ class DataRegistrationViewModel extends ChangeNotifier{
 //  }
 
   Future<void> getImageFromCamera() async {
-    isImagePickedFromCamera = false;
-    notifyListeners();
+//    isImagePickedFromCamera = false;
+//    notifyListeners();
 
     imageFromCamera = await _dataRepository.getImageFromCamera();
 //    print('pickedImage:${imageFile.path}');

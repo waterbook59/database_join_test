@@ -2,8 +2,8 @@ import 'package:datebasejointest/style.dart';
 import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:datebasejointest/views/components/barcode_part.dart';
 import 'package:datebasejointest/views/components/button_with_icon.dart';
-import 'package:datebasejointest/views/components/cached_camera_image.dart';
-import 'package:datebasejointest/views/components/camera_icon_part.dart';
+import 'package:datebasejointest/views/components/cached_image.dart';
+import 'package:datebasejointest/views/components/add_icon_part.dart';
 import 'package:datebasejointest/views/components/gallery_part.dart';
 import 'package:datebasejointest/views/components/imgae_from_url.dart';
 import 'package:datebasejointest/views/components/picker_form_part.dart';
@@ -21,10 +21,11 @@ class DataRegistrationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+
       ///image_pickerでカメラまたはギャラリーキャンセル時にエラーが出るのでWillPopScope(true?)で戻らせない
       child: WillPopScope(
 //        onWillPop: _willPopCallback,
-      onWillPop: ()=>_exitApp(context),
+        onWillPop: () => _exitApp(context),
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -38,103 +39,83 @@ class DataRegistrationPage extends StatelessWidget {
                     children: [
                       const SizedBox(height: 15,),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Wrap(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Wrap(
 //                       alignment: WrapAlignment.center
-                          spacing: 10,
-                          children: [
-                            ///商品画像：自分でカメラで撮影
-                            model.isImagePickedFromCamera
-                            ///   画像が取れたらキャッシュの画面を表示
-                            ? model.imageFromCamera==null
-                               ? Container()
-                               : CachedCameraImage(
-                              onTap: () => getImageFromCamera(context),
-                              displayImage: Image.file(model.imageFromCamera),
-                            )
-
-//                            Container(
-//                                  decoration: BoxDecoration(
-//                                  border:  Border.all(color: Colors.blueAccent),
-//                            ),
-//                                child:  SizedBox(
-//                                width: 90,
-//                                height: 90,
-//                                child: Image.file(model.imageFromCamera)
-//                                )
-//                            )
-                            ///初期タップでカメラ起動または他で選択済みの時
-                            :
-                            (model.isImagePickedFromGallery||model.isImagePickedFromNetwork)
-                            ///ギャラリーまたはnetworkの画像がキャッシュに入った時
-                            //todo 完全にカメラアイコンを消すのではなく小さく表示して選択肢として残す
-                                ? Container()//小さいCameraIconPartへ変更
-                                :///初期タップでカメラ起動
-                                  CameraIconPart(
-                                    onTap: () => getImageFromCamera(context),
-                                    displayImage: Image.asset(cameraIcon),
-                                  ),
-
+                            spacing: 10,
+                            children: [
+                              ///商品画像：自分でカメラで撮影
+                              model.isImagePickedFromCamera
+                              ///   画像が取れたらキャッシュの画面を表示
+                                  ? model.imageFromCamera == null
+                                  ? Container()
+                                  : CachedImage(
+                                onTap: () => getImageFromCamera(context),
+                                displayImage: Image.file(model.imageFromCamera),
+                              )
+                              ///初期タップでカメラ起動または他で選択済みの時
+                                  :
+                              (model.isImagePickedFromGallery || model.isImagePickedFromNetwork)
+                              ///ギャラリーまたはnetworkの画像がキャッシュに入った時
+                              //完全にカメラアイコンを消すのではなく小さく表示して選択肢として残す
+                                  ? AddIconPart(
+                                onTap: () => getImageFromCamera(context),
+                                displayImage: Icon(Icons.add_a_photo,size: 60,),
+                                width: 60,
+                                height: 60,
+                              ) //小さいCameraIconPartへ変更
+                                  :
+                              ///初期タップでカメラ起動
+                              AddIconPart(
+                                onTap: () => getImageFromCamera(context),
+                                displayImage: Icon(Icons.add_a_photo,size: 60,),
+                                width: 90,
+                                height: 90,
+                              ),
 
 
                           ///商品画像：ギャラリーから選択
-                            model.isImagePickedFromGallery
-                                ? model.imageFromGallery==null
-                                ? Container()
-                                : Container(
-                                decoration: BoxDecoration(
-                                  border:  Border.all(color: Colors.blueAccent),
-                                ),
-                                child:  SizedBox(
-                                    width: 90,
-                                    height: 90,
-                                    child: Image.file(model.imageFromGallery)
-                                )
-                            )
-                            ///初期タップでフォルダ選択起動
-                                : Container(
-                              decoration: BoxDecoration(
-                                border:  Border.all(color: Colors.blueAccent),
-                              ),
-                              child: InkWell(
+                              model.isImagePickedFromGallery
+                                  ? model.imageFromGallery == null
+                                  ? Container()
+                                  : CachedImage(
                                 onTap: () => getImageFromGallery(context),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: SizedBox(
-                                    width: 90,
-                                    height: 90,
-                                    child:Icon(Icons.folder),
-                                  ),
-                                ),
+                                displayImage: Image.file(model.imageFromGallery),
+                              )
+                              ///初期タップでフォルダ選択起動
+                                  :
+                              (model.isImagePickedFromCamera || model.isImagePickedFromNetwork)
+                                  ? AddIconPart(
+                                onTap: () => getImageFromGallery(context),
+                                displayImage:  Icon(Icons.add_photo_alternate,size: 60,),
+                                width: 60,
+                                height: 60,
+                              )
+                              : AddIconPart(
+                                onTap: () => getImageFromGallery(context),
+                                displayImage: Icon(Icons.add_photo_alternate,size: 60,),
+                                width: 90,
+                                height: 90,
                               ),
-                            ),
-
-                            ///商品画像：ギャラリーから選択
-//                            GalleryPart(
-//                              onTap: () => getImageFromGallery(context),
-//                              displayImage: model.isImagePickedFromGallery
-//                                  ? model.imageFromGallery==null
-//                                  ?Container()
-//                                  :Image.file(model.imageFromGallery)
-//                                  : Icon(Icons.folder),
-//                            ),
 
 
-                            ///商品画像：networkから選択
-                          BarcodePart(
-                            onTap: () => _getProductInfo(context),
-                            displayImage: model.isImagePickedFromNetwork
-                                ? model.imageFromNetwork==null
-                                ?Container()
-                                :Image.file(model.imageFromNetwork)
-                                :FaIcon(FontAwesomeIcons.barcode),
-                          ),
 
-                  ],
-                  )
+                              ///商品画像：networkから選択
+                              BarcodePart(
+                                onTap: () => _getProductInfo(context),
+                                displayImage: model.isImagePickedFromNetwork
+                                    ? model.imageFromNetwork == null
+                                    ? Container()
+                                    : Image.file(model.imageFromNetwork)
+                                    : FaIcon(FontAwesomeIcons.barcode),
+                              ),
+
+                            ],
+                          )
 
 
                       ),
+
                       ///商品画像：バーコード検索結果
                       SizedBox(
                           width: 90,
@@ -152,20 +133,24 @@ class DataRegistrationPage extends StatelessWidget {
                         hintText: '商品名を入力',
                         textInputType: TextInputType.text,
                       ),
+
                       ///カテゴリ
                       ProductTextPart(
                         productTextController: model.productCategoryController,
-                        onCancelButtonPressed: () => model.productCategoryClear(),
+                        onCancelButtonPressed: () =>
+                            model.productCategoryClear(),
                         labelText: 'カテゴリ',
                         hintText: 'カテゴリを入力',
                         textInputType: TextInputType.text,
                       ),
+
                       ///期限
                       PickerFormPart(
                         dateEditController: model.dateEditController,
                         onCancelButtonPressed: () => model.dateClear(),
                         dateTime: model.validDateTime,
-                        dateChanged: (newDateTime) => model.dateChange(newDateTime),
+                        dateChanged: (newDateTime) =>
+                            model.dateChange(newDateTime),
                       ),
 
                       ///数量
@@ -176,10 +161,12 @@ class DataRegistrationPage extends StatelessWidget {
                         hintText: '数量を入力',
                         textInputType: TextInputType.number,
                       ),
+
                       ///保管場所
                       ProductTextPart(
                         productTextController: model.productStorageController,
-                        onCancelButtonPressed: () => model.productStorageClear(),
+                        onCancelButtonPressed: () =>
+                            model.productStorageClear(),
                         labelText: '保管場所',
                         hintText: '保管場所を入力',
                         textInputType: TextInputType.text,
@@ -212,30 +199,24 @@ class DataRegistrationPage extends StatelessWidget {
                   );
                 }),
           ),
-
-          floatingActionButton: FloatingActionButton(
-            onPressed:  ()=>_getProductInfo(context),
-            tooltip: 'Increment',
-            child: Icon(Icons.add),
-          ), // This trailing comma makes auto-formatting nicer for build methods.
         ),
       ),
     );
   }
 
-  Future<void> _getProductInfo(BuildContext context) async{
+  Future<void> _getProductInfo(BuildContext context) async {
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);
     await viewModel.getProductInfo();
   }
 
-  Future<void> getImageFromCamera(BuildContext context) async{
+  Future<void> getImageFromCamera(BuildContext context) async {
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);
     await viewModel.getImageFromCamera();
   }
 
-  Future<void> getImageFromGallery(BuildContext context) async{
+  Future<void> getImageFromGallery(BuildContext context) async {
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);
     await viewModel.getImageFromGallery();
@@ -248,15 +229,13 @@ class DataRegistrationPage extends StatelessWidget {
   }
 
 
-
-
 //trueで返すだけならギャラリーのキャンセルボタンはなくなるが、スマホのボトムの戻るは残る
-  Future<bool> _willPopCallback() async{
+  Future<bool> _willPopCallback() async {
     return true;
   }
 
   //ギャラリー選択時のキャンセルには効かない
-  Future<bool>_exitApp(BuildContext context) async{
+  Future<bool> _exitApp(BuildContext context) async {
     return showDialog(
       context: context,
       child: new AlertDialog(

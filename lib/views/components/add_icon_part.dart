@@ -1,11 +1,13 @@
 
 import 'package:flutter/material.dart';
 
-class CachedCameraImage extends StatelessWidget {
+class AddIconPart extends StatelessWidget {
 
-  const CachedCameraImage({this.onTap, this.displayImage});
+  const AddIconPart({this.onTap, this.displayImage, this.width, this.height});
   final VoidCallback onTap;
   final Widget displayImage;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +17,14 @@ class CachedCameraImage extends StatelessWidget {
       ),
       child: InkWell(
         onTap: onTap,
+        //padding削除
         child: SizedBox(
-          width: 90,
-          height: 90,
-          //todo flutter_image_compressを使用して画像を縮小する
+          width: width,
+          height: height,
+          //todo タップでカメラ起動 or 保存先から選択
           child: displayImage,
         ),
       ),
     );
   }
 }
-
-
-
