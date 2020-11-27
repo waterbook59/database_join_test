@@ -63,11 +63,6 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
           tabs: _tab,
         ),
       ),
-      floatingActionButton: const FloatingActionButton(
-        //todo
-        onPressed: null,
-        child: Icon(Icons.add),
-      ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(

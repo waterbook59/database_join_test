@@ -21,7 +21,6 @@ class DataRegistrationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-
       ///image_pickerでカメラまたはギャラリーキャンセル時にエラーが出るのでWillPopScope(true?)で戻らせない
       child: WillPopScope(
 //        onWillPop: _willPopCallback,
@@ -177,12 +176,12 @@ class DataRegistrationPage extends StatelessWidget {
                       ),
 
                       ///バーコード読み取りボタン
-                      ButtonWithIcon(
-                        label: 'バーコードで商品情報取得',
-                        icon: const FaIcon(FontAwesomeIcons.barcode),
-                        buttonColor: Colors.orangeAccent,
-                        onPressed: () => _getProductInfo(context),
-                      ),
+//                      ButtonWithIcon(
+//                        label: 'バーコードで商品情報取得',
+//                        icon: const FaIcon(FontAwesomeIcons.barcode),
+//                        buttonColor: Colors.orangeAccent,
+//                        onPressed: () => _getProductInfo(context),
+//                      ),
                       const SizedBox(
                         height: 20,
                       ),

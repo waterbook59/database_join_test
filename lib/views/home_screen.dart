@@ -16,7 +16,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _pages = [
     FoodDayMenuPage(),//メニュー
-    DataRegistrationPage(),//データ登録
     DataListPage(),//登録データ一覧
 
   ];
@@ -33,11 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: Text('メニュー',
 //                    style: TextStyle(fontFamily: boldFont)
                 )),
-            BottomNavigationBarItem(
-                icon:FaIcon(FontAwesomeIcons.edit),
-                title: Text('データ登録',
-//                  style: TextStyle(fontFamily: boldFont),
-                )),
+
             BottomNavigationBarItem(
                 icon: Icon(Icons.list),
                 title: Text('データ一覧',
