@@ -73,6 +73,28 @@ class DataRegistrationPage extends StatelessWidget {
                                 height: 90,
                               ),
 
+                              ///商品画像：networkから選択
+                              model.isImagePickedFromNetwork
+                                  ? model.isImagePickedFromNetwork ==null
+                                  ? Container()
+                                  : SizedBox(
+                                  width:90,
+                                  height:90,
+                                  child: ImageFromUrl(imageUrl: model.productUrl,)
+                              )
+                                  :(model.isImagePickedFromCamera || model.isImagePickedFromGallery)
+                                  ? AddIconPart(
+                                onTap: () => _getProductInfo(context),
+                                displayImage:  FaIcon(FontAwesomeIcons.barcode, size: 60,),
+                                width: 60,
+                                height: 60,
+                              )
+                                  : AddIconPart(
+                                onTap: () => _getProductInfo(context),
+                                displayImage:  Center(child: FaIcon(FontAwesomeIcons.barcode, size: 60,)),
+                                width: 90,
+                                height: 90,
+                              ),
 
                           ///商品画像：ギャラリーから選択
                               model.isImagePickedFromGallery
@@ -99,31 +121,9 @@ class DataRegistrationPage extends StatelessWidget {
                               ),
 
 
-
-                              ///商品画像：networkから選択
-                              BarcodePart(
-                                onTap: () => _getProductInfo(context),
-                                displayImage: model.isImagePickedFromNetwork
-                                    ? model.imageFromNetwork == null
-                                    ? Container()
-                                    : Image.file(model.imageFromNetwork)
-                                    : FaIcon(FontAwesomeIcons.barcode),
-                              ),
-
                             ],
                           )
-
-
                       ),
-
-                      ///商品画像：バーコード検索結果
-                      SizedBox(
-                          width: 90,
-                          height: 90,
-                          //todo バーコード検索結果から表示、タップでカメラ起動
-                          child: ImageFromUrl(
-                            imageUrl: model.productUrl,
-                          )),
 
                       ///商品名
                       ProductTextPart(

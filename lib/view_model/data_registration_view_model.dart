@@ -64,12 +64,6 @@ class DataRegistrationViewModel extends ChangeNotifier{
 //  File get imageFromNetwork => null;
 
 
-  Future<void> getProductInfo() async{
-    await _dataRepository.getProductInfo(_products);
-    _productNameController.text = _products[0].name;
-    _productUrl = _products[0].productImage.medium;
-    notifyListeners();
-  }
 
   Future<void> registerProductData() async {
     await _dataRepository.registerProductData();
@@ -117,6 +111,24 @@ class DataRegistrationViewModel extends ChangeNotifier{
 //    super.dispose();
 //  }
 
+  Future<void> getProductInfo() async{
+
+    await _dataRepository.getProductInfo(_products);
+    _productNameController.text = _products[0].name;
+    _productUrl = _products[0].productImage.medium;
+
+//    if (_productUrl  != null){
+      isImagePickedFromNetwork = true;
+      isImagePickedFromCamera = false;
+      isImagePickedFromGallery = false;
+//    }
+    notifyListeners();
+  }
+
+
+
+
+
   Future<void> getImageFromCamera() async {
 //    isImagePickedFromCamera = false;
 //    notifyListeners();
@@ -127,6 +139,7 @@ class DataRegistrationViewModel extends ChangeNotifier{
     if (imageFromCamera != null){
       isImagePickedFromCamera = true;
       isImagePickedFromGallery = false;
+      isImagePickedFromNetwork = false;
     }
     notifyListeners();
   }
@@ -138,6 +151,7 @@ class DataRegistrationViewModel extends ChangeNotifier{
     if (imageFromGallery != null) {
       isImagePickedFromGallery = true;
       isImagePickedFromCamera = false;
+      isImagePickedFromNetwork = false;
     }
     notifyListeners();
   }

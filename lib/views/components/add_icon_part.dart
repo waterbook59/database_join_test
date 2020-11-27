@@ -21,7 +21,6 @@ class AddIconPart extends StatelessWidget {
         child: SizedBox(
           width: width,
           height: height,
-          //todo タップでカメラ起動 or 保存先から選択
           child: displayImage,
         ),
       ),

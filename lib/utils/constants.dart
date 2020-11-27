@@ -8,8 +8,8 @@ List<Product> variableProducts = [
       name: 'クリアクリーン美白ハミガキ',
       description: 'すごい美白ハミガキ',
       productImage: ProductImage(
-        small: '美白ハミガキ小画像',
-        medium: '美白ハミガキ中画像',
+        small: ' https://item-shopping.c.yimg.jp/i/c/y-lohaco_j789452',
+        medium: 'https://item-shopping.c.yimg.jp/i/g/y-lohaco_j789452',
       )
   ),
   Product(
@@ -17,8 +17,8 @@ List<Product> variableProducts = [
       name: '尾西のおかゆ',
       description: 'すごいおかゆ',
       productImage: ProductImage(
-        small: 'おかゆ小画像',
-        medium: 'おかゆ中画像',
+        small: 'https://item-shopping.c.yimg.jp/i/c/y-lohaco_j789444',
+        medium: 'https://item-shopping.c.yimg.jp/i/g/y-lohaco_j789444',
       )
   ),
   Product(
