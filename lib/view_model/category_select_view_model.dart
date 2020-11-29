@@ -1,6 +1,4 @@
 import 'package:datebasejointest/data_models/menu/category_list.dart';
-import 'package:datebasejointest/models/repository/data_repository.dart';
-import 'package:datebasejointest/models/repository/menu_repository.dart';
 import 'package:datebasejointest/utils/constants.dart';
 import 'package:flutter/material.dart';
 

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:datebasejointest/data_models/product.dart';
-import 'package:datebasejointest/main.dart';
 import 'package:datebasejointest/models/db/product_info_database.dart';
 import 'package:datebasejointest/utils/extensions.dart';
 import 'package:image_picker/image_picker.dart';

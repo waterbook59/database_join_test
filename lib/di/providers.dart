@@ -1,6 +1,5 @@
 import 'package:datebasejointest/models/db/product_info_dao.dart';
 import 'package:datebasejointest/models/repository/data_repository.dart';
-import 'package:datebasejointest/models/repository/menu_repository.dart';
 import 'package:datebasejointest/view_model/category_select_view_model.dart';
 import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:provider/provider.dart';

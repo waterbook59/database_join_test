@@ -19,34 +19,43 @@ class ProductTextPart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+//      child: SizedBox(//エラー
+//        width: double.infinity,
+    ///Row内の要素を固定ではなく画面に合わせて広げるにはExpanded
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
 //        alignment: const Alignment(1, 0), // right & center
-        children: [
-          SizedBox(
-            width: 280,
-            child: TextFormField(
-              decoration: InputDecoration(
+          children: [
+//          SizedBox(
+//            width: 280,
+//            child:
+          ///テキストフォームだけを機種によらず伸ばすので、
+            ///TextFormFieldにExpanded
+              Expanded(
+                child: TextFormField(
+                  decoration: InputDecoration(
 //              icon: const Icon(Icons.dashboard),
-                labelText: labelText,
-                labelStyle:const  TextStyle(color: Colors.black87),
-                hintText: hintText,
-                hintStyle:const TextStyle(color: Colors.black26),
+                    labelText: labelText,
+                    labelStyle:const  TextStyle(color: Colors.black87),
+                    hintText: hintText,
+                    hintStyle:const TextStyle(color: Colors.black26),
+                  ),
+                  controller: productTextController,
+                  keyboardType:textInputType ,
+                  maxLines: null,
+                  style: const TextStyle(fontSize: 14,color: Colors.indigo),
+                ),
               ),
-              controller: productTextController,
-              keyboardType:textInputType ,
-              maxLines: null,
-              style: const TextStyle(fontSize: 14,color: Colors.indigo),
+//          ),
+            const SizedBox(width: 10,),
+            //todo キャンセルボタンはtextFieldタップ時だけ表示する
+            CircleIconButton(
+              onPressed: onCancelButtonPressed,
             ),
-          ),
-          const SizedBox(width: 10,),
-          //todo キャンセルボタンはtextFieldタップ時だけ表示する
-          CircleIconButton(
-            onPressed: onCancelButtonPressed,
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+//    );
   }
 }

@@ -1,12 +1,10 @@
 import 'package:datebasejointest/di/providers.dart';
-import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:datebasejointest/views/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'localize/japanese_cupertion_localizations.dart' as jcl;
 import 'package:provider/provider.dart';
-import 'models/db/product_info_database.dart';
 
 //MyProductInfoDB myProductInfoDB;
 

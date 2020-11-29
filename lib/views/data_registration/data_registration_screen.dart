@@ -4,6 +4,7 @@ import 'package:datebasejointest/views/components/add_icon_part.dart';
 import 'package:datebasejointest/views/components/imgae_from_url.dart';
 import 'package:datebasejointest/views/components/picker_form_part.dart';
 import 'package:datebasejointest/views/components/product_text_part.dart';
+import 'package:datebasejointest/views/data_registration/component/amount_input_part.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -120,6 +121,7 @@ class DataRegistrationScreen extends StatelessWidget {
                         )
                     ),
 
+                    SizedBox(height: 15),
                     ///商品名
                     ProductTextPart(
                       productTextController: model.productNameController,
@@ -149,6 +151,14 @@ class DataRegistrationScreen extends StatelessWidget {
                     ),
 
                     ///数量
+                    AmountInputPart(
+                      productTextController: model.productNumberController,
+                      onCancelButtonPressed: () => model.productNumberClear(),
+                      labelText: '数量',
+                      hintText: '数量を入力',
+                      textInputType: TextInputType.number,
+                    ),
+
                     ProductTextPart(
                       productTextController: model.productNumberController,
                       onCancelButtonPressed: () => model.productNumberClear(),

@@ -20,7 +20,7 @@ class PickerFormPart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
 //          alignment: const Alignment(1, 0), // right & center

@@ -1,10 +1,7 @@
-import 'package:datebasejointest/style.dart';
+
 import 'package:datebasejointest/view_model/data_registration_view_model.dart';
-import 'package:datebasejointest/views/components/barcode_part.dart';
-import 'package:datebasejointest/views/components/button_with_icon.dart';
 import 'package:datebasejointest/views/components/cached_image.dart';
 import 'package:datebasejointest/views/components/add_icon_part.dart';
-import 'package:datebasejointest/views/components/gallery_part.dart';
 import 'package:datebasejointest/views/components/imgae_from_url.dart';
 import 'package:datebasejointest/views/components/picker_form_part.dart';
 import 'package:datebasejointest/views/components/product_text_part.dart';
