@@ -1,10 +1,10 @@
-import 'package:datebasejointest/models/db/product_info_dao.dart';
+import 'package:datebasejointest/models/db/product_info/product_info_dao.dart';
 import 'package:datebasejointest/models/repository/data_repository.dart';
 import 'package:datebasejointest/view_model/category_select_view_model.dart';
 import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:datebasejointest/models/db/product_info_database.dart';
+import 'package:datebasejointest/models/db/product_info/product_info_database.dart';
 
 List<SingleChildWidget> globalProviders = [
   ...independentModels,

@@ -1,7 +1,7 @@
 
 import 'package:moor/moor.dart';
 //自分で追加
-import 'package:datebasejointest/models/db/product_info_database.dart';
+import 'package:datebasejointest/models/db/product_info/product_info_database.dart';
 
 part 'product_info_dao.g.dart';
 

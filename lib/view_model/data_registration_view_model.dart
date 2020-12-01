@@ -6,7 +6,7 @@ import 'package:datebasejointest/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class DataRegistrationViewModel extends ChangeNotifier{
+class DataRegistrationViewModel extends ChangeNotifier {
   //diあり
   DataRegistrationViewModel({DataRepository repository})
       : _dataRepository = repository;
@@ -16,28 +16,38 @@ class DataRegistrationViewModel extends ChangeNotifier{
 //  final DataRepository _dataRepository =DataRepository();
 
   final List<Product> _products = variableProducts;
+
   List<Product> get products => _products;
 
   String _productUrl = '';
+
   String get productUrl => _productUrl;
+
   //商品名
   final TextEditingController _productNameController = TextEditingController();
+
   TextEditingController get productNameController => _productNameController;
+
   //カテゴリ
   final TextEditingController _productCategoryController =
-  TextEditingController();
+      TextEditingController();
+
   TextEditingController get productCategoryController =>
       _productCategoryController;
+
   //数量
   final TextEditingController _productNumberController =
-  TextEditingController();
+      TextEditingController();
+
   TextEditingController get productNumberController => _productNumberController;
+
   //期限
   final TextEditingController _dateEditController = TextEditingController();
   TextEditingController get dateEditController => _dateEditController;
+
   //保管場所
   final TextEditingController _productStorageController =
-  TextEditingController();
+      TextEditingController();
   TextEditingController get productStorageController =>
       _productStorageController;
 
@@ -49,6 +59,7 @@ class DataRegistrationViewModel extends ChangeNotifier{
 
   bool _isProcessing = false;
   bool get isProcessing => _isProcessing;
+
 //  List<Product> _products = <Product>[];
 //  List<Product> get products => _products;
 
@@ -56,6 +67,7 @@ class DataRegistrationViewModel extends ChangeNotifier{
   File imageFromCamera;
   File imageFromGallery;
   File imageFromNetwork;
+
   ///３つ別々より１つの方が良い?
   bool isImagePickedFromCamera = false;
   bool isImagePickedFromGallery = false;
@@ -63,13 +75,19 @@ class DataRegistrationViewModel extends ChangeNotifier{
 
 //  File get imageFromNetwork => null;
 
-
-
-  Future<void> registerProductData() async {
-    await _dataRepository.registerProductData();
+  Future<void> registerProductData(RecordStatus recordStatus) async {
+    await _dataRepository.registerProductData(
+      recordStatus,
+        imageFromCamera,
+        imageFromGallery,
+        imageFromNetwork,
+        _productNameController,
+        _productCategoryController,
+        _validDateTime,
+        _productNumberController,
+        _productStorageController);
     notifyListeners();
   }
-
 
   void productNameClear() {
     _productNameController.clear();
@@ -103,31 +121,24 @@ class DataRegistrationViewModel extends ChangeNotifier{
         DateFormat.yMMMd('ja').format(newDateTime).toString();
   }
 
-
-
 //  @override
 //  void dispose() {
 //    _homeRepository.dispose();
 //    super.dispose();
 //  }
 
-  Future<void> getProductInfo() async{
-
+  Future<void> getProductInfo() async {
     await _dataRepository.getProductInfo(_products);
     _productNameController.text = _products[0].name;
     _productUrl = _products[0].productImage.medium;
 
 //    if (_productUrl  != null){
-      isImagePickedFromNetwork = true;
-      isImagePickedFromCamera = false;
-      isImagePickedFromGallery = false;
+    isImagePickedFromNetwork = true;
+    isImagePickedFromCamera = false;
+    isImagePickedFromGallery = false;
 //    }
     notifyListeners();
   }
-
-
-
-
 
   Future<void> getImageFromCamera() async {
 //    isImagePickedFromCamera = false;
@@ -136,7 +147,7 @@ class DataRegistrationViewModel extends ChangeNotifier{
     imageFromCamera = await _dataRepository.getImageFromCamera();
 //    print('pickedImage:${imageFile.path}');
 
-    if (imageFromCamera != null){
+    if (imageFromCamera != null) {
       isImagePickedFromCamera = true;
       isImagePickedFromGallery = false;
       isImagePickedFromNetwork = false;
@@ -144,7 +155,7 @@ class DataRegistrationViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> getImageFromGallery() async{
+  Future<void> getImageFromGallery() async {
     isImagePickedFromGallery = false;
     notifyListeners();
     imageFromGallery = await _dataRepository.getImageFromGallery();
@@ -155,8 +166,4 @@ class DataRegistrationViewModel extends ChangeNotifier{
     }
     notifyListeners();
   }
-
-
-
-
 }

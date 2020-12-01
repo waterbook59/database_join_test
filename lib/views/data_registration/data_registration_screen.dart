@@ -1,3 +1,4 @@
+import 'package:datebasejointest/utils/constants.dart';
 import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:datebasejointest/views/components/cached_image.dart';
 import 'package:datebasejointest/views/components/add_icon_part.dart';
@@ -11,6 +12,8 @@ import 'package:provider/provider.dart';
 
 
 class DataRegistrationScreen extends StatelessWidget {
+
+ RecordStatus recordStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -150,21 +153,22 @@ class DataRegistrationScreen extends StatelessWidget {
                           model.dateChange(newDateTime),
                     ),
 
-                    ///数量
-                    AmountInputPart(
-                      productTextController: model.productNumberController,
-                      onCancelButtonPressed: () => model.productNumberClear(),
-                      labelText: '数量',
-                      hintText: '数量を入力',
-                      textInputType: TextInputType.number,
-                    ),
+                    ///数量:+,-ボタンも付けて
+//                    AmountInputPart(
+//                      productTextController: model.productNumberController,
+//                      onCancelButtonPressed: () => model.productNumberClear(),
+//                      labelText: '数量',
+//                      hintText: '数量を入力',
+//                      textInputType: TextInputType.number,
+//                    ),
 
                     ProductTextPart(
                       productTextController: model.productNumberController,
                       onCancelButtonPressed: () => model.productNumberClear(),
                       labelText: '数量',
                       hintText: '数量を入力',
-                      textInputType: TextInputType.number,
+                      ///TextInputType.numberから変更,decimalのtrueは何か？
+                      textInputType: TextInputType.numberWithOptions(signed: true, decimal:true),
                     ),
 
                     ///保管場所
@@ -196,9 +200,10 @@ class DataRegistrationScreen extends StatelessWidget {
                     RaisedButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadiusDirectional.circular(15)),
+                      color: Colors.orangeAccent,
                       child: const Text('保存'),
                       //todo 文字=>DB,カメラ画像=>model.imageFileをsavedFileとしてドキュメントへ保存
-                      onPressed: () => registerProductData(context),
+                      onPressed: () => registerProductData(context,recordStatus),
                     ),
                   ],
                 );
@@ -209,27 +214,30 @@ class DataRegistrationScreen extends StatelessWidget {
   }
 
   Future<void> _getProductInfo(BuildContext context) async {
+    recordStatus = RecordStatus.networkImage;
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);
     await viewModel.getProductInfo();
   }
 
   Future<void> getImageFromCamera(BuildContext context) async {
+    recordStatus =RecordStatus.camera;
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);
     await viewModel.getImageFromCamera();
   }
 
   Future<void> getImageFromGallery(BuildContext context) async {
+    recordStatus = RecordStatus.gallery;
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);
     await viewModel.getImageFromGallery();
   }
 
-  Future<void> registerProductData(BuildContext context) async {
+  Future<void> registerProductData(BuildContext context, RecordStatus recordStatus) async {
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);
-    await viewModel.registerProductData();
+    await viewModel.registerProductData(recordStatus);
   }
 
 

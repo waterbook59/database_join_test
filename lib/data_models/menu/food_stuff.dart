@@ -2,7 +2,7 @@ import 'package:datebasejointest/utils/constants.dart';
 
 class FoodStuff{
   String foodstuffId;//UuidでつけるかautoIncrement
-  String localImagePath;//カメラ・ギャラリーのイメージパス
+  String localImagePath;//カメラ・ギャラリーのイメージパス_File(localImagePath.path)で呼び出す
   String imageUrl;//network経由のproductImage
   String name;
   String category;
@@ -17,6 +17,8 @@ class FoodStuff{
 }
 
 class AmountToEat {
+  String foodstuffId;
+  String amountToEatId;
   String date;//何日目
   MealType mealType;//朝食、昼食、間食、夕食
   int piece;//個数

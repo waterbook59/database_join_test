@@ -47,3 +47,9 @@ enum MealType{
   snack,
   dinner
 }
+
+enum RecordStatus{
+  camera,
+  networkImage,
+  gallery
+}

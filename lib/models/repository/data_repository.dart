@@ -1,36 +1,33 @@
-
 import 'dart:async';
 import 'dart:io';
 
 import 'package:datebasejointest/data_models/product.dart';
-import 'package:datebasejointest/models/db/product_info_database.dart';
+import 'package:datebasejointest/models/db/product_info/product_info_database.dart';
+import 'package:datebasejointest/utils/constants.dart';
 import 'package:datebasejointest/utils/extensions.dart';
+import 'package:flutter/src/widgets/editable_text.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:moor/moor.dart';//TypedResult用にインポート
-import 'package:datebasejointest/models/db/product_info_dao.dart';
+import 'package:moor/moor.dart'; //TypedResult用にインポート
+import 'package:datebasejointest/models/db/product_info/product_info_dao.dart';
 
-class DataRepository{
+class DataRepository {
 //diあり
-  DataRepository({productInfoDao}) :
-      _productInfoDao = productInfoDao;
-final ProductInfoDao _productInfoDao;
+  DataRepository({productInfoDao}) : _productInfoDao = productInfoDao;
+  final ProductInfoDao _productInfoDao;
 
   //diなし main.dartに設定
 //    final productInfoDao = myProductInfoDB.productInfoDao;
 
-  Future<List<Product>> getProductInfo(List<Product> products) async{
-
+  Future<List<Product>> getProductInfo(List<Product> products) async {
 //    var products = <Product>[];
     var productRecords = <ProductRecord>[];
     var productRecordImages = <ProductRecordImage>[];
-
-
 
     //List<JoinedProduct>を想定
     var results = <JoinedProduct>[];
     var joinTable = <TypedResult>[];
 
-    try{
+    try {
       //2.モデルクラス(List<Product>)をDBのテーブルクラスへ変換
       productRecords = products.toProductRecord(products).cast<ProductRecord>();
       productRecordImages =
@@ -38,6 +35,7 @@ final ProductInfoDao _productInfoDao;
       print('products:$products');
       print('productRecords:$productRecords');
       print('productRecordImages:$productRecordImages');
+
       /// 3.2つのテーブルをDBへinsert
       await _productInfoDao.insertDB(productRecords, productRecordImages);
 //      joinTable =await productInfoDao.insertAndTableDB(productRecords, productRecordImages);
@@ -47,42 +45,61 @@ final ProductInfoDao _productInfoDao;
 //      print('List<JoinedProduct:${results[3].productRecord.description}>');
       ///5.JoinedProductクラスに格納されたデータをProductへ再格納して返す(extensions:)
       products = results.toProduct(results);
-
-    }on Exception catch (error) {
+    } on Exception catch (error) {
       print('error:$error');
     }
     return products;
   }
 
 //todo FutureOr<File>で対応可能か調べる
-  Future<File> getImageFromCamera() async{
+  Future<File> getImageFromCamera() async {
     final imagePicker = ImagePicker();
-    final cameraImageFile = await imagePicker.getImage(source: ImageSource.camera);
+    final cameraImageFile =
+        await imagePicker.getImage(source: ImageSource.camera);
+
     ///if (pickedFile != null)を記述しておかないと、
     ///画像ライブラリの選択画面で「キャンセル」を押した際にエラーになってしまう!!
-    if(cameraImageFile !=null){
-     return File(cameraImageFile.path);
+    if (cameraImageFile != null) {
+      return File(cameraImageFile.path);
     }
   }
 
-  Future<File> getImageFromGallery() async{
+  Future<File> getImageFromGallery() async {
     final imagePicker = ImagePicker();
     final galleryPickedFile =
-    await imagePicker.getImage(source: ImageSource.gallery);
+        await imagePicker.getImage(source: ImageSource.gallery);
+
     ///if (pickedFile != null)を記述しておかないと、
     ///画像ライブラリの選択画面で「キャンセル」を押した際にエラーになってしまう!!
-    if(galleryPickedFile !=null){
-     return File(galleryPickedFile.path);
+    if (galleryPickedFile != null) {
+      return File(galleryPickedFile.path);
     }
-
   }
 
 
   //todo 登録
-  Future<void> registerProductData() async{
-    print('registerProductDataで商品情報登録');
-  }
+  Future<void> registerProductData(
+      RecordStatus recordStatus,
+      File imageFromCamera,
+      File imageFromGallery,
+      File imageFromNetwork,
+      TextEditingController productNameController,
+      TextEditingController productCategoryController,
+      DateTime validDateTime,
+      TextEditingController productNumberController,
+      TextEditingController productStorageController) async{
 
+    print('registerProductDataで商品情報登録/recordStatus:$recordStatus');
+    switch(recordStatus){
+      case RecordStatus.camera:
+        break;
+      case RecordStatus.gallery:
+        break;
+      case RecordStatus.networkImage:
+        break;
+    }
+
+  }
 
 
 

@@ -1,7 +1,7 @@
 import 'package:datebasejointest/data_models/product.dart';
 import 'package:datebasejointest/data_models/product_image.dart';
 //自分で追加
-import 'package:datebasejointest/models/db/product_info_database.dart';
+import 'package:datebasejointest/models/db/product_info/product_info_database.dart';
 import 'package:uuid/uuid.dart';
 
 ///一つのリスト(List<Product>)に対してキーを加えて２つのリストへ変換する作業
