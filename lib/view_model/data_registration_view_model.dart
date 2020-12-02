@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:datebasejointest/data_models/menu/food_stuff.dart';
 import 'package:datebasejointest/data_models/product.dart';
 import 'package:datebasejointest/models/repository/data_repository.dart';
 import 'package:datebasejointest/utils/constants.dart';
@@ -76,16 +77,31 @@ class DataRegistrationViewModel extends ChangeNotifier {
 //  File get imageFromNetwork => null;
 
   Future<void> registerProductData(RecordStatus recordStatus) async {
+//viewModel層でモデルクラスに格納してrepositoryへ
+    switch(recordStatus){
+      case RecordStatus.camera:
+      FoodStuff foodStuff =
+      FoodStuff(
+        //localImage.pathを保存する
+      );
+
+        break;
+      case RecordStatus.gallery:
+        break;
+      case RecordStatus.networkImage:
+        break;
+    }
     await _dataRepository.registerProductData(
-      recordStatus,
-        imageFromCamera,
-        imageFromGallery,
-        imageFromNetwork,
-        _productNameController,
-        _productCategoryController,
-        _validDateTime,
-        _productNumberController,
-        _productStorageController);
+//      recordStatus,
+//        imageFromCamera,
+//        imageFromGallery,
+//        imageFromNetwork,
+//        _productNameController,
+//        _productCategoryController,
+//        _validDateTime,
+//        _productNumberController,
+//        _productStorageController
+    );
     notifyListeners();
   }
 

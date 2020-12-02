@@ -1,4 +1,5 @@
 
+import 'package:datebasejointest/utils/constants.dart';
 import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:datebasejointest/views/components/cached_image.dart';
 import 'package:datebasejointest/views/components/add_icon_part.dart';
@@ -14,6 +15,7 @@ class DataRegistrationPage extends StatelessWidget {
 //   HomeScreen({Key key, this.title}) : super(key: key);
 //  final String title;
 //  final int _counter = 0;
+  RecordStatus recordStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +223,7 @@ class DataRegistrationPage extends StatelessWidget {
   Future<void> registerProductData(BuildContext context) async {
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);
-    await viewModel.registerProductData();
+    await viewModel.registerProductData(recordStatus);
   }
 
 

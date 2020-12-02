@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:datebasejointest/data_models/menu/food_stuff.dart';
 import 'package:datebasejointest/data_models/product.dart';
 import 'package:datebasejointest/models/db/product_info/product_info_database.dart';
 import 'package:datebasejointest/utils/constants.dart';
@@ -77,27 +78,11 @@ class DataRepository {
   }
 
 
-  //todo 登録
-  Future<void> registerProductData(
-      RecordStatus recordStatus,
-      File imageFromCamera,
-      File imageFromGallery,
-      File imageFromNetwork,
-      TextEditingController productNameController,
-      TextEditingController productCategoryController,
-      DateTime validDateTime,
-      TextEditingController productNumberController,
-      TextEditingController productStorageController) async{
+  //todo 登録,viewModelでモデルクラスを作る形へ変更中
+  Future<void> registerProductData(FoodStuff foodStuff) async{
 
-    print('registerProductDataで商品情報登録/recordStatus:$recordStatus');
-    switch(recordStatus){
-      case RecordStatus.camera:
-        break;
-      case RecordStatus.gallery:
-        break;
-      case RecordStatus.networkImage:
-        break;
-    }
+    print('registerProductDataで商品情報登録/foodStuff:$foodStuff');
+
 
   }
 
