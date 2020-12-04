@@ -141,13 +141,13 @@ class CategorySelectViewModel extends ChangeNotifier{
 
         break;
       case MealType.lunch:
-        Navigator.of(context).pop(viewModel.lunchCategory);
+
         break;
       case MealType.snack:
-        Navigator.of(context).pop(viewModel.snackCategory);
+
         break;
       case MealType.dinner:
-        Navigator.of(context).pop(viewModel.dinnerCategory);
+
         break;
     }
 

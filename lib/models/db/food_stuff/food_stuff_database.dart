@@ -1,11 +1,15 @@
 
 
-import 'package:moor/moor.dart';
+import 'dart:io';
 
-//part 'food_stuff_database.g.dart';
+import 'package:moor/moor.dart';
+import 'package:moor_ffi/moor_ffi.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as q;
+part 'food_stuff_database.g.dart';
 
 //テーブルfood_stuff
-class FoodStuffRecord extends Table{
+class FoodStuffRecords extends Table{
   IntColumn get id => integer().autoIncrement()();
   TextColumn get foodStuffId => text()();
   TextColumn get localImagePath => text()();
@@ -22,7 +26,7 @@ class FoodStuffRecord extends Table{
 }
 
 //テーブルamountToEat
-class AmountToEatRecord extends Table{
+class AmountToEatRecords extends Table{
   IntColumn get id => integer().autoIncrement()();
   TextColumn get foodStuffId => text()();
   TextColumn get amountToEatId => text()();
@@ -34,16 +38,31 @@ class AmountToEatRecord extends Table{
   Set<Column> get primaryKey => {id};
 }
 
-//テーブル categoryList
-class CategoryListRecord extends Table{
+///テーブル categoryList=>MenuDB
+//class CategoryListRecord extends Table{
+//}
 
+///テーブルdayMenuList=>MenuDB
+//class DayMenuListRecord extends Table{
+//}
+
+
+@UseMoor(tables:[FoodStuffRecords,AmountToEatRecords])
+class FoodStuffDB extends _$FoodStuffDB {
+
+  FoodStuffDB() : super(_openConnection());
+
+  @override
+  int get schemaVersion => 1;
 }
 
-//テーブルdayMenuList
-class DayMenuListRecord extends Table{
-
+LazyDatabase _openConnection() {
+  return LazyDatabase(() async {
+    final dbFolder = await getApplicationDocumentsDirectory();
+    //下はpath_providerの一般的な書き方
+    final file = File(q.join(dbFolder.path, 'food_stuff.db'));
+    return VmDatabase(file);
+  });
 }
-
-
 
 

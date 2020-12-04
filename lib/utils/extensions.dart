@@ -1,5 +1,7 @@
+import 'package:datebasejointest/data_models/menu/food_stuff.dart';
 import 'package:datebasejointest/data_models/product.dart';
 import 'package:datebasejointest/data_models/product_image.dart';
+import 'package:datebasejointest/models/db/food_stuff/food_stuff_database.dart';
 //自分で追加
 import 'package:datebasejointest/models/db/product_info/product_info_database.dart';
 import 'package:uuid/uuid.dart';
@@ -62,5 +64,24 @@ extension ConvertToProduct on List<JoinedProduct>{
     });
     return products;
         }
+}
 
+///FoodStuff=>DBテーブルクラス(foodStuffRecord)へ変換
+extension ConvertToFoodStuffRecord on FoodStuff{
+
+  FoodStuffRecord toFoodStuffRecord(FoodStuff foodStuff){
+
+    var foodStuffRecord = FoodStuffRecord(
+      foodStuffId:foodStuff.foodStuffId ?? "",
+      localImagePath: foodStuff.localImagePath ?? "",
+      name: foodStuff.name ?? "",
+      category: foodStuff.category ?? "",
+      storage: foodStuff.storage ?? "",
+      validDate: foodStuff.validDate,
+      amount: foodStuff.amount ??0,
+      useAmount: foodStuff.useAmount ?? 0,
+      restAmount: foodStuff.restAmount ?? 0,
+    );
+    return foodStuffRecord;
+  }
 }

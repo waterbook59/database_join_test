@@ -8,6 +8,7 @@ import 'package:datebasejointest/utils/constants.dart';
 import 'package:datebasejointest/utils/extensions.dart';
 import 'package:flutter/src/widgets/editable_text.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart'; //TypedResult用にインポート
 import 'package:datebasejointest/models/db/product_info/product_info_dao.dart';
 
@@ -80,8 +81,14 @@ class DataRepository {
 
   //todo 登録,viewModelでモデルクラスを作る形へ変更中
   Future<void> registerProductData(FoodStuff foodStuff) async{
-
     print('registerProductDataで商品情報登録/foodStuff:$foodStuff');
+
+    try{
+      final foodStuffRecord = foodStuff.toFoodStuffRecord(foodStuff);
+      //await _dao.addFoodStuff(foodStuffRecord);
+    }on SqliteException catch(e){
+      print("repositoryでのエラー：${e.toString()}");
+    }
 
 
   }
