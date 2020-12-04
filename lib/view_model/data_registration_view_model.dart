@@ -4,8 +4,10 @@ import 'package:datebasejointest/data_models/menu/food_stuff.dart';
 import 'package:datebasejointest/data_models/product.dart';
 import 'package:datebasejointest/models/repository/data_repository.dart';
 import 'package:datebasejointest/utils/constants.dart';
+import 'package:datebasejointest/utils/file_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class DataRegistrationViewModel extends ChangeNotifier {
   //diあり
@@ -17,29 +19,24 @@ class DataRegistrationViewModel extends ChangeNotifier {
 //  final DataRepository _dataRepository =DataRepository();
 
   final List<Product> _products = variableProducts;
-
   List<Product> get products => _products;
 
   String _productUrl = '';
-
   String get productUrl => _productUrl;
 
   //商品名
   final TextEditingController _productNameController = TextEditingController();
-
   TextEditingController get productNameController => _productNameController;
 
   //カテゴリ
   final TextEditingController _productCategoryController =
       TextEditingController();
-
   TextEditingController get productCategoryController =>
       _productCategoryController;
 
   //数量
   final TextEditingController _productNumberController =
       TextEditingController();
-
   TextEditingController get productNumberController => _productNumberController;
 
   //期限
@@ -80,28 +77,58 @@ class DataRegistrationViewModel extends ChangeNotifier {
 //viewModel層でモデルクラスに格納してrepositoryへ
     switch(recordStatus){
       case RecordStatus.camera:
+        var localImage = await FileController.saveCachedImage(imageFromCamera);
       FoodStuff foodStuff =
       FoodStuff(
-        //localImage.pathを保存する
+          foodStuffId: Uuid().v1(),
+          name: _productNameController.text,
+          category: _productCategoryController.text,
+          validDate: _validDateTime,
+          storage: _productStorageController.text,
+          amount: int.parse(_productNameController.text),
+          //useAmount,restAmountはDBで初期値設定
+          //todo localImage.pathを保存する
+          localImagePath:localImage.path,
+          //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
       );
-
+      await _dataRepository.registerProductData(foodStuff);
         break;
       case RecordStatus.gallery:
+        var localImage = await FileController.saveCachedImage(imageFromGallery);
+        FoodStuff foodStuff =
+        FoodStuff(
+          foodStuffId: Uuid().v1(),
+          name: _productNameController.text,
+          category: _productCategoryController.text,
+          validDate: _validDateTime,
+          storage: _productStorageController.text,
+          amount: int.parse(_productNameController.text),
+          //useAmount,restAmountはDBで初期値設定
+          //todo localImage.pathを保存する
+          localImagePath:localImage.path,
+          //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
+        );
+        await _dataRepository.registerProductData(foodStuff);
         break;
       case RecordStatus.networkImage:
+        var localImage = await FileController.saveCachedImage(imageFromNetwork);
+        FoodStuff foodStuff =
+        FoodStuff(
+          foodStuffId: Uuid().v1(),
+          name: _productNameController.text,
+          category: _productCategoryController.text,
+          validDate: _validDateTime,
+          storage: _productStorageController.text,
+          amount: int.parse(_productNameController.text),
+          //useAmount,restAmountはDBで初期値設定
+          //todo localImage.pathを保存する
+          localImagePath:localImage.path,
+          //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
+        );
+        await _dataRepository.registerProductData(foodStuff);
         break;
     }
-    await _dataRepository.registerProductData(
-//      recordStatus,
-//        imageFromCamera,
-//        imageFromGallery,
-//        imageFromNetwork,
-//        _productNameController,
-//        _productCategoryController,
-//        _validDateTime,
-//        _productNumberController,
-//        _productStorageController
-    );
+
     notifyListeners();
   }
 

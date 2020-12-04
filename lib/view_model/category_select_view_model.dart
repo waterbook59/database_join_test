@@ -1,12 +1,13 @@
 import 'package:datebasejointest/data_models/menu/category_list.dart';
+import 'package:datebasejointest/models/repository/data_repository.dart';
 import 'package:datebasejointest/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class CategorySelectViewModel extends ChangeNotifier{
   //diあり
-//  CategorySelectViewModel({MenuRepository repository})
-//      : _menuRepository = repository;
-//  final MenuRepository _menuRepository;
+  CategorySelectViewModel({DataRepository repository})
+      : _dataRepository = repository;
+  final DataRepository _dataRepository;
 
 //  CategorySelectViewModel({DataRepository repository})
 //      : _menuRepository = repository;
@@ -133,10 +134,22 @@ class CategorySelectViewModel extends ChangeNotifier{
   ///選択ボタンを押したらtrueのみのリストを表示するのではなく、
   ///trueもfalseも存在するカテゴリの中からisSelected:trueのものだけを表示する形へ変更
 
-  Future<void> selectCategory() async {
+  Future<void> selectCategory(MealType mealType) async {
 
-    //todo breakfastCategoryの中でisSelectedがtrueのものだけを返す
-    ///リスト再作成なのか、、リストそのままでtrueだけ選別できるのか
+    switch(mealType){
+      case MealType.breakfast:
+
+        break;
+      case MealType.lunch:
+        Navigator.of(context).pop(viewModel.lunchCategory);
+        break;
+      case MealType.snack:
+        Navigator.of(context).pop(viewModel.snackCategory);
+        break;
+      case MealType.dinner:
+        Navigator.of(context).pop(viewModel.dinnerCategory);
+        break;
+    }
 
 
   }

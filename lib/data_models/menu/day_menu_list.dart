@@ -1,4 +1,5 @@
 
+import 'package:datebasejointest/data_models/menu/food_stuff.dart';
 import 'package:datebasejointest/data_models/product.dart';
 import 'category_list.dart';
 
@@ -22,15 +23,15 @@ class DayMenuList {
   final int id;
   final String dayMenu; //○日目
   final List<Category> breakfastCategory;
-  final List<Product> breakfastProduct;
+  final List<FoodStuff> breakfastProduct;
   final String breakfastMemo;
   final List<Category> lunchCategory;
-  final List<Product> lunchProduct;
+  final List<FoodStuff> lunchProduct;
   final String lunchMemo;
   final List<Category> snackCategory;
-  final List<Product> snackProduct;
+  final List<FoodStuff> snackProduct;
   final String snackMemo;
   final List<Category> dinnerCategory;
-  final List<Product> dinnerProduct;
+  final List<FoodStuff> dinnerProduct;
   final String dinnerMemo;
 }

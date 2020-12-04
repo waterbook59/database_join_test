@@ -2,12 +2,12 @@
 
 import 'package:moor/moor.dart';
 
-part 'food_stuff_database.g.dart';
+//part 'food_stuff_database.g.dart';
 
 //テーブルfood_stuff
 class FoodStuffRecord extends Table{
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get foodstuffId => text()();
+  TextColumn get foodStuffId => text()();
   TextColumn get localImagePath => text()();
   TextColumn get name => text()();
   TextColumn get category => text().nullable()();
@@ -24,7 +24,7 @@ class FoodStuffRecord extends Table{
 //テーブルamountToEat
 class AmountToEatRecord extends Table{
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get foodstuffId => text()();
+  TextColumn get foodStuffId => text()();
   TextColumn get amountToEatId => text()();
   TextColumn get date => text()();//何日目
   TextColumn get mealType => text()();//todo 朝食、昼食、間食、夕食
@@ -34,6 +34,15 @@ class AmountToEatRecord extends Table{
   Set<Column> get primaryKey => {id};
 }
 
+//テーブル categoryList
+class CategoryListRecord extends Table{
+
+}
+
+//テーブルdayMenuList
+class DayMenuListRecord extends Table{
+
+}
 
 
 

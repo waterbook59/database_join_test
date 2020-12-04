@@ -166,9 +166,10 @@ class CategorySelectScreen extends StatelessWidget {
   Future<void> selectCategory(BuildContext context, MealType mealType) async {
     final viewModel =
     Provider.of<CategorySelectViewModel>(context, listen: false);
-    await viewModel.selectCategory();
+    await viewModel.selectCategory(mealType);
 
     ///選択ボタン押したら画面戻りつつ値を渡す
+    ///DB登録に変更するので、viewModelでswitch実施
     switch(mealType){
       case MealType.breakfast:
         Navigator.of(context).pop(viewModel.breakfastCategory);

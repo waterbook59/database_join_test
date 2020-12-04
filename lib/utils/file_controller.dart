@@ -28,6 +28,7 @@ class FileController {
 //    return savedFile;
 //  }
 
+  //todo 保存ボタン押した時に_imageがnullの時のバリデーション
   static Future<File> saveCachedImage(File image) async {
     final dynamic path = await localPath; //directory.path
     ///file名(image.png)のところは、var fileName =basename(file.path)として、末尾だけを使ってファイル名付けられる
