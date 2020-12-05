@@ -9,4 +9,10 @@ part 'food_stuff_dao.g.dart';
 class FoodStuffDao extends DatabaseAccessor<FoodStuffDB> with _$FoodStuffDaoMixin {
   FoodStuffDao(FoodStuffDB foodStuffDB) : super(foodStuffDB);
 
+  //挿入
+  Future<void> addFoodStuff( foodStuffRecord) =>into(foodStuffRecords).insert(foodStuffRecord);
+  //読込
+  Future<List<FoodStuffRecord>> get allFoodStuffs => select(foodStuffRecords).get();
+  //削除
+
 }

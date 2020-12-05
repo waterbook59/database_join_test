@@ -1,3 +1,4 @@
+import 'package:datebasejointest/models/db/food_stuff/food_stuff_dao.dart';
 import 'package:datebasejointest/models/db/product_info/product_info_dao.dart';
 import 'package:datebasejointest/models/repository/data_repository.dart';
 import 'package:datebasejointest/view_model/category_select_view_model.dart';
@@ -32,10 +33,12 @@ List<SingleChildWidget> dependentModels = [
 //    update: (_, dao, repository)=>MenuRepository(productInfoDao: dao),
 //  ),
 
+//todo Proxyprovider2にしてFoodStuffDao加える,
 //todo Proxyprovider2にしてApiService加える,
-//todo もっと進んだらApiService,ProductInfoDao,FoodStuffDaoをDataRepositoryにまとめる
-  ProxyProvider<ProductInfoDao,DataRepository>(
-    update: (_, dao, repository)=>DataRepository(productInfoDao: dao),
+//todo Proxyprovider3にしてApiService,ProductInfoDao,FoodStuffDaoをDataRepositoryにまとめる
+  ProxyProvider2<ProductInfoDao,FoodStuffDao,DataRepository>(
+    update: (_, productDao, foodDao,repository)=>
+        DataRepository(productInfoDao: productDao,foodStuffDao:foodDao),
   ),
 
 //todo menuRepository=>database

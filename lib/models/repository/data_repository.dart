@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:datebasejointest/data_models/menu/food_stuff.dart';
 import 'package:datebasejointest/data_models/product.dart';
+import 'package:datebasejointest/models/db/food_stuff/food_stuff_dao.dart';
 import 'package:datebasejointest/models/db/product_info/product_info_database.dart';
 import 'package:datebasejointest/utils/constants.dart';
 import 'package:datebasejointest/utils/extensions.dart';
@@ -14,8 +15,12 @@ import 'package:datebasejointest/models/db/product_info/product_info_dao.dart';
 
 class DataRepository {
 //diあり
-  DataRepository({productInfoDao}) : _productInfoDao = productInfoDao;
+  DataRepository({ProductInfoDao productInfoDao, FoodStuffDao foodStuffDao}) :
+        _productInfoDao = productInfoDao,
+        _foodStuffDao = foodStuffDao;
   final ProductInfoDao _productInfoDao;
+  final FoodStuffDao _foodStuffDao;
+
 
   //diなし main.dartに設定
 //    final productInfoDao = myProductInfoDB.productInfoDao;
@@ -85,7 +90,7 @@ class DataRepository {
 
     try{
       final foodStuffRecord = foodStuff.toFoodStuffRecord(foodStuff);
-      //await _dao.addFoodStuff(foodStuffRecord);
+      await _foodStuffDao.addFoodStuff(foodStuffRecord);
     }on SqliteException catch(e){
       print("repositoryでのエラー：${e.toString()}");
     }
