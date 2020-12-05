@@ -92,7 +92,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                         header: Flexible(
                           child: Container(
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.green),
+//                                border: Border.all(color: Colors.green),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               height: 50,

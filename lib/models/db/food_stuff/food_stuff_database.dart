@@ -6,6 +6,8 @@ import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as q;
+
+import 'food_stuff_dao.dart';
 part 'food_stuff_database.g.dart';
 
 //テーブルfood_stuff
@@ -47,7 +49,7 @@ class AmountToEatRecords extends Table{
 //}
 
 
-@UseMoor(tables:[FoodStuffRecords,AmountToEatRecords])
+@UseMoor(tables:[FoodStuffRecords,AmountToEatRecords],daos: [FoodStuffDao])
 class FoodStuffDB extends _$FoodStuffDB {
 
   FoodStuffDB() : super(_openConnection());

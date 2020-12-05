@@ -5,14 +5,14 @@ import 'package:datebasejointest/models/db/product_info/product_info_database.da
 
 part 'product_info_dao.g.dart';
 
-//todo UseDaoにクエリ書いてみていろいろ内部結合してみる
+
 @UseDao(tables:[ProductRecords,ProductRecordImages,ProductWithImages])
 class ProductInfoDao extends DatabaseAccessor<MyProductInfoDB> with _$ProductInfoDaoMixin {
   ProductInfoDao(MyProductInfoDB infoDB) : super(infoDB);
 
   ///1.extension:List<Product>=>List<ProductRecord>,List<ProductRecordImages>に分ける
   ///2.dao:分けた２つのリストをそれぞれDB格納
-  //todo 格納する前にDBをclear
+  // 格納する前にDBをclear
 
   Future<void> clearProductDB() {
     return delete(productRecords).go();
@@ -37,7 +37,6 @@ class ProductInfoDao extends DatabaseAccessor<MyProductInfoDB> with _$ProductInf
   }
 
   ///3.dao:２つに分けたリストを内部結合して読込＆JoinedProductクラスのリストとして格納
-//todo とりあえずqueryの中身をみてわからなければ、int型のidで内部結合してみる
 
   Future<List<JoinedProduct>> getJoinedProduct()  async{
     final query = select(productRecords).join([
