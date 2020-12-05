@@ -237,6 +237,7 @@ class DataRegistrationScreen extends StatelessWidget {
   Future<void> registerProductData(BuildContext context, RecordStatus recordStatus) async {
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);
+    print('view層から登録ボタン押してviewModelへ');
     await viewModel.registerProductData(recordStatus);
   }
 

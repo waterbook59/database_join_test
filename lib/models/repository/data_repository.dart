@@ -98,6 +98,12 @@ class DataRepository {
 
   }
 
+  Future<List<FoodStuff>>getFoodStuffList() async{
+    final resultRecords = await _foodStuffDao.allFoodStuffs;
+    var results =resultRecords.toFoodStuffs(resultRecords);
+    return results;
+  }
+
 
 
 }

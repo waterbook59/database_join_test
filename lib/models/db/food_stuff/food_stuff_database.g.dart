@@ -987,6 +987,9 @@ abstract class _$FoodStuffDB extends GeneratedDatabase {
   $AmountToEatRecordsTable _amountToEatRecords;
   $AmountToEatRecordsTable get amountToEatRecords =>
       _amountToEatRecords ??= $AmountToEatRecordsTable(this);
+  FoodStuffDao _foodStuffDao;
+  FoodStuffDao get foodStuffDao =>
+      _foodStuffDao ??= FoodStuffDao(this as FoodStuffDB);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

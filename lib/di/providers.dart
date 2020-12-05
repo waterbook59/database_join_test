@@ -1,4 +1,5 @@
 import 'package:datebasejointest/models/db/food_stuff/food_stuff_dao.dart';
+import 'package:datebasejointest/models/db/food_stuff/food_stuff_database.dart';
 import 'package:datebasejointest/models/db/product_info/product_info_dao.dart';
 import 'package:datebasejointest/models/repository/data_repository.dart';
 import 'package:datebasejointest/view_model/category_select_view_model.dart';
@@ -19,6 +20,11 @@ List<SingleChildWidget> independentModels =[
     create: (_)=>MyProductInfoDB(),
     dispose: (_,db) =>db.close(),
   ),
+  Provider<FoodStuffDB>(
+    create: (_)=>FoodStuffDB(),
+    dispose: (_,db) =>db.close(),
+  ),
+
   //  Provider<ProductApiService>(
 //    create: (_)=>ProductApiService.create(),
 //    dispose: (_, productApiService)=>productApiService.dispose(),
@@ -28,6 +34,9 @@ List<SingleChildWidget> independentModels =[
 List<SingleChildWidget> dependentModels = [
   ProxyProvider<MyProductInfoDB,ProductInfoDao>(
     update: (_, db, dao)=>ProductInfoDao(db),
+  ),
+  ProxyProvider<FoodStuffDB,FoodStuffDao>(
+    update: (_, db, dao)=>FoodStuffDao(db),
   ),
 //  ProxyProvider<ProductInfoDao,MenuRepository>(
 //    update: (_, dao, repository)=>MenuRepository(productInfoDao: dao),

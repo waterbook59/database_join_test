@@ -12,7 +12,8 @@ part 'food_stuff_database.g.dart';
 
 //テーブルfood_stuff
 class FoodStuffRecords extends Table{
-  IntColumn get id => integer().autoIncrement()();
+//  IntColumn get id => integer().autoIncrement().customConstraint('PRIMARY KEY ON CONFLICT REPLACE')as IntColumn;
+  IntColumn get id =>integer().autoIncrement()();
   TextColumn get foodStuffId => text()();
   TextColumn get localImagePath => text()();
   TextColumn get name => text()();

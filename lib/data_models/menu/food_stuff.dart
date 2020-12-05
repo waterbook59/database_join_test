@@ -2,6 +2,7 @@ import 'package:datebasejointest/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class FoodStuff {
+  int id;///追加
   String foodStuffId; //UuidでつけるかautoIncrement
   String localImagePath; //カメラ・ギャラリーのイメージパス_File(localImagePath.path)で呼び出す
 //  String imageUrl;//network経由のproductImage、イメージパスあればいらない？？
@@ -16,7 +17,9 @@ class FoodStuff {
 //  List<AmountToEat> amountToEatList;
 
   FoodStuff(
-      {this.foodStuffId,
+      {
+        this.id,
+        this.foodStuffId,
       this.localImagePath,
       this.name,
       this.category,

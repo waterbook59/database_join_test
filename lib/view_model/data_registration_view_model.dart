@@ -18,6 +18,11 @@ class DataRegistrationViewModel extends ChangeNotifier {
   //diなし
 //  final DataRepository _dataRepository =DataRepository();
 
+  ///登録データ格納
+  final List<FoodStuff> _foodStuffs = <FoodStuff>[];
+  List<FoodStuff> get foodStuffs => _foodStuffs;
+
+
   final List<Product> _products = variableProducts;
   List<Product> get products => _products;
 
@@ -80,21 +85,24 @@ class DataRegistrationViewModel extends ChangeNotifier {
         var localImage = await FileController.saveCachedImage(imageFromCamera);
       FoodStuff foodStuff =
       FoodStuff(
+        //idはautoIncrementするので、初期登録は何も入れなくて良いはず
           foodStuffId: Uuid().v1(),
           name: _productNameController.text,
           category: _productCategoryController.text,
           validDate: _validDateTime,
           storage: _productStorageController.text,
-          amount: int.parse(_productNameController.text),
+          amount: int.parse(_productNumberController.text),
           //useAmount,restAmountはDBで初期値設定
           //todo localImage.pathを保存する
           localImagePath:localImage.path,
           //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
       );
       await _dataRepository.registerProductData(foodStuff);
+        notifyListeners();
         break;
       case RecordStatus.gallery:
         var localImage = await FileController.saveCachedImage(imageFromGallery);
+
         FoodStuff foodStuff =
         FoodStuff(
           foodStuffId: Uuid().v1(),
@@ -102,15 +110,19 @@ class DataRegistrationViewModel extends ChangeNotifier {
           category: _productCategoryController.text,
           validDate: _validDateTime,
           storage: _productStorageController.text,
-          amount: int.parse(_productNameController.text),
+          amount: int.parse(_productNumberController.text),
           //useAmount,restAmountはDBで初期値設定
           //todo localImage.pathを保存する
           localImagePath:localImage.path,
           //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
         );
+        print('viewModel=>repository/FoodStuff.id:${foodStuff.id}');
+        print('viewModel=>repository/FoodStuff.foodStuffId:${foodStuff.foodStuffId}');
         await _dataRepository.registerProductData(foodStuff);
+        notifyListeners();
         break;
       case RecordStatus.networkImage:
+        //todo FileController.saveCachedImageに渡したimageFromNetworkがFileになってない
         var localImage = await FileController.saveCachedImage(imageFromNetwork);
         FoodStuff foodStuff =
         FoodStuff(
@@ -119,17 +131,17 @@ class DataRegistrationViewModel extends ChangeNotifier {
           category: _productCategoryController.text,
           validDate: _validDateTime,
           storage: _productStorageController.text,
-          amount: int.parse(_productNameController.text),
+          amount: int.parse(_productNumberController.text),
           //useAmount,restAmountはDBで初期値設定
           //todo localImage.pathを保存する
           localImagePath:localImage.path,
           //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
         );
         await _dataRepository.registerProductData(foodStuff);
+        notifyListeners();
         break;
     }
 
-    notifyListeners();
   }
 
   void productNameClear() {
@@ -208,5 +220,17 @@ class DataRegistrationViewModel extends ChangeNotifier {
       isImagePickedFromNetwork = false;
     }
     notifyListeners();
+  }
+
+  Future<void> getFoodStuffList() async{
+    final _foodStuffs =await _dataRepository.getFoodStuffList();
+
+    if(_foodStuffs.isEmpty) {
+      print("リストが空");
+      notifyListeners();
+    }else{
+      print("DB=>レポジトリ=>vieModelで取得したデータの１番目：${_foodStuffs[0].name}");
+      notifyListeners();
+    }
   }
 }

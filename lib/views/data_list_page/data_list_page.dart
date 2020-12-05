@@ -1,10 +1,20 @@
 
+import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:datebasejointest/views/data_registration/data_registration_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DataListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+//    final viewModel = Provider.of<DataRegistrationViewModel>(context, listen: false);
+//    Future(() {
+//      viewModel.getFoodStuffList();
+//      //isEmptyの時に「文字登録してください」的な表示できるか
+//      print('取得したfoodStuffのList${viewModel.foodStuffs}');
+//    });
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

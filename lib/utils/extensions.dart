@@ -72,16 +72,43 @@ extension ConvertToFoodStuffRecord on FoodStuff{
   FoodStuffRecord toFoodStuffRecord(FoodStuff foodStuff){
 
     var foodStuffRecord = FoodStuffRecord(
+      id: foodStuff.id ?? 0,//追加
       foodStuffId:foodStuff.foodStuffId ?? "",
       localImagePath: foodStuff.localImagePath ?? "",
       name: foodStuff.name ?? "",
       category: foodStuff.category ?? "",
       storage: foodStuff.storage ?? "",
       validDate: foodStuff.validDate,
-      amount: foodStuff.amount ??0,
+      amount: foodStuff.amount ?? 0,
       useAmount: foodStuff.useAmount ?? 0,
       restAmount: foodStuff.restAmount ?? 0,
     );
     return foodStuffRecord;
+  }
+}
+
+///DBテーブルクラス(foodStuffRecord)=>FoodStuffへ変換
+extension ConvertToFoodStuff on List<FoodStuffRecord>{
+
+  List<FoodStuff> toFoodStuffs(List<FoodStuffRecord> foodStuffRecords){
+    var foodStuffs = List<FoodStuff>();
+
+    foodStuffRecords.forEach((foodStuffRecord){
+      foodStuffs.add(
+          FoodStuff(
+            id: foodStuffRecord.id ?? 0,//追加
+            foodStuffId: foodStuffRecord.foodStuffId ?? "",
+            localImagePath: foodStuffRecord.localImagePath ?? "",
+            name: foodStuffRecord.name ?? "",
+            category: foodStuffRecord.category ?? "",
+            storage: foodStuffRecord.storage ?? "",
+            validDate: foodStuffRecord.validDate ?? "",
+            amount: foodStuffRecord.amount ?? 0,
+            useAmount: foodStuffRecord.useAmount ?? 0,
+            restAmount: foodStuffRecord.restAmount ?? 0,
+          )
+      );
+    });
+    return foodStuffs;
   }
 }

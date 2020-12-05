@@ -10,7 +10,7 @@ class FoodStuffDao extends DatabaseAccessor<FoodStuffDB> with _$FoodStuffDaoMixi
   FoodStuffDao(FoodStuffDB foodStuffDB) : super(foodStuffDB);
 
   //挿入
-  Future<void> addFoodStuff( foodStuffRecord) =>into(foodStuffRecords).insert(foodStuffRecord);
+  Future<void> addFoodStuff( FoodStuffRecord foodStuffRecord) =>into(foodStuffRecords).insert(foodStuffRecord);
   //読込
   Future<List<FoodStuffRecord>> get allFoodStuffs => select(foodStuffRecords).get();
   //削除
