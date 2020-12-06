@@ -239,6 +239,8 @@ class DataRegistrationScreen extends StatelessWidget {
     Provider.of<DataRegistrationViewModel>(context, listen: false);
     print('view層から登録ボタン押してviewModelへ');
     await viewModel.registerProductData(recordStatus);
+    //登録が終わったら閉じる
+    Navigator.pop(context);
   }
 
 

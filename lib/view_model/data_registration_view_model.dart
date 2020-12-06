@@ -18,8 +18,8 @@ class DataRegistrationViewModel extends ChangeNotifier {
   //diなし
 //  final DataRepository _dataRepository =DataRepository();
 
-  ///登録データ格納
-  final List<FoodStuff> _foodStuffs = <FoodStuff>[];
+  ///登録データ格納 finalにすると変更通知できないのでしょ
+  List<FoodStuff> _foodStuffs = <FoodStuff>[];
   List<FoodStuff> get foodStuffs => _foodStuffs;
 
 
@@ -224,13 +224,14 @@ class DataRegistrationViewModel extends ChangeNotifier {
   }
 
   Future<void> getFoodStuffList() async{
-    final _foodStuffs =await _dataRepository.getFoodStuffList();
+    ///finalにしない！！finalにするとnotifyListenersしてもview層でConsumer更新されない
+     _foodStuffs =await _dataRepository.getFoodStuffList();
 
     if(_foodStuffs.isEmpty) {
       print("リストが空");
       notifyListeners();
     }else{
-      print("DB=>レポジトリ=>vieModelで取得したデータの１番目：${_foodStuffs[0].name}");
+      print("DB=>レポジトリ=>vieModelで取得したデータの長さ：${_foodStuffs.length}");
       notifyListeners();
     }
   }
