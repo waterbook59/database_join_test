@@ -100,10 +100,11 @@ class DataRegistrationViewModel extends ChangeNotifier {
       await _dataRepository.registerProductData(foodStuff);
         notifyListeners();
         break;
+
       case RecordStatus.gallery:
         var localImage = await FileController.saveCachedImage(imageFromGallery);
-
-        FoodStuff foodStuff =
+        ///finalへ変更
+        final foodStuff =
         FoodStuff(
           foodStuffId: Uuid().v1(),
           name: _productNameController.text,

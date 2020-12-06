@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
+import 'package:path/path.dart' as q;
 //自分で追加
 import 'package:datebasejointest/models/db/product_info/product_info_dao.dart';
 part 'product_info_database.g.dart';
@@ -62,7 +62,7 @@ LazyDatabase _openConnection() {
     // for your app.
     final dbFolder = await getApplicationDocumentsDirectory();
     //下はpath_providerの一般的な書き方
-    final file = File(p.join(dbFolder.path, 'product_info.db'));
+    final file = File(q.join(dbFolder.path, 'product_info.db'));
     return VmDatabase(file);
   });
 }

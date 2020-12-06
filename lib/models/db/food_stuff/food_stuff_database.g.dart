@@ -263,11 +263,12 @@ class FoodStuffRecordsCompanion extends UpdateCompanion<FoodStuffRecord> {
     this.validDate = const Value.absent(),
     @required int amount,
     this.useAmount = const Value.absent(),
-    this.restAmount = const Value.absent(),
+    @required int restAmount,
   })  : foodStuffId = Value(foodStuffId),
         localImagePath = Value(localImagePath),
         name = Value(name),
-        amount = Value(amount);
+        amount = Value(amount),
+        restAmount = Value(restAmount);
   static Insertable<FoodStuffRecord> custom({
     Expression<int> id,
     Expression<String> foodStuffId,
@@ -489,8 +490,11 @@ class $FoodStuffRecordsTable extends FoodStuffRecords
   @override
   GeneratedIntColumn get restAmount => _restAmount ??= _constructRestAmount();
   GeneratedIntColumn _constructRestAmount() {
-    return GeneratedIntColumn('rest_amount', $tableName, false,
-        defaultValue: amount);
+    return GeneratedIntColumn(
+      'rest_amount',
+      $tableName,
+      false,
+    );
   }
 
   @override
@@ -569,6 +573,8 @@ class $FoodStuffRecordsTable extends FoodStuffRecords
           _restAmountMeta,
           restAmount.isAcceptableOrUnknown(
               data['rest_amount'], _restAmountMeta));
+    } else if (isInserting) {
+      context.missing(_restAmountMeta);
     }
     return context;
   }
@@ -596,7 +602,7 @@ class AmountToEatRecord extends DataClass
   final String mealType;
   final int piece;
   AmountToEatRecord(
-      {@required this.id,
+      {this.id,
       @required this.foodStuffId,
       @required this.amountToEatId,
       @required this.date,
@@ -845,8 +851,11 @@ class $AmountToEatRecordsTable extends AmountToEatRecords
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
   GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+    return GeneratedIntColumn(
+      'id',
+      $tableName,
+      true,
+    );
   }
 
   final VerificationMeta _foodStuffIdMeta =
@@ -966,7 +975,7 @@ class $AmountToEatRecordsTable extends AmountToEatRecords
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
   @override
   AmountToEatRecord map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;

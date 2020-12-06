@@ -71,8 +71,9 @@ extension ConvertToFoodStuffRecord on FoodStuff{
 
   FoodStuffRecord toFoodStuffRecord(FoodStuff foodStuff){
 
-    var foodStuffRecord = FoodStuffRecord(
-      id: foodStuff.id ?? 0,//追加
+    ///finalへ変更
+    final foodStuffRecord = FoodStuffRecord(
+      id: foodStuff.id, //追加でnullの時の条件は入れない
       foodStuffId:foodStuff.foodStuffId ?? "",
       localImagePath: foodStuff.localImagePath ?? "",
       name: foodStuff.name ?? "",

@@ -2,12 +2,11 @@
 
 import 'dart:io';
 
+import 'package:datebasejointest/models/db/food_stuff/food_stuff_dao.dart';
 import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as q;
-
-import 'food_stuff_dao.dart';
+import 'package:path/path.dart' as p;
 part 'food_stuff_database.g.dart';
 
 //テーブルfood_stuff
@@ -22,23 +21,25 @@ class FoodStuffRecords extends Table{
   DateTimeColumn get validDate => dateTime().nullable()();
   IntColumn get amount =>integer()();
   IntColumn get useAmount=>integer().withDefault(const Constant(0))();// メニュー内で使う量、初期ゼロ
-  IntColumn get restAmount=>integer().withDefault(amount)();// メニューで使ってない量、初期amountと同じ
-
-  @override
-  Set<Column> get primaryKey => {id};
+  //IntColumn get restAmount=>integer().withDefault(amount)();// メニューで使ってない量、初期amountと同じ
+  ///初期値に変数設定でエラー
+  IntColumn get restAmount=>integer()();
+///idをprimaryKeyから外してコード生成するとTables can't override primaryKey and use autoIncrement()のエラー出ない
+//  @override
+//  Set<Column> get primaryKey => {id};
 }
 
 //テーブルamountToEat
 class AmountToEatRecords extends Table{
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn get id =>integer().nullable()();
   TextColumn get foodStuffId => text()();
   TextColumn get amountToEatId => text()();
   TextColumn get date => text()();//何日目
   TextColumn get mealType => text()();//todo 朝食、昼食、間食、夕食
   IntColumn get piece =>integer().nullable()();//個数
 
-  @override
-  Set<Column> get primaryKey => {id};
+//  @override
+//  Set<Column> get primaryKey => {id};
 }
 
 ///テーブル categoryList=>MenuDB
@@ -63,7 +64,7 @@ LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
     //下はpath_providerの一般的な書き方
-    final file = File(q.join(dbFolder.path, 'food_stuff.db'));
+    final file = File(p.join(dbFolder.path, 'food_stuff.db'));
     return VmDatabase(file);
   });
 }

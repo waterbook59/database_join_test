@@ -8,12 +8,12 @@ class DataListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-//    final viewModel = Provider.of<DataRegistrationViewModel>(context, listen: false);
-//    Future(() {
-//      viewModel.getFoodStuffList();
-//      //isEmptyの時に「文字登録してください」的な表示できるか
-//      print('取得したfoodStuffのList${viewModel.foodStuffs}');
-//    });
+    final viewModel = Provider.of<DataRegistrationViewModel>(context, listen: false);
+    Future(() async{
+      await viewModel.getFoodStuffList();
+      //isEmptyの時に「文字登録してください」的な表示できるか
+      print('取得したfoodStuffのList${viewModel.foodStuffs}');
+    });
 
     return SafeArea(
       child: Scaffold(

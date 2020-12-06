@@ -86,10 +86,11 @@ class DataRepository {
 
   //todo 登録,viewModelでモデルクラスを作る形へ変更中
   Future<void> registerProductData(FoodStuff foodStuff) async{
-    print('registerProductDataで商品情報登録/foodStuff:$foodStuff');
+    print('registerProductDataで商品情報登録/foodStuff:${foodStuff.id}');
 
     try{
       final foodStuffRecord = foodStuff.toFoodStuffRecord(foodStuff);
+      print('foodStuffRecordへ変換後のid：${foodStuffRecord.id}/${foodStuffRecord.restAmount}');
       await _foodStuffDao.addFoodStuff(foodStuffRecord);
     }on SqliteException catch(e){
       print("repositoryでのエラー：${e.toString()}");
