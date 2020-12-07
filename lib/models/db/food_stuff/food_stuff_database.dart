@@ -25,21 +25,21 @@ class FoodStuffRecords extends Table{
   ///初期値に変数設定でエラー
   IntColumn get restAmount=>integer()();
 ///idをprimaryKeyから外してコード生成するとTables can't override primaryKey and use autoIncrement()のエラー出ない
-//  @override
-//  Set<Column> get primaryKey => {id};
+  @override
+  Set<Column> get primaryKey => {id};
 }
 
 //テーブルamountToEat
 class AmountToEatRecords extends Table{
-  IntColumn get id =>integer().nullable()();
+  IntColumn get id =>integer().autoIncrement()();
   TextColumn get foodStuffId => text()();
   TextColumn get amountToEatId => text()();
   TextColumn get date => text()();//何日目
   TextColumn get mealType => text()();//todo 朝食、昼食、間食、夕食
   IntColumn get piece =>integer().nullable()();//個数
 
-//  @override
-//  Set<Column> get primaryKey => {id};
+  @override
+  Set<Column> get primaryKey => {id};
 }
 
 ///テーブル categoryList=>MenuDB

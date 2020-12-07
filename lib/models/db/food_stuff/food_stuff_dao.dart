@@ -19,5 +19,8 @@ class FoodStuffDao extends DatabaseAccessor<FoodStuffDB> with _$FoodStuffDaoMixi
   //読込
   Future<List<FoodStuffRecord>> get allFoodStuffs => select(foodStuffRecords).get();
   //削除
+  Future<void> deleteFoodStuff(FoodStuffRecord foodStuffRecord)=>
+      (delete(foodStuffRecords)..where((t)=>t.foodStuffId.equals(foodStuffRecord.foodStuffId)))
+          .go();
 
 }

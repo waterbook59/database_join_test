@@ -84,7 +84,7 @@ class DataRepository {
   }
 
 
-  //todo 登録,viewModelでモデルクラスを作る形へ変更中
+  //登録,viewModelでモデルクラスを作る形へ変更
   Future<void> registerProductData(FoodStuff foodStuff) async{
     print('registerProductDataで商品情報登録/foodStuff:${foodStuff.id}');
 
@@ -103,6 +103,11 @@ class DataRepository {
     final resultRecords = await _foodStuffDao.allFoodStuffs;
     var results =resultRecords.toFoodStuffs(resultRecords);
     return results;
+  }
+
+  Future<void> deleteFoodStuff(FoodStuff foodStuff) async{
+    final foodStuffRecord =foodStuff.toFoodStuffRecord(foodStuff);
+    await _foodStuffDao.deleteFoodStuff(foodStuffRecord);
   }
 
 

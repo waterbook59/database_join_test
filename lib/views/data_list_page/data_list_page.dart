@@ -2,6 +2,7 @@
 import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:datebasejointest/views/data_registration/data_registration_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import 'components/food_stuff_item.dart';
@@ -42,7 +43,7 @@ class DataListPage extends StatelessWidget {
                     itemBuilder: (context, int position) =>
                         FoodStuffItem(
                           foodStuff:model.foodStuffs[position],
-//                          onLongTapped: (foodStuff)=>_onWordDeleted(foodStuff,context),
+                          onLongTapped: (foodStuff)=>_onFoodStuffDeleted(foodStuff,context),
 //                          onWordTapped: (foodStuff)=>_upDateWord(foodStuff,context),
                         )
                 );
@@ -59,4 +60,39 @@ class DataListPage extends StatelessWidget {
         MaterialPageRoute<dynamic>(
             builder:(context)=>DataRegistrationScreen() ));
   }
+
+  Future<void>_onFoodStuffDeleted(foodStuff, BuildContext context) async{
+    final viewModel = Provider.of<DataRegistrationViewModel>(context, listen: false);
+
+    showDialog(
+      context: context,
+        barrierDismissible: false,
+        builder: (_) => AlertDialog(
+          title: Text("『${foodStuff.name}』の削除"),
+          content:const Text("削除してもいいですか？"),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () async {
+                await viewModel.onFoodStuffDeleted(foodStuff);//イベントEvent.delete返ってくる
+//                if(viewModel.eventStatus == Event.delete){
+                  Fluttertoast.showToast(msg:"削除完了しました");
+//                }
+                // ここで最後の１つを削除後取得しようとするとList内が空っぽでエラーが出るがisEmptyで回避
+                await viewModel.getFoodStuffList();
+                Navigator.pop(context);
+              },
+              child: Text("はい"),
+            ),
+            FlatButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("いいえ"),
+            ),
+          ],
+        ),
+    );
+  }
+
+
 }

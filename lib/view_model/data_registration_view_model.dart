@@ -235,4 +235,9 @@ class DataRegistrationViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> onFoodStuffDeleted(FoodStuff foodStuff) async{
+    await _dataRepository.deleteFoodStuff(foodStuff);
+    notifyListeners();
+  }
 }

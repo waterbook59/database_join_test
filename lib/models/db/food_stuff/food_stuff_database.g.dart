@@ -602,7 +602,7 @@ class AmountToEatRecord extends DataClass
   final String mealType;
   final int piece;
   AmountToEatRecord(
-      {this.id,
+      {@required this.id,
       @required this.foodStuffId,
       @required this.amountToEatId,
       @required this.date,
@@ -851,11 +851,8 @@ class $AmountToEatRecordsTable extends AmountToEatRecords
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
   GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn(
-      'id',
-      $tableName,
-      true,
-    );
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
   }
 
   final VerificationMeta _foodStuffIdMeta =
@@ -975,7 +972,7 @@ class $AmountToEatRecordsTable extends AmountToEatRecords
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   AmountToEatRecord map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
