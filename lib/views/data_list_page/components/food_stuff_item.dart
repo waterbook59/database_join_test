@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:datebasejointest/data_models/menu/food_stuff.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +24,7 @@ class FoodStuffItem extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       color: Colors.cyan,
       child: ListTile(
+        leading: Image.file(File(foodStuff.localImagePath)),
         title: Text("${foodStuff.name}", style: TextStyle(color: Colors.black87,fontSize: 23.0),),
         subtitle: Text("在庫：${foodStuff.amount}・期限：${foodStuff.validDate}",
           style: TextStyle(fontFamily: "Corporate", color: Colors.brown),

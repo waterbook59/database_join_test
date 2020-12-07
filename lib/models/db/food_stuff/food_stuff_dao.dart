@@ -18,7 +18,8 @@ class FoodStuffDao extends DatabaseAccessor<FoodStuffDB> with _$FoodStuffDaoMixi
   Future<void> addFoodStuff(FoodStuffRecord foodStuffRecord) =>into(foodStuffRecords).insert(foodStuffRecord);
   //読込
   Future<List<FoodStuffRecord>> get allFoodStuffs => select(foodStuffRecords).get();
-  //削除
+
+  //削除 todo ローカル保存した時のコピーの画像まで削除できているのかpathを消してもImage.copyは残るのでは
   Future<void> deleteFoodStuff(FoodStuffRecord foodStuffRecord)=>
       (delete(foodStuffRecords)..where((t)=>t.foodStuffId.equals(foodStuffRecord.foodStuffId)))
           .go();
