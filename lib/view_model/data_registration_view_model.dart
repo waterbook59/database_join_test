@@ -121,7 +121,13 @@ class DataRegistrationViewModel extends ChangeNotifier {
         );
         await _dataRepository.registerProductData(foodStuff);
         /// DB登録と同時にキャッシュ画像の方は削除
+        ///imageFromGarellyはFile: '/data/user/0/com.example.datebasejointest/cache/image_pickerxxxxx.jpg'の形
         imageFromGallery.delete();
+        //=>削除した後、さらにdataRegistrationScreenを開こうとするとエラー
+//         isImagePickedFromGallery = false;
+         //todo テキスト関連をクリア
+        allClear();
+
         notifyListeners();
         break;
       ///ネットワークイメージ
@@ -154,11 +160,10 @@ class DataRegistrationViewModel extends ChangeNotifier {
     //File.pathでString形式にしてDB保存している,foodStuff.localImageはString
     File deleteFile = File(foodStuff.localImagePath);
     await _dataRepository.deleteFoodStuff(foodStuff);
-    //todo 画像についてはDBから画像へのパスとcashとローカルから画像も削除する
+    // 画像についてはDBから画像へのパスとローカルから画像も削除する
     await FileController.deleteCashedImage(deleteFile);
     notifyListeners();
   }
-
 
 
   void productNameClear() {
@@ -251,6 +256,19 @@ class DataRegistrationViewModel extends ChangeNotifier {
 //      print("DB=>レポジトリ=>vieModelで取得したデータの長さ：${_foodStuffs.length}");
       notifyListeners();
     }
+  }
+
+  Future<void> allClear() async{
+    //todo それぞれキャッシュ画像はクリアの必要ありか？
+    isImagePickedFromCamera = false;
+    isImagePickedFromGallery = false;
+    isImagePickedFromNetwork = false;
+    productNameClear();
+    productCategoryClear();
+    dateClear();
+    productNumberClear();
+    productStorageClear();
+    notifyListeners();//いらんかも
   }
 
 

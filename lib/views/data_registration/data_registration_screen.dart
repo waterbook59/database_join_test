@@ -238,7 +238,7 @@ class DataRegistrationScreen extends StatelessWidget {
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);
 //    print('view層から登録ボタン押してviewModelへ');
-    ///DB登録と同時にキャッシュ画像クリア
+    ///DB登録と同時にキャッシュ画像クリア&テキストコントローラーたちもクリア
     await viewModel.registerProductData(recordStatus);
     //登録が終わったら閉じる
     //todo Navigator.popだと閉じた時にDataListPageが更新されない
@@ -285,7 +285,11 @@ class DataRegistrationScreen extends StatelessWidget {
             child: new Text('キャンセル'),
           ),
           new FlatButton(
-            onPressed: () {
+            onPressed: () async{
+              //入力破棄するので、入力したものは全てクリア
+              final viewModel =
+              Provider.of<DataRegistrationViewModel>(context, listen: false);
+              await viewModel.allClear();
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },
