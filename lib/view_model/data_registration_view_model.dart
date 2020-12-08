@@ -93,7 +93,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
           storage: _productStorageController.text,
           amount: int.parse(_productNumberController.text),
           //useAmount,restAmountはDBで初期値設定
-          //todo localImage.pathを保存する
+          // localImage.pathを保存する
           localImagePath:localImage.path,
           //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
       );
@@ -102,10 +102,10 @@ class DataRegistrationViewModel extends ChangeNotifier {
         break;
 
       case RecordStatus.gallery:
-        ///cacheのデータをlocalへコピー
+        ///cacheの画像データをlocal(app_flutter内)へコピー
         var localImage = await FileController.saveCachedImage(imageFromGallery);
         print('viewModelでのlocalImage.pathの値:${localImage.path}');
-        ///finalへ変更
+        //finalへ変更
         final foodStuff =
         FoodStuff(
           foodStuffId: Uuid().v1(),
@@ -119,10 +119,12 @@ class DataRegistrationViewModel extends ChangeNotifier {
           localImagePath:localImage.path,
           //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
         );
-
         await _dataRepository.registerProductData(foodStuff);
+        /// DB登録と同時にキャッシュ画像の方は削除
+        imageFromGallery.delete();
         notifyListeners();
         break;
+      ///ネットワークイメージ
       case RecordStatus.networkImage:
         //todo FileController.saveCachedImageに渡したimageFromNetworkがFileになってない
         var localImage = await FileController.saveCachedImage(imageFromNetwork);

@@ -29,6 +29,7 @@ class FileController {
 //  }
 
   //todo 保存ボタン押した時に_imageがnullの時のバリデーション
+  //todo 削除する時に便利なのでキャッシュのパスもDB保存しておく or DB保存時キャッシュ削除
   static Future<File> saveCachedImage(File image) async {
     final dynamic path = await localPath; //directory.path
     // =>DB保存側のパス：/data/user/0/com.example.datebasejointest/app_flutter
@@ -41,6 +42,7 @@ class FileController {
     final String fileName = basename(image.path);
     final String imagePath = '$path/$fileName';
     final File localImage = await image.copy(imagePath);
+    print('キャッシュのパスかも：$image');
     print('path(localPath)の値：$path');
     print('fileName /basename(image.path);の値：$fileName');
     print('DB保存するlocalImage/image.copy(imagePath)の値：$localImage');
@@ -58,6 +60,7 @@ class FileController {
   //ローカルフォルダ削除
   await deleteFile.delete();
   //todo キャッシュも消したい
+
   }
 
 
