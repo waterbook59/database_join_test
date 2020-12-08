@@ -40,6 +40,7 @@ class FileController {
     final String fileName = basename(image.path);
     final String imagePath = '$path/$fileName';
     final File localImage = await image.copy(imagePath);
+    print('DB保存するimage.copi(imagePath)の値：$localImage');
     return localImage;
 //    final String key = controller.text;
 //    /// localImageをlocalImage.pathとしてDBにString保存(今回はsharedPreferences)
