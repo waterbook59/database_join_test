@@ -19,7 +19,7 @@ class DataListPage extends StatelessWidget {
     Future(() {
        viewModel.getFoodStuffList();
       //立ち上げ時はここのリストは空になるのでprintでList[]でも問題なし
-      print('取得したfoodStuffのList長さ${viewModel.foodStuffs.length}');
+//      print('取得したfoodStuffのList長さ${viewModel.foodStuffs.length}');
     });
 
 
@@ -37,10 +37,12 @@ class DataListPage extends StatelessWidget {
           padding: const EdgeInsets.all(15.0),
           child: Consumer<DataRegistrationViewModel>(
               builder: (context,model,child){
-                print('DataListPageのConsumerリスト長さ：${model.foodStuffs.length}');
+//                print('DataListPageのConsumerリスト長さ：${model.foodStuffs.length}');
                 return ListView.builder(
                     itemCount: model.foodStuffs.length,
                     itemBuilder: (context, int position) =>
+                    //todo 期限表示は○年○月○日表示
+                    //todo 画像を一定の大きさに揃える(Fit?)
                         FoodStuffItem(
                           foodStuff:model.foodStuffs[position],
                           onLongTapped: (foodStuff)=>_onFoodStuffDeleted(foodStuff,context),
@@ -73,10 +75,9 @@ class DataListPage extends StatelessWidget {
           actions: <Widget>[
             FlatButton(
               onPressed: () async {
-                await viewModel.onFoodStuffDeleted(foodStuff);//イベントEvent.delete返ってくる
-//                if(viewModel.eventStatus == Event.delete){
+                ///画像についてはDBから画像へのパスとcashとローカルから画像も削除する
+                await viewModel.onFoodStuffDeleted(foodStuff);
                   Fluttertoast.showToast(msg:"削除完了しました");
-//                }
                 // ここで最後の１つを削除後取得しようとするとList内が空っぽでエラーが出るがisEmptyで回避
                 await viewModel.getFoodStuffList();
                 Navigator.pop(context);

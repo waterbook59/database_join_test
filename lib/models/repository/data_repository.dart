@@ -39,9 +39,9 @@ class DataRepository {
       productRecords = products.toProductRecord(products).cast<ProductRecord>();
       productRecordImages =
           products.toProductRecordImage(products).cast<ProductRecordImage>();
-      print('products:$products');
-      print('productRecords:$productRecords');
-      print('productRecordImages:$productRecordImages');
+//      print('products:$products');
+//      print('productRecords:$productRecords');
+//      print('productRecordImages:$productRecordImages');
 
       /// 3.2つのテーブルをDBへinsert
       await _productInfoDao.insertDB(productRecords, productRecordImages);
@@ -86,11 +86,11 @@ class DataRepository {
 
   //登録,viewModelでモデルクラスを作る形へ変更
   Future<void> registerProductData(FoodStuff foodStuff) async{
-    print('registerProductDataで商品情報登録/foodStuff:${foodStuff.id}');
+
 
     try{
       final foodStuffRecord = foodStuff.toFoodStuffRecord(foodStuff);
-      print('foodStuffRecordへ変換後のid：${foodStuffRecord.id}/${foodStuffRecord.restAmount}');
+//      print('foodStuffRecordへ変換後のid：${foodStuffRecord.id}/${foodStuffRecord.restAmount}');
       await _foodStuffDao.addFoodStuff(foodStuffRecord);
     }on SqliteException catch(e){
       print("repositoryでのエラー：${e.toString()}");
@@ -104,6 +104,7 @@ class DataRepository {
     var results =resultRecords.toFoodStuffs(resultRecords);
     return results;
   }
+
 
   Future<void> deleteFoodStuff(FoodStuff foodStuff) async{
     final foodStuffRecord =foodStuff.toFoodStuffRecord(foodStuff);

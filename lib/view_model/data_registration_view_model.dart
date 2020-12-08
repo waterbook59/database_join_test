@@ -102,7 +102,9 @@ class DataRegistrationViewModel extends ChangeNotifier {
         break;
 
       case RecordStatus.gallery:
+        ///cacheのデータをlocalへコピー
         var localImage = await FileController.saveCachedImage(imageFromGallery);
+        print('viewModelでのlocalImage.pathの値:${localImage.path}');
         ///finalへ変更
         final foodStuff =
         FoodStuff(
@@ -113,18 +115,18 @@ class DataRegistrationViewModel extends ChangeNotifier {
           storage: _productStorageController.text,
           amount: int.parse(_productNumberController.text),
           //useAmount,restAmountはDBで初期値設定
-          //todo localImage.pathを保存する
+          // localImage.pathを保存する
           localImagePath:localImage.path,
           //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
         );
-        print('viewModel=>repository/FoodStuff.id:${foodStuff.id}');
-        print('viewModel=>repository/FoodStuff.foodStuffId:${foodStuff.foodStuffId}');
+
         await _dataRepository.registerProductData(foodStuff);
         notifyListeners();
         break;
       case RecordStatus.networkImage:
         //todo FileController.saveCachedImageに渡したimageFromNetworkがFileになってない
         var localImage = await FileController.saveCachedImage(imageFromNetwork);
+
         FoodStuff foodStuff =
         FoodStuff(
           foodStuffId: Uuid().v1(),
@@ -134,7 +136,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
           storage: _productStorageController.text,
           amount: int.parse(_productNumberController.text),
           //useAmount,restAmountはDBで初期値設定
-          //todo localImage.pathを保存する
+          // localImage.pathを保存する
           localImagePath:localImage.path,
           //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
         );
@@ -144,6 +146,18 @@ class DataRegistrationViewModel extends ChangeNotifier {
     }
 
   }
+
+  Future<void> onFoodStuffDeleted(FoodStuff foodStuff) async{
+    //ローカル画像削除のためFileを渡す
+    //File.pathでString形式にしてDB保存している,foodStuff.localImageはString
+    File deleteFile = File(foodStuff.localImagePath);
+    await _dataRepository.deleteFoodStuff(foodStuff);
+    //todo 画像についてはDBから画像へのパスとcashとローカルから画像も削除する
+    await FileController.deleteCashedImage(deleteFile);
+    notifyListeners();
+  }
+
+
 
   void productNameClear() {
     _productNameController.clear();
@@ -201,7 +215,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
 //    notifyListeners();
 
     imageFromCamera = await _dataRepository.getImageFromCamera();
-//    print('pickedImage:${imageFile.path}');
+
 
     if (imageFromCamera != null) {
       isImagePickedFromCamera = true;
@@ -215,6 +229,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
     isImagePickedFromGallery = false;
     notifyListeners();
     imageFromGallery = await _dataRepository.getImageFromGallery();
+    print('ImagePickerのFile(galleryPickedFile.path)の値：$imageFromGallery');
     if (imageFromGallery != null) {
       isImagePickedFromGallery = true;
       isImagePickedFromCamera = false;
@@ -231,13 +246,11 @@ class DataRegistrationViewModel extends ChangeNotifier {
       print("リストが空");
       notifyListeners();
     }else{
-      print("DB=>レポジトリ=>vieModelで取得したデータの長さ：${_foodStuffs.length}");
+//      print("DB=>レポジトリ=>vieModelで取得したデータの長さ：${_foodStuffs.length}");
       notifyListeners();
     }
   }
 
-  Future<void> onFoodStuffDeleted(FoodStuff foodStuff) async{
-    await _dataRepository.deleteFoodStuff(foodStuff);
-    notifyListeners();
-  }
+
+
 }

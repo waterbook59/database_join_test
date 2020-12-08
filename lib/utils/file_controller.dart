@@ -31,6 +31,7 @@ class FileController {
   //todo 保存ボタン押した時に_imageがnullの時のバリデーション
   static Future<File> saveCachedImage(File image) async {
     final dynamic path = await localPath; //directory.path
+    // =>DB保存側のパス：/data/user/0/com.example.datebasejointest/app_flutter
     ///file名(image.png)のところは、var fileName =basename(file.path)として、末尾だけを使ってファイル名付けられる
     ///import 'package:path/path.dart';必須
     ///例：file = File("/dir1/dir2/file.ext")=>basename(file)=>file.extだけ抽出できる
@@ -40,7 +41,9 @@ class FileController {
     final String fileName = basename(image.path);
     final String imagePath = '$path/$fileName';
     final File localImage = await image.copy(imagePath);
-    print('DB保存するimage.copi(imagePath)の値：$localImage');
+    print('path(localPath)の値：$path');
+    print('fileName /basename(image.path);の値：$fileName');
+    print('DB保存するlocalImage/image.copy(imagePath)の値：$localImage');
     return localImage;
 //    final String key = controller.text;
 //    /// localImageをlocalImage.pathとしてDBにString保存(今回はsharedPreferences)
@@ -48,6 +51,15 @@ class FileController {
 //    prefs.setString(key, localImage.path);
 
   }
+
+  ///cacheフォルダとローカルフォルダ(flutter_assets)のデータを削除
+  static Future<void> deleteCashedImage(File deleteFile) async {
+  print('deleteFileの中身:$deleteFile');
+  //ローカルフォルダ削除
+  await deleteFile.delete();
+  //todo キャッシュも消したい
+  }
+
 
 
 }
