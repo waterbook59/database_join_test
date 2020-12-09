@@ -43,7 +43,7 @@ class DataRegistrationScreen extends StatelessWidget {
 //                       alignment: WrapAlignment.center
                           spacing: 10,
                           children: [
-                            ///商品画像：自分でカメラで撮影
+                ///商品画像：自分でカメラで撮影
                             model.isImagePickedFromCamera
                             ///   画像が取れたらキャッシュの画面を表示
                                 ? model.imageFromCamera == null
@@ -72,14 +72,18 @@ class DataRegistrationScreen extends StatelessWidget {
                               height: 90,
                             ),
 
-                            ///商品画像：networkから選択
+                ///商品画像：networkから選択
                             model.isImagePickedFromNetwork
                                 ? model.isImagePickedFromNetwork ==null
                                 ? Container()
                                 : SizedBox(
                                 width:90,
                                 height:90,
-                                child: ImageFromUrl(imageUrl: model.productUrl,)
+                                //todo imageFromNetworkにパスを格納
+                                child: ImageFromUrl(
+                                  displayFilePath: model.imageFromNetwork.path,
+                                onTap: ()=>_getProductInfo(context),
+                                )
                             )
                                 :(model.isImagePickedFromCamera || model.isImagePickedFromGallery)
                                 ? AddIconPart(
@@ -95,7 +99,7 @@ class DataRegistrationScreen extends StatelessWidget {
                               height: 90,
                             ),
 
-                            ///商品画像：ギャラリーから選択
+                ///商品画像：ギャラリーから選択
                             model.isImagePickedFromGallery
                                 ? model.imageFromGallery == null
                                 ? Container()
@@ -184,14 +188,6 @@ class DataRegistrationScreen extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-
-                    ///バーコード読み取りボタン
-//                      ButtonWithIcon(
-//                        label: 'バーコードで商品情報取得',
-//                        icon: const FaIcon(FontAwesomeIcons.barcode),
-//                        buttonColor: Colors.orangeAccent,
-//                        onPressed: () => _getProductInfo(context),
-//                      ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -213,6 +209,7 @@ class DataRegistrationScreen extends StatelessWidget {
     );
   }
 
+  //todo CircularProgressIndicator()つける
   Future<void> _getProductInfo(BuildContext context) async {
     recordStatus = RecordStatus.networkImage;
     final viewModel =
@@ -220,6 +217,7 @@ class DataRegistrationScreen extends StatelessWidget {
     await viewModel.getProductInfo();
   }
 
+ //todo CircularProgressIndicator()つける
   Future<void> getImageFromCamera(BuildContext context) async {
     recordStatus =RecordStatus.camera;
     final viewModel =
@@ -227,6 +225,7 @@ class DataRegistrationScreen extends StatelessWidget {
     await viewModel.getImageFromCamera();
   }
 
+ //todo CircularProgressIndicator()つける
   Future<void> getImageFromGallery(BuildContext context) async {
     recordStatus = RecordStatus.gallery;
     final viewModel =

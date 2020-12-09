@@ -1,23 +1,45 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ImageFromUrl extends StatelessWidget {
-  const ImageFromUrl({this.imageUrl});
-  final String imageUrl;
+
+
+  const ImageFromUrl({this.displayFilePath,this.onTap});
+  final String displayFilePath;
+  final VoidCallback onTap;
+
 
   @override
   Widget build(BuildContext context) {
-    final isInvalidUrl = imageUrl.startsWith('http');
-    if(imageUrl == null || imageUrl == ''|| !isInvalidUrl){
+//    final isInvalidUrl = displayFilePath.startsWith('http');
+    if(displayFilePath == null || displayFilePath == ''){
       return const Icon(Icons.broken_image);
     }else{
-      return CachedNetworkImage(
-        imageUrl: imageUrl,
-        fit: BoxFit.cover,
-        placeholder: (context,url)=>const CircularProgressIndicator(),
-        ///errorにdynamic型明示
-        errorWidget: (context,url,dynamic error)=>const Icon(Icons.broken_image),
-      );
+      return
+        Container(
+          decoration: BoxDecoration(
+            border:  Border.all(color: Colors.blueAccent),
+          ),
+          child: InkWell(
+            onTap: onTap,
+            child: SizedBox(
+              width: 100,
+              height: 100,
+              //todo flutter_image_compressを使用して画像を縮小する
+              child:Image.file(File(displayFilePath)),
+              //displayImage,
+            ),
+          ),
+        );
+//        CachedNetworkImage(
+//        imageUrl: imageUrl,
+//        fit: BoxFit.cover,
+//        placeholder: (context,url)=>const CircularProgressIndicator(),
+//        ///errorにdynamic型明示
+//        errorWidget: (context,url,dynamic error)=>const Icon(Icons.broken_image),
+//      );
     }
 
   }

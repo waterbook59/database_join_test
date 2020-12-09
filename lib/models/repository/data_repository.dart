@@ -87,7 +87,6 @@ class DataRepository {
   //登録,viewModelでモデルクラスを作る形へ変更
   Future<void> registerProductData(FoodStuff foodStuff) async{
 
-
     try{
       final foodStuffRecord = foodStuff.toFoodStuffRecord(foodStuff);
 //      print('foodStuffRecordへ変換後のid：${foodStuffRecord.id}/${foodStuffRecord.restAmount}');

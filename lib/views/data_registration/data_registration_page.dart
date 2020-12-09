@@ -78,7 +78,7 @@ class DataRegistrationPage extends StatelessWidget {
                                   : SizedBox(
                                   width:90,
                                   height:90,
-                                  child: ImageFromUrl(imageUrl: model.productUrl,)
+                                  child: ImageFromUrl(displayFilePath: model.productUrl,)
                               )
                                   :(model.isImagePickedFromCamera || model.isImagePickedFromGallery)
                                   ? AddIconPart(

@@ -6,6 +6,7 @@ import 'package:datebasejointest/models/repository/data_repository.dart';
 import 'package:datebasejointest/utils/constants.dart';
 import 'package:datebasejointest/utils/file_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -81,11 +82,12 @@ class DataRegistrationViewModel extends ChangeNotifier {
   Future<void> registerProductData(RecordStatus recordStatus) async {
 //viewModel層でモデルクラスに格納してrepositoryへ
     switch(recordStatus){
+
       case RecordStatus.camera:
         var localImage = await FileController.saveCachedImage(imageFromCamera);
       FoodStuff foodStuff =
       FoodStuff(
-        //idはautoIncrementするので、初期登録は何も入れなくて良いはず
+        //idはautoIncrementするので、初期登録は何も入れなくて良い
           foodStuffId: Uuid().v1(),
           name: _productNameController.text,
           category: _productCategoryController.text,
@@ -98,6 +100,10 @@ class DataRegistrationViewModel extends ChangeNotifier {
           //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
       );
       await _dataRepository.registerProductData(foodStuff);
+        /// DB登録と同時にキャッシュ画像の方は削除
+      imageFromCamera.delete();
+        ///テキスト関連を全てクリア
+      allClear();
         notifyListeners();
         break;
 
@@ -123,32 +129,31 @@ class DataRegistrationViewModel extends ChangeNotifier {
         /// DB登録と同時にキャッシュ画像の方は削除
         ///imageFromGarellyはFile: '/data/user/0/com.example.datebasejointest/cache/image_pickerxxxxx.jpg'の形
         imageFromGallery.delete();
-        //=>削除した後、さらにdataRegistrationScreenを開こうとするとエラー
-//         isImagePickedFromGallery = false;
-         //todo テキスト関連をクリア
+         // テキスト関連を全てクリア
         allClear();
-
         notifyListeners();
         break;
+
       ///ネットワークイメージ
       case RecordStatus.networkImage:
         //todo FileController.saveCachedImageに渡したimageFromNetworkがFileになってない
-        var localImage = await FileController.saveCachedImage(imageFromNetwork);
-
-        FoodStuff foodStuff =
-        FoodStuff(
-          foodStuffId: Uuid().v1(),
-          name: _productNameController.text,
-          category: _productCategoryController.text,
-          validDate: _validDateTime,
-          storage: _productStorageController.text,
-          amount: int.parse(_productNumberController.text),
+//        var localImage = await FileController.saveCachedImage(imageFromNetwork);
+        print('imageFromNetwork:$imageFromNetwork');//null
+        //
+//        FoodStuff foodStuff =
+//        FoodStuff(
+//          foodStuffId: Uuid().v1(),
+//          name: _productNameController.text,
+//          category: _productCategoryController.text,
+//          validDate: _validDateTime,
+//          storage: _productStorageController.text,
+//          amount: int.parse(_productNumberController.text),
           //useAmount,restAmountはDBで初期値設定
           // localImage.pathを保存する
-          localImagePath:localImage.path,
+//          localImagePath:localImage.path,
           //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
-        );
-        await _dataRepository.registerProductData(foodStuff);
+//        );
+//        await _dataRepository.registerProductData(foodStuff);
         notifyListeners();
         break;
     }
@@ -208,6 +213,14 @@ class DataRegistrationViewModel extends ChangeNotifier {
     await _dataRepository.getProductInfo(_products);
     _productNameController.text = _products[0].name;
     _productUrl = _products[0].productImage.medium;
+
+    //todo CacheManagerパッケージを使ってurlからFileパスを得てimageFromNetworkに格納
+    if(_productUrl !=null ){
+      final cache = DefaultCacheManager();
+      final file = await cache.getSingleFile(_productUrl);
+      imageFromNetwork = file;
+      print('imageFromNetworkに格納したネットワークからのfile：$imageFromNetwork');
+    }
 
 //    if (_productUrl  != null){
     isImagePickedFromNetwork = true;
