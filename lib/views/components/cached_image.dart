@@ -1,11 +1,13 @@
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class CachedImage extends StatelessWidget {
 
-  const CachedImage({this.onTap, this.displayImage});
+  const CachedImage({this.onTap, this.displayFilePath});
   final VoidCallback onTap;
-  final Widget displayImage;
+  final String displayFilePath;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,8 @@ class CachedImage extends StatelessWidget {
           width: 100,
           height: 100,
           //todo flutter_image_compressを使用して画像を縮小する
-          child: displayImage,
+          child:Image.file(File(displayFilePath)),
+//          displayImage,
         ),
       ),
     );

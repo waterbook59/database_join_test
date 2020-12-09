@@ -49,7 +49,7 @@ class DataRegistrationPage extends StatelessWidget {
                                   ? Container()
                                   : CachedImage(
                                 onTap: () => getImageFromCamera(context),
-                                displayImage: Image.file(model.imageFromCamera),
+                                displayFilePath: model.imageFromCamera.path,
                               )
                               ///初期タップでカメラ起動または他で選択済みの時
                                   :
@@ -100,7 +100,7 @@ class DataRegistrationPage extends StatelessWidget {
                                   ? Container()
                                   : CachedImage(
                                 onTap: () => getImageFromGallery(context),
-                                displayImage: Image.file(model.imageFromGallery),
+                                displayFilePath: model.imageFromGallery.path,
                               )
                               ///初期タップでフォルダ選択起動
                                   :
