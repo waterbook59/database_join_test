@@ -83,6 +83,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
 //viewModel層でモデルクラスに格納してrepositoryへ
     switch(recordStatus){
 
+  ///カメラからデータ保存
       case RecordStatus.camera:
         var localImage = await FileController.saveCachedImage(imageFromCamera);
       FoodStuff foodStuff =
@@ -100,13 +101,14 @@ class DataRegistrationViewModel extends ChangeNotifier {
           //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
       );
       await _dataRepository.registerProductData(foodStuff);
-        /// DB登録と同時にキャッシュ画像の方は削除
+        // DB登録と同時にキャッシュ画像の方は削除
       imageFromCamera.delete();
-        ///テキスト関連を全てクリア
+        //テキスト関連を全てクリア
       allClear();
         notifyListeners();
         break;
 
+    ///ギャラリーからデータ保存
       case RecordStatus.gallery:
         ///cacheの画像データをlocal(app_flutter内)へコピー
         var localImage = await FileController.saveCachedImage(imageFromGallery);
@@ -134,26 +136,29 @@ class DataRegistrationViewModel extends ChangeNotifier {
         notifyListeners();
         break;
 
-      ///ネットワークイメージ
+    ///ネットワークからデータ保存
       case RecordStatus.networkImage:
         //todo FileController.saveCachedImageに渡したimageFromNetworkがFileになってない
-//        var localImage = await FileController.saveCachedImage(imageFromNetwork);
-        print('imageFromNetwork:$imageFromNetwork');//null
+        var localImage = await FileController.saveCachedImage(imageFromNetwork);
+        print('imageFromNetwork:$imageFromNetwork');
         //
-//        FoodStuff foodStuff =
-//        FoodStuff(
-//          foodStuffId: Uuid().v1(),
-//          name: _productNameController.text,
-//          category: _productCategoryController.text,
-//          validDate: _validDateTime,
-//          storage: _productStorageController.text,
-//          amount: int.parse(_productNumberController.text),
-          //useAmount,restAmountはDBで初期値設定
-          // localImage.pathを保存する
-//          localImagePath:localImage.path,
-          //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
-//        );
-//        await _dataRepository.registerProductData(foodStuff);
+        FoodStuff foodStuff =
+        FoodStuff(
+          foodStuffId: Uuid().v1(),
+          name: _productNameController.text,
+          category: _productCategoryController.text,
+          validDate: _validDateTime,
+          storage: _productStorageController.text,
+          amount: int.parse(_productNumberController.text),
+//          useAmount,restAmountはDBで初期値設定
+//           localImage.pathを保存する
+          localImagePath:localImage.path,
+//          amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
+        );
+        await _dataRepository.registerProductData(foodStuff);
+        //キャッシュと入力関連全てクリア
+        imageFromNetwork.delete();
+        allClear();
         notifyListeners();
         break;
     }
