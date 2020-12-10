@@ -21,8 +21,12 @@ class CachedImage extends StatelessWidget {
           width: 100,
           height: 100,
           //todo flutter_image_compressを使用して画像を縮小する
-          child:Image.file(File(displayFilePath)),
-//          displayImage,
+          child:Image.file(
+            File(displayFilePath),
+//            height: 100,
+//            width: 100,
+//            fit: BoxFit.cover,
+          ),
         ),
       ),
     );

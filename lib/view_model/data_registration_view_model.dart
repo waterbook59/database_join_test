@@ -85,6 +85,8 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
   ///カメラからデータ保存
       case RecordStatus.camera:
+        //todo imageFromCameraのデータ圧縮
+
         var localImage = await FileController.saveCachedImage(imageFromCamera);
       FoodStuff foodStuff =
       FoodStuff(
@@ -240,7 +242,8 @@ class DataRegistrationViewModel extends ChangeNotifier {
 //    notifyListeners();
 
     imageFromCamera = await _dataRepository.getImageFromCamera();
-
+    //todo imageFromCameraのデータに対してimage_cropper適用
+    // croppedFileにimageFromCameraを代入
 
     if (imageFromCamera != null) {
       isImagePickedFromCamera = true;

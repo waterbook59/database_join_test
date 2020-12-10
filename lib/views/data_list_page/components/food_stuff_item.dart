@@ -19,22 +19,32 @@ class FoodStuffItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 //    print("isMemorizedCheckIconは$memorizedCheckedIcon");
-    return Card(
-      elevation: 5.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      color: Colors.cyan,
-      child: ListTile(
-        leading: Image.file(File(foodStuff.localImagePath)),
-        title: Text("${foodStuff.name}", style: TextStyle(color: Colors.black87,fontSize: 23.0),),
-        subtitle: Text("在庫：${foodStuff.amount}・期限：${foodStuff.validDate}",
-          style: TextStyle(fontFamily: "Corporate", color: Colors.brown),
-        ),
+    return Container(
+      height: 100,
+      child: Card(
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        color: Colors.cyan,
+        child: ListTile(
+          leading: Image.file(
+            File(foodStuff.localImagePath),
+            ///登録リストの画像の大きさを調整
+            height: 100,
+            width: 100,
+            fit: BoxFit.cover,
+          ),
+          title: Text("${foodStuff.name}", style: TextStyle(color: Colors.black87,fontSize: 23.0),),
+          //todo 期限を○年○月○日表記へ変更
+          subtitle: Text("在庫：${foodStuff.amount}・期限：${foodStuff.validDate}",
+            style: TextStyle(fontFamily: "Corporate", color: Colors.brown),
+          ),
 
 //        trailing: word.isMemorized ? MemorizedCheckedIcon(isCheckedIcon: word.isMemorized,):null,
-        // trailing: _memorizedCheckIcon(word.isMemorized),
-        onLongPress: () => onLongTapped(foodStuff),
+          // trailing: _memorizedCheckIcon(word.isMemorized),
+          onLongPress: () => onLongTapped(foodStuff),
 //            _deleteWord(_wordList[position]),
-        onTap: () => onWordTapped(foodStuff),
+          onTap: () => onWordTapped(foodStuff),
+        ),
       ),
     );
   }
