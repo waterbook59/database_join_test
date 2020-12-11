@@ -245,19 +245,21 @@ class DataRegistrationViewModel extends ChangeNotifier {
     imageFromCamera = await _dataRepository.getImageFromCamera();
     //todo imageFromCameraのデータに対してimage_cropper適用
     /// croppedCameraFileにimageFromCameraを代入
+    // imageFromCamera =nullの場合の条件付けないとcroppedCameraFile内のimageFromCamera.path=nullでエラー
+    if(imageFromCamera !=null){
     var croppedCameraFile = await ImageCropper.cropImage(
         sourcePath: imageFromCamera.path,
         aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio16x9
+//          CropAspectRatioPreset.square,
+//          CropAspectRatioPreset.ratio3x2,
+//          CropAspectRatioPreset.original,
+//          CropAspectRatioPreset.ratio4x3,
+//          CropAspectRatioPreset.ratio16x9
         ],
         androidUiSettings: AndroidUiSettings(
-            toolbarTitle: 'Cropper',
-            toolbarColor: Colors.deepOrange,
-            toolbarWidgetColor: Colors.white,
+            toolbarTitle: '',
+            toolbarColor: Colors.black12,
+//            toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false),
         iosUiSettings: IOSUiSettings(
@@ -265,7 +267,10 @@ class DataRegistrationViewModel extends ChangeNotifier {
         )
     );
     ///croppedCameraFileをimageFromCameraに代入
-    imageFromCamera = croppedCameraFile;
+      imageFromCamera = croppedCameraFile;
+    }else{
+      imageFromCamera =null;
+    }
 
     if (imageFromCamera != null) {
       isImagePickedFromCamera = true;

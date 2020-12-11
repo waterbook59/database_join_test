@@ -65,7 +65,7 @@ class DataRepository {
         await imagePicker.getImage(source: ImageSource.camera);
 
     ///if (pickedFile != null)を記述しておかないと、
-    ///画像ライブラリの選択画面で「キャンセル」を押した際にエラーになってしまう!!
+    ///カメラ起動後「キャンセル」を押した際にエラーになってしまう!!
     if (cameraImageFile != null) {
       return File(cameraImageFile.path);
     }

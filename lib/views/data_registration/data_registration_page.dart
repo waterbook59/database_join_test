@@ -64,6 +64,8 @@ class DataRegistrationPage extends StatelessWidget {
                               ) //小さいCameraIconPartへ変更
                                   :
                               ///初期タップでカメラ起動
+                              //todo カメラ起動で戻るを押すとobject.path=nullでエラー
+
                               AddIconPart(
                                 onTap: () => getImageFromCamera(context),
                                 displayImage: Icon(Icons.add_a_photo,size: 60,),
