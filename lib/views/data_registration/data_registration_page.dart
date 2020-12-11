@@ -208,6 +208,7 @@ class DataRegistrationPage extends StatelessWidget {
     await viewModel.getProductInfo();
   }
 
+  //todo imageFromCameraのデータに対してimage_cropper適用
   Future<void> getImageFromCamera(BuildContext context) async {
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);

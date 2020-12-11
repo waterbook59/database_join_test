@@ -7,6 +7,7 @@ import 'package:datebasejointest/utils/constants.dart';
 import 'package:datebasejointest/utils/file_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -243,7 +244,28 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
     imageFromCamera = await _dataRepository.getImageFromCamera();
     //todo imageFromCameraのデータに対してimage_cropper適用
-    // croppedFileにimageFromCameraを代入
+    /// croppedCameraFileにimageFromCameraを代入
+    var croppedCameraFile = await ImageCropper.cropImage(
+        sourcePath: imageFromCamera.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        )
+    );
+    ///croppedCameraFileをimageFromCameraに代入
+    imageFromCamera = croppedCameraFile;
 
     if (imageFromCamera != null) {
       isImagePickedFromCamera = true;
