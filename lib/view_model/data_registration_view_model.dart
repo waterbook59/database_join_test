@@ -249,21 +249,26 @@ class DataRegistrationViewModel extends ChangeNotifier {
     if(imageFromCamera !=null){
     var croppedCameraFile = await ImageCropper.cropImage(
         sourcePath: imageFromCamera.path,
-        aspectRatioPresets: [
-//          CropAspectRatioPreset.square,
-//          CropAspectRatioPreset.ratio3x2,
-//          CropAspectRatioPreset.original,
-//          CropAspectRatioPreset.ratio4x3,
-//          CropAspectRatioPreset.ratio16x9
-        ],
+        aspectRatio: CropAspectRatio(
+          ratioX: 1,ratioY: 1),
+        compressQuality: 100,
+        maxHeight: 100,
+        maxWidth: 100,
+        compressFormat: ImageCompressFormat.jpg,
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: '',
             toolbarColor: Colors.black12,
+//            statusBarColor: ,
+//            backgroundColor: ,
 //            toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
+            lockAspectRatio: true,//trueにすると背景の写真が動く
+            hideBottomControls: true //全部ボトムコントローラー消える
+        ),
         iosUiSettings: IOSUiSettings(
           minimumAspectRatio: 1.0,
+          doneButtonTitle: '完了',
+            cancelButtonTitle: '戻る'
         )
     );
     ///croppedCameraFileをimageFromCameraに代入
