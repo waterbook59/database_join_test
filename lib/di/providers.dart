@@ -1,7 +1,10 @@
+import 'package:datebasejointest/models/db/database_manager.dart';
 import 'package:datebasejointest/models/db/food_stuff/food_stuff_dao.dart';
 import 'package:datebasejointest/models/db/food_stuff/food_stuff_database.dart';
 import 'package:datebasejointest/models/db/product_info/product_info_dao.dart';
 import 'package:datebasejointest/models/repository/data_repository.dart';
+import 'package:datebasejointest/models/repository/user_repository.dart';
+import 'package:datebasejointest/view_model/login_viewModel.dart';
 import 'package:datebasejointest/view_model/category_select_view_model.dart';
 import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +27,10 @@ List<SingleChildWidget> independentModels =[
     create: (_)=>FoodStuffDB(),
     dispose: (_,db) =>db.close(),
   ),
+  ///fireStore前におく
+  Provider<DatabaseManager>(
+    create: (_)=>DatabaseManager(),
+  )
 
   //  Provider<ProductApiService>(
 //    create: (_)=>ProductApiService.create(),
@@ -37,6 +44,10 @@ List<SingleChildWidget> dependentModels = [
   ),
   ProxyProvider<FoodStuffDB,FoodStuffDao>(
     update: (_, db, dao)=>FoodStuffDao(db),
+  ),
+  ///Firebase_authログイン関連
+  ProxyProvider<DatabaseManager,UserRepository >(
+    update: (_, dbManager, userRepo)=>UserRepository(databaseManager: dbManager),
   ),
 //  ProxyProvider<ProductInfoDao,MenuRepository>(
 //    update: (_, dao, repository)=>MenuRepository(productInfoDao: dao),
@@ -71,6 +82,11 @@ List<SingleChildWidget> viewModels =[
       repository:Provider.of<DataRepository>(context, listen: false),
     ),
   ),
-
+  ///Firebase_auth匿名ログイン関連
+  ChangeNotifierProvider<LoginViewModel>(
+    create: (context)=>LoginViewModel(
+      userRepository: Provider.of<UserRepository>(context, listen: false),
+    ),
+  )
 
 ];
