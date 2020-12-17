@@ -2,10 +2,10 @@ import 'package:datebasejointest/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class FoodStuff {
-  int id;///追加
+  int id;///moorの時は追加
   String foodStuffId; //UuidでつけるかautoIncrement
   String localImagePath; //カメラ・ギャラリーのイメージパス_File(localImagePath.path)で呼び出す
-//  String imageUrl;//network経由のproductImage、イメージパスあればいらない？？
+//  String imageUrl;//network経由のproductImage、localImagePathあればいらない
   String name;
   String category;
   DateTime validDate;
@@ -16,20 +16,22 @@ class FoodStuff {
 //○日目の朝には○個食べるという量が必要
 //  List<AmountToEat> amountToEatList;
 
-  FoodStuff(
-      {
-        this.id,
-        this.foodStuffId,
-      this.localImagePath,
-      this.name,
-      this.category,
-      this.validDate,
-      this.storage,
-      this.amount,
-      this.useAmount,
-      this.restAmount,
-//      this.amountToEatList
-      });
+//<editor-fold desc="Data Methods" defaultstate="collapsed">
+
+  FoodStuff({
+    this.id,
+    this.foodStuffId,
+    this.localImagePath,
+    this.name,
+    this.category,
+    this.validDate,
+    this.storage,
+    this.amount,
+    this.useAmount,
+    this.restAmount,
+  });
+
+
 }
 
 class AmountToEat {
