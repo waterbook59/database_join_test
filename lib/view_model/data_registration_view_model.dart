@@ -1,8 +1,11 @@
 import 'dart:io';
 
 import 'package:datebasejointest/data_models/menu/food_stuff.dart';
+import 'package:datebasejointest/data_models/menu/food_stuff_firebase.dart';
 import 'package:datebasejointest/data_models/product.dart';
 import 'package:datebasejointest/models/repository/data_repository.dart';
+import 'package:datebasejointest/models/repository/post_repository.dart';
+import 'package:datebasejointest/models/repository/user_repository.dart';
 import 'package:datebasejointest/utils/constants.dart';
 import 'package:datebasejointest/utils/file_controller.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +16,18 @@ import 'package:uuid/uuid.dart';
 
 class DataRegistrationViewModel extends ChangeNotifier {
   //diあり
-  DataRegistrationViewModel({DataRepository repository})
-      : _dataRepository = repository;
+  DataRegistrationViewModel({
+    DataRepository dataRepository,
+    UserRepository userRepository,
+    PostRepository postRepository,
+  })
+      : _dataRepository = dataRepository,
+        _userRepository = userRepository,
+        _postRepository = postRepository;
+
   final DataRepository _dataRepository;
+  final UserRepository _userRepository;
+  final PostRepository _postRepository;
 
   //diなし
 //  final DataRepository _dataRepository =DataRepository();
@@ -24,6 +36,9 @@ class DataRegistrationViewModel extends ChangeNotifier {
   List<FoodStuff> _foodStuffs = <FoodStuff>[];
   List<FoodStuff> get foodStuffs => _foodStuffs;
 
+  //todo firebaseの場合はダイレクトに格納・読取(fromMap,toMap)するからいらない？？
+  List<FoodStuffFB> _foodStuffFBs = <FoodStuffFB>[];
+  List<FoodStuffFB> get foodStuffFBs => _foodStuffFBs;
 
   final List<Product> _products = variableProducts;
   List<Product> get products => _products;
@@ -64,6 +79,8 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
   bool _isProcessing = false;
   bool get isProcessing => _isProcessing;
+  //画像とってくるときのグリグリ
+  bool isImagePicked = false;
 
 //  List<Product> _products = <Product>[];
 //  List<Product> get products => _products;
@@ -77,6 +94,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
   bool isImagePickedFromCamera = false;
   bool isImagePickedFromGallery = false;
   bool isImagePickedFromNetwork = false;
+
 
 //  File get imageFromNetwork => null;
 
@@ -182,7 +200,28 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
 
 ///Firebaseへ登録
-  postFoodStuff(RecordStatus recordStatus) async{
+  Future<void> postFoodStuff(RecordStatus recordStatus) async{
+    _isProcessing = true;
+    notifyListeners();
+    switch(recordStatus){
+    ///カメラからFBへデータ保存
+      case RecordStatus.camera:
+        await _postRepository.post(
+            UserRepository.currentModelUser,
+            imageFromCamera,
+            _productNameController.text,
+            _validDateTime,
+            _productStorageController.text,
+            int.parse(_productNumberController.text),
+        );
+            _isProcessing = false;
+        isImagePicked = false;
+        notifyListeners();
+    }
+
+
+
+
 
   }
 
