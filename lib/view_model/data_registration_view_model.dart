@@ -80,6 +80,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
 //  File get imageFromNetwork => null;
 
+///FoodStuffをローカル保存
   Future<void> registerProductData(RecordStatus recordStatus) async {
 //viewModel層でモデルクラスに格納してrepositoryへ
     switch(recordStatus){
@@ -168,6 +169,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
   }
 
+///ローカルデータ削除
   Future<void> onFoodStuffDeleted(FoodStuff foodStuff) async{
     //ローカル画像削除のためFileを渡す
     //File.pathでString形式にしてDB保存している,foodStuff.localImageはString
@@ -178,6 +180,11 @@ class DataRegistrationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+
+///Firebaseへ登録
+  postFoodStuff(RecordStatus recordStatus) async{
+
+  }
 
   void productNameClear() {
     _productNameController.clear();
@@ -222,7 +229,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
     _productNameController.text = _products[0].name;
     _productUrl = _products[0].productImage.medium;
 
-    //todo CacheManagerパッケージを使ってurlからFileパスを得てimageFromNetworkに格納
+    /// CacheManagerパッケージを使ってurlからFileパスを得てimageFromNetworkに格納
     if(_productUrl !=null ){
       final cache = DefaultCacheManager();
       final file = await cache.getSingleFile(_productUrl);
@@ -243,7 +250,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
 //    notifyListeners();
 
     imageFromCamera = await _dataRepository.getImageFromCamera();
-    //todo imageFromCameraのデータに対してimage_cropper適用
+    //imageFromCameraのデータに対してimage_cropper適用
     /// croppedCameraFileにimageFromCameraを代入
     // imageFromCamera =nullの場合の条件付けないとcroppedCameraFile内のimageFromCamera.path=nullでエラー
     if(imageFromCamera !=null){
@@ -276,7 +283,6 @@ class DataRegistrationViewModel extends ChangeNotifier {
     }else{
       imageFromCamera =null;
     }
-
     if (imageFromCamera != null) {
       isImagePickedFromCamera = true;
       isImagePickedFromGallery = false;
@@ -286,9 +292,37 @@ class DataRegistrationViewModel extends ChangeNotifier {
   }
 
   Future<void> getImageFromGallery() async {
-    isImagePickedFromGallery = false;
-    notifyListeners();
+//    isImagePickedFromGallery = false;
+//    notifyListeners();
     imageFromGallery = await _dataRepository.getImageFromGallery();
+    /// croppedCameraFileにimageFromGalleryを代入
+    if(imageFromGallery !=null){
+      var croppedCameraFile = await ImageCropper.cropImage(
+          sourcePath: imageFromGallery.path,
+          aspectRatio: CropAspectRatio(
+              ratioX: 1,ratioY: 1),
+          compressQuality: 100,
+          maxHeight: 100,
+          maxWidth: 100,
+          compressFormat: ImageCompressFormat.jpg,
+          androidUiSettings: AndroidUiSettings(
+              toolbarTitle: '',
+              toolbarColor: Colors.black12,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: true,//trueにすると背景の写真が動く
+              hideBottomControls: true //全部ボトムコントローラー消える
+          ),
+          iosUiSettings: IOSUiSettings(
+              minimumAspectRatio: 1.0,
+              doneButtonTitle: '完了',
+              cancelButtonTitle: '戻る'
+          )
+      );
+      ///croppedCameraFileをimageFromGalleryに代入
+      imageFromGallery = croppedCameraFile;
+    }else{
+      imageFromGallery =null;
+    }
     print('ImagePickerのFile(galleryPickedFile.path)の値：$imageFromGallery');
     if (imageFromGallery != null) {
       isImagePickedFromGallery = true;
@@ -323,6 +357,8 @@ class DataRegistrationViewModel extends ChangeNotifier {
     productStorageClear();
     notifyListeners();//いらんかも
   }
+
+
 
 
 

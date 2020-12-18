@@ -199,7 +199,8 @@ class DataRegistrationScreen extends StatelessWidget {
                           borderRadius: BorderRadiusDirectional.circular(15)),
                       color: Colors.orangeAccent,
                       child: const Text('保存'),
-                      //文字=>DB,画像=>imagePathとしてドキュメントへ保存
+                      //ローカル保存：文字=>moor,画像=>imagePathとしてドキュメントへ保存
+                      //firebaseに投稿
                       onPressed: () => registerProductData(context,recordStatus),
                     ),
                   ],
@@ -238,8 +239,11 @@ class DataRegistrationScreen extends StatelessWidget {
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);
 //    print('view層から登録ボタン押してviewModelへ');
-    ///DB登録と同時にキャッシュ画像クリア&テキストコントローラーたちもクリア
+    ///ローカル保存：DB登録と同時にキャッシュ画像クリア&テキストコントローラーたちもクリア
     await viewModel.registerProductData(recordStatus);
+    ///Firebase保存
+//    await viewModel.postFoodStuff(recordStatus);
+
     //登録が終わったら閉じる
     //todo Navigator.popだと閉じた時にDataListPageが更新されない
     Navigator.pop(context);
