@@ -206,7 +206,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
     switch(recordStatus){
     ///カメラからFBへデータ保存
       case RecordStatus.camera:
-        await _postRepository.post(
+        await _postRepository.postFSFromCamera(
             UserRepository.currentModelUser,
             imageFromCamera,
             _productNameController.text,
