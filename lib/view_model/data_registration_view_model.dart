@@ -206,13 +206,17 @@ class DataRegistrationViewModel extends ChangeNotifier {
     switch(recordStatus){
     ///カメラからFBへデータ保存
       case RecordStatus.camera:
+        //名前付で渡す
         await _postRepository.postFSFromCamera(
-            UserRepository.currentModelUser,
-            imageFromCamera,
-            _productNameController.text,
-            _validDateTime,
-            _productStorageController.text,
-            int.parse(_productNumberController.text),
+          currentUser: UserRepository.currentModelUser,
+          imageFromCamera: imageFromCamera,
+          name:_productNameController.text,
+          category: _productCategoryController.text,
+          validDateTime: _validDateTime,
+          storage: _productStorageController.text,
+          amount: int.parse(_productNumberController.text),
+          useAmount: 0,
+          restAmount:int.parse(_productNumberController.text),
         );
             _isProcessing = false;
         isImagePicked = false;
@@ -291,6 +295,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
     imageFromCamera = await _dataRepository.getImageFromCamera();
     //imageFromCameraのデータに対してimage_cropper適用
     /// croppedCameraFileにimageFromCameraを代入
+    //todo croppedFileの大きさを大きく！！(小さすぎ)
     // imageFromCamera =nullの場合の条件付けないとcroppedCameraFile内のimageFromCamera.path=nullでエラー
     if(imageFromCamera !=null){
     var croppedCameraFile = await ImageCropper.cropImage(

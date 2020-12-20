@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:datebasejointest/data_models/menu/food_stuff_firebase.dart';
 import 'package:datebasejointest/data_models/user/anonymous_user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_storage/firebase_storage.dart';
@@ -43,6 +44,10 @@ class DatabaseManager {
     //アップロードが終わったらファイルのダウンロードurl取得
     //FirebaseStorage5.0以降はonCompleteメソッドなくなった
     return uploadTask.then((TaskSnapshot taskSnapshot) => taskSnapshot.ref.getDownloadURL());
+  }
+
+  Future<void> insertFoodStuff(FoodStuffFB postFoodStuff) async{
+    await _db.collection('FoodStuffs').doc(postFoodStuff.foodStuffId).set(postFoodStuff.toMap());
   }
 
 }
