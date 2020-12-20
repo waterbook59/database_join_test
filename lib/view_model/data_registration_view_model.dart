@@ -376,6 +376,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+///ローカルデータ読み取り
   Future<void> getFoodStuffList() async{
     ///finalにしない！！finalにするとnotifyListenersしてもview層でConsumer更新されない
      _foodStuffs =await _dataRepository.getFoodStuffList();
@@ -387,6 +388,15 @@ class DataRegistrationViewModel extends ChangeNotifier {
 //      print("DB=>レポジトリ=>vieModelで取得したデータの長さ：${_foodStuffs.length}");
       notifyListeners();
     }
+  }
+
+///CloudFirestoreからデータ読み取り
+  Future<void> getFoodStuffListFB() async{
+    _isProcessing = true;
+    _foodStuffFBs =await _postRepository.getFoodStuffList(currentUser:UserRepository.currentModelUser);
+
+  _isProcessing = false;
+  notifyListeners();
   }
 
   Future<void> allClear() async{

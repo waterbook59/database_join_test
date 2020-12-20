@@ -46,8 +46,40 @@ class DatabaseManager {
     return uploadTask.then((TaskSnapshot taskSnapshot) => taskSnapshot.ref.getDownloadURL());
   }
 
+  //todo cloudFirestoreに登録:foodStuffIdじゃなくてuserIdでセットすべき？？
   Future<void> insertFoodStuff(FoodStuffFB postFoodStuff) async{
-    await _db.collection('FoodStuffs').doc(postFoodStuff.foodStuffId).set(postFoodStuff.toMap());
+    await _db.collection('foodstuffs').doc(postFoodStuff.foodStuffId).set(postFoodStuff.toMap());
+  }
+
+  ///cloudFirestoreから読込
+  Future<List<FoodStuffFB>> getFoodStuffList(String userId) async{
+    //cloudFirestoreにデータあるかどうか判別（しないとアプリ落ちる）
+    final query = await _db.collection('foodstuffs').get();
+    if(query.docs.length ==0) return <FoodStuffFB>[];
+    //todo 自分以外にデータを共有するユーザー(partnerの名前でcollection作る予定)を加える
+    var userIds = await  getFollowingUserIds(userId);
+   // 自分がフォローしてるユーザーに自分を加える
+    userIds.add(userId);
+    var results = <FoodStuffFB>[];
+    //userIdに一致しているデータを投稿順に降順で並べる
+    await _db.collection('foodstuffs').where('userId',whereIn:userIds).orderBy('postDateTime',descending: true).get().then((value) {
+      value.docs.forEach((element) {
+        results.add(FoodStuffFB.fromMap(element.data()));
+      });
+    });
+    print('FoodStuffを投稿順にとってくる：$results');
+   return results;
+  }
+
+  Future<List<String>> getFollowingUserIds(String userId) async{
+    final query = await _db.collection('users').doc(userId).collection(
+        'partner').get();
+    if (query.docs.length == 0) return List();
+    var userIds  = <String>[];
+    query.docs.forEach((id) {
+      userIds.add(id.data()['userId']); //userIdがキー
+    });
+    return userIds;
   }
 
 }

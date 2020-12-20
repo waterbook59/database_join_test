@@ -34,6 +34,7 @@ class PostRepository {
       //storageにアップロードした画像のurl
       imageStoragePath: storageId,
       //storageIdをもとにimageUrlが得られる
+      postDatetime: DateTime.now(),
       name: name,
       category: category,
       validDate: validDateTime,
@@ -44,5 +45,10 @@ class PostRepository {
     );
     await databaseManager.insertFoodStuff(postFoodStuff);
 
+  }
+
+  //Firebaseからデータ取得
+  Future<List<FoodStuffFB>>getFoodStuffList({AnonymousUser currentUser}) async{
+    return databaseManager.getFoodStuffList(currentUser.userId);
   }
 }

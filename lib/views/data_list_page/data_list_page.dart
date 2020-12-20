@@ -17,7 +17,7 @@ class DataListPage extends StatelessWidget {
 
 
     Future(() {
-       viewModel.getFoodStuffList();
+       viewModel.getFoodStuffListFB();
       //立ち上げ時はここのリストは空になるのでprintでList[]でも問題なし
 //      print('取得したfoodStuffのList長さ${viewModel.foodStuffs.length}');
     });

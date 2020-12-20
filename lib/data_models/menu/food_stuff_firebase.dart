@@ -7,23 +7,27 @@ class FoodStuffFB {
   String userId;///Firebaseへ投稿したユーザーのID
   String imageUrl;///Firebase
   String imageStoragePath;///Firebase storageのパス
+  DateTime postDatetime;///投稿日時
   String name;
   String category;
-  DateTime validDate;
+  DateTime validDate;//有効期限
   String storage; //保管場所
   int amount; //総量
   int useAmount; //メニュー内で使う量
-  int restAmount;  //メニュー内に登録してない量
+  int restAmount;//メニュー内に登録してない量
 //○日目の朝には○個食べるという量が必要
 //  List<AmountToEat> amountToEatList;
 
+
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
+
 
   FoodStuffFB({
     @required this.foodStuffId,
     @required this.userId,
     @required this.imageUrl,
     @required this.imageStoragePath,
+    @required this.postDatetime,
     @required this.name,
     @required this.category,
     @required this.validDate,
@@ -42,6 +46,7 @@ class FoodStuffFB {
               userId == other.userId &&
               imageUrl == other.imageUrl &&
               imageStoragePath == other.imageStoragePath &&
+              postDatetime == other.postDatetime &&
               name == other.name &&
               category == other.category &&
               validDate == other.validDate &&
@@ -58,6 +63,7 @@ class FoodStuffFB {
       userId.hashCode ^
       imageUrl.hashCode ^
       imageStoragePath.hashCode ^
+      postDatetime.hashCode ^
       name.hashCode ^
       category.hashCode ^
       validDate.hashCode ^
@@ -74,6 +80,7 @@ class FoodStuffFB {
         ' userId: $userId,' +
         ' imageUrl: $imageUrl,' +
         ' imageStoragePath: $imageStoragePath,' +
+        ' postDatetime: $postDatetime,' +
         ' name: $name,' +
         ' category: $category,' +
         ' validDate: $validDate,' +
@@ -90,6 +97,7 @@ class FoodStuffFB {
     String userId,
     String imageUrl,
     String imageStoragePath,
+    DateTime postDatetime,
     String name,
     String category,
     DateTime validDate,
@@ -103,6 +111,7 @@ class FoodStuffFB {
       userId: userId ?? this.userId,
       imageUrl: imageUrl ?? this.imageUrl,
       imageStoragePath: imageStoragePath ?? this.imageStoragePath,
+      postDatetime: postDatetime ?? this.postDatetime,
       name: name ?? this.name,
       category: category ?? this.category,
       validDate: validDate ?? this.validDate,
@@ -120,6 +129,7 @@ class FoodStuffFB {
       'userId': this.userId,
       'imageUrl': this.imageUrl,
       'imageStoragePath': this.imageStoragePath,
+      'postDatetime': this.postDatetime.toIso8601String(),
       'name': this.name,
       'category': this.category,
       'validDate': this.validDate.toIso8601String(),
@@ -136,12 +146,14 @@ class FoodStuffFB {
       userId: map['userId'] as String,
       imageUrl: map['imageUrl'] as String,
       imageStoragePath: map['imageStoragePath'] as String,
+      postDatetime: map['postDatetime'] ==null
+          ? null
+          : DateTime.parse(map['postDatetime'] as String),
       name: map['name'] as String,
       category: map['category'] as String,
-//      validDate: map['validDate'] as DateTime,
       validDate: map['validDate']==null
-        ? null
-        : DateTime.parse(map['validDate'] as String),
+          ? null
+          : DateTime.parse(map['validDate'] as String),
       storage: map['storage'] as String,
       amount: map['amount'] as int,
       useAmount: map['useAmount'] as int,
@@ -153,6 +165,5 @@ class FoodStuffFB {
   //</editor-fold>
 
 
-
-
 }
+
