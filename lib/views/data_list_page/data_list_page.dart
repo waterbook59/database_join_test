@@ -37,18 +37,25 @@ class DataListPage extends StatelessWidget {
           padding: const EdgeInsets.all(15.0),
           child: Consumer<DataRegistrationViewModel>(
               builder: (context,model,child){
-//                print('DataListPageのConsumerリスト長さ：${model.foodStuffs.length}');
-                return ListView.builder(
-                    itemCount: model.foodStuffs.length,
-                    itemBuilder: (context, int position) =>
-                    //todo 期限表示は○年○月○日表示
-                    //todo 画像を一定の大きさに揃える(Fit?)
-                        FoodStuffItem(
-                          foodStuff:model.foodStuffs[position],
-                          onLongTapped: (foodStuff)=>_onFoodStuffDeleted(foodStuff,context),
+                if(model.isProcessing){
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }else{
+                  //                print('DataListPageのConsumerリスト長さ：${model.foodStuffs.length}');
+                  return ListView.builder(
+                      itemCount: model.foodStuffFBs.length,
+                      itemBuilder: (context, int position) =>
+                      //todo 期限表示は○年○月○日表示
+                      //todo 画像を一定の大きさに揃える(Fit?)
+                      FoodStuffItem(
+                        foodStuff:model.foodStuffFBs[position],
+                        onLongTapped: (foodStuff)=>_onFoodStuffDeleted(foodStuff,context),
 //                          onWordTapped: (foodStuff)=>_upDateWord(foodStuff,context),
-                        )
-                );
+                      )
+                  );
+                }
+
               }
           ),
         ),

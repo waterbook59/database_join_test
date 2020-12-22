@@ -60,11 +60,11 @@ class DatabaseManager {
     var userIds = await  getFollowingUserIds(userId);
    // 自分がフォローしてるユーザーに自分を加える
     userIds.add(userId);
-//    var results = <FoodStuffFB>[];
-    var results = List<FoodStuffFB>();
-print('query.docs.length:${query.docs.length}');
-print('cloudFirestoreから読込userId:$userId');
-print('cloudFirestoreから読込userIds:${userIds[0]}');
+    var results = <FoodStuffFB>[];
+
+//print('query.docs.length:${query.docs.length}');
+//print('cloudFirestoreから読込userId:$userId');
+//print('cloudFirestoreから読込userIds:${userIds[0]}');
 
     //userIdに一致しているデータを投稿順に昇順(古いものから順番に)で並べる
     await _db.collection('foodStuffs').where('userId',whereIn:userIds).orderBy('postDatetime', descending: true).get()
@@ -82,10 +82,7 @@ print('cloudFirestoreから読込userIds:${userIds[0]}');
 //   DocumentSnapshot docSnapshot = await _db.collection('foodStuffs').doc(userId).get();
 //    print('コレクションからuserIdに紐づくドキュメント/docSnapshot.data:${docSnapshot.data()}');
 
-
-
-
-print('FoodStuffを投稿順にとってくる：$results');
+//print('FoodStuffを投稿順にとってくる：$results');
    return results;
   }
 

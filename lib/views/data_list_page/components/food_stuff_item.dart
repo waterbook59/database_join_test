@@ -1,12 +1,13 @@
 import 'dart:io';
 
 import 'package:datebasejointest/data_models/menu/food_stuff.dart';
+import 'package:datebasejointest/data_models/menu/food_stuff_firebase.dart';
 import 'package:flutter/material.dart';
 
 
 
 class FoodStuffItem extends StatelessWidget {
-  final FoodStuff foodStuff;
+  final FoodStuffFB foodStuff;
   final ValueChanged onLongTapped;
   final ValueChanged onWordTapped;
 
@@ -26,8 +27,10 @@ class FoodStuffItem extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         color: Colors.cyan,
         child: ListTile(
-          leading: Image.file(
-            File(foodStuff.localImagePath),
+          leading:
+//          Image.file(File(foodStuff.localImagePath),
+            Image.network(
+                foodStuff.imageUrl,
             ///登録リストの画像の大きさを調整
             height: 100,
             width: 100,
