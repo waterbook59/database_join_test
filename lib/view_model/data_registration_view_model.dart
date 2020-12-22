@@ -36,7 +36,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
   List<FoodStuff> _foodStuffs = <FoodStuff>[];
   List<FoodStuff> get foodStuffs => _foodStuffs;
 
-  //todo firebaseの場合はダイレクトに格納・読取(fromMap,toMap)するからいらない？？
+  //firebaseデータ格納
   List<FoodStuffFB> _foodStuffFBs = <FoodStuffFB>[];
   List<FoodStuffFB> get foodStuffFBs => _foodStuffFBs;
 
@@ -295,7 +295,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
     imageFromCamera = await _dataRepository.getImageFromCamera();
     //imageFromCameraのデータに対してimage_cropper適用
     /// croppedCameraFileにimageFromCameraを代入
-    //todo croppedFileの大きさを大きく！！(小さすぎ)
+    /// croppedFileの大きさ適正化
     // imageFromCamera =nullの場合の条件付けないとcroppedCameraFile内のimageFromCamera.path=nullでエラー
     if(imageFromCamera !=null){
     var croppedCameraFile = await ImageCropper.cropImage(
@@ -303,8 +303,9 @@ class DataRegistrationViewModel extends ChangeNotifier {
         aspectRatio: CropAspectRatio(
           ratioX: 1,ratioY: 1),
         compressQuality: 100,
-        maxHeight: 100,
-        maxWidth: 100,
+///maxHeightのサイズ指定すれば画像縮小は可能
+//        maxHeight: 200,
+//        maxWidth: 200,
         compressFormat: ImageCompressFormat.jpg,
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: '',

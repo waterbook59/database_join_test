@@ -201,6 +201,7 @@ class DataRegistrationScreen extends StatelessWidget {
                       child: const Text('保存'),
                       //ローカル保存：文字=>moor,画像=>imagePathとしてドキュメントへ保存
                       //firebaseに投稿
+                      //todo 保存ボタン押した時の登録までの時間はボタン押せないようにする(重複登録防止)
                       onPressed: () => registerProductData(context,recordStatus),
                     ),
                   ],
@@ -243,7 +244,7 @@ class DataRegistrationScreen extends StatelessWidget {
 //    await viewModel.registerProductData(recordStatus);
     ///Firebase保存
     await viewModel.postFoodStuff(recordStatus);
-
+    //todo 登録中はボタン押せないようにする
     //登録が終わったら閉じる
     //todo Navigator.popだと閉じた時にDataListPageが更新されない
     Navigator.pop(context);
