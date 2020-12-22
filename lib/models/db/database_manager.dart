@@ -48,26 +48,44 @@ class DatabaseManager {
 
   //todo cloudFirestoreに登録:foodStuffIdじゃなくてuserIdでセットすべき？？
   Future<void> insertFoodStuff(FoodStuffFB postFoodStuff) async{
-    await _db.collection('foodstuffs').doc(postFoodStuff.foodStuffId).set(postFoodStuff.toMap());
+    await _db.collection('foodStuffs').doc(postFoodStuff.foodStuffId).set(postFoodStuff.toMap());
   }
 
   ///cloudFirestoreから読込
   Future<List<FoodStuffFB>> getFoodStuffList(String userId) async{
     //cloudFirestoreにデータあるかどうか判別（しないとアプリ落ちる）
-    final query = await _db.collection('foodstuffs').get();
+    final query = await _db.collection('foodStuffs').get();
     if(query.docs.length ==0) return <FoodStuffFB>[];
     //todo 自分以外にデータを共有するユーザー(partnerの名前でcollection作る予定)を加える
     var userIds = await  getFollowingUserIds(userId);
    // 自分がフォローしてるユーザーに自分を加える
     userIds.add(userId);
-    var results = <FoodStuffFB>[];
-    //userIdに一致しているデータを投稿順に降順で並べる
-    await _db.collection('foodstuffs').where('userId',whereIn:userIds).orderBy('postDateTime',descending: true).get().then((value) {
-      value.docs.forEach((element) {
-        results.add(FoodStuffFB.fromMap(element.data()));
+//    var results = <FoodStuffFB>[];
+    var results = List<FoodStuffFB>();
+print('query.docs.length:${query.docs.length}');
+print('cloudFirestoreから読込userId:$userId');
+print('cloudFirestoreから読込userIds:${userIds[0]}');
+
+    //userIdに一致しているデータを投稿順に昇順(古いものから順番に)で並べる
+    await _db.collection('foodStuffs').where('userId',whereIn:userIds).orderBy('postDatetime', descending: true).get()
+        .then((value) {
+          value.docs.forEach((element) {
+          results.add(FoodStuffFB.fromMap(element.data()));
       });
     });
-    print('FoodStuffを投稿順にとってくる：$results');
+    ///whereを使えばフィールド内で一致しているドキュメント群をとってこれる
+//    QuerySnapshot qSnapshot =await _db.collection('foodStuffs').where('userId',whereIn:userIds).get();
+    //print('コレクションからドキュメント群/querySnapshot:${qSnapshot.docs[0].data()}');
+
+//    QuerySnapshot query
+    ///doc()に入れるのはドキュメントを追加に書いてあるモノ(今回はfoodStuffIdなのでuserIdで検索してもnull)
+//   DocumentSnapshot docSnapshot = await _db.collection('foodStuffs').doc(userId).get();
+//    print('コレクションからuserIdに紐づくドキュメント/docSnapshot.data:${docSnapshot.data()}');
+
+
+
+
+print('FoodStuffを投稿順にとってくる：$results');
    return results;
   }
 
