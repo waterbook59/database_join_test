@@ -86,6 +86,30 @@ class DatabaseManager {
    return results;
   }
 
+///realtime更新に変更
+   Future<List<FoodStuffFB>> getFoodStuffListRealtime(String userId) async{
+    //cloudFirestoreにデータあるかどうか判別（しないとアプリ落ちる）
+     final query = await _db.collection('foodStuffs').get();
+     if(query.docs.length ==0) return <FoodStuffFB>[];
+     //todo 自分以外にデータを共有するユーザー(partnerの名前でcollection作る予定)を加える
+     var userIds = await  getFollowingUserIds(userId);
+     // 自分がフォローしてるユーザーに自分を加える
+     userIds.add(userId);
+     var results = <FoodStuffFB>[];
+
+
+    final snapshots =  _db.collection('foodStuffs').where('userId',whereIn:userIds).orderBy('postDatetime', descending: true).snapshots();
+    snapshots.listen((snapshot) {
+      final docs = snapshot.docs;
+      docs.forEach((element) {
+        results.add(FoodStuffFB.fromMap(element.data()));
+      });
+    });
+    return results;
+  }
+
+
+
   Future<List<String>> getFollowingUserIds(String userId) async{
     final query = await _db.collection('users').doc(userId).collection(
         'partner').get();
@@ -96,5 +120,7 @@ class DatabaseManager {
     });
     return userIds;
   }
+
+
 
 }

@@ -392,12 +392,21 @@ class DataRegistrationViewModel extends ChangeNotifier {
   }
 
 ///CloudFirestoreからデータ読み取り
+  //todo streambuilderでリアルタイムにしたらオフラインでのデータ更新できるか？？
   Future<void> getFoodStuffListFB() async{
     _isProcessing = true;
     _foodStuffFBs =await _postRepository.getFoodStuffList(currentUser:UserRepository.currentModelUser);
 
   _isProcessing = false;
   notifyListeners();
+  }
+
+///CloudFirestore Realtimeで読み取り
+  Future<void>getFoodStuffListRealtime() async{
+    _isProcessing = true;
+    _foodStuffFBs =await _postRepository.getFoodStuffListRealtime(currentUser:UserRepository.currentModelUser);
+    _isProcessing = false;
+    notifyListeners();
   }
 
   Future<void> allClear() async{

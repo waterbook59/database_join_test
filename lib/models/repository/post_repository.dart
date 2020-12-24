@@ -51,4 +51,8 @@ class PostRepository {
   Future<List<FoodStuffFB>>getFoodStuffList({AnonymousUser currentUser}) async{
     return databaseManager.getFoodStuffList(currentUser.userId);
   }
+
+  Future<List<FoodStuffFB>>getFoodStuffListRealtime({AnonymousUser currentUser}) {
+    return databaseManager.getFoodStuffListRealtime(currentUser.userId);
+  }
 }
