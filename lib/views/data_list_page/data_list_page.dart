@@ -1,4 +1,5 @@
 
+import 'package:datebasejointest/data_models/menu/food_stuff_firebase.dart';
 import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:datebasejointest/views/data_registration/data_registration_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,15 +13,13 @@ class DataListPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final viewModel = Provider.of<DataRegistrationViewModel>(context, listen: false);
-//    Future<void>(viewModel.getFoodStuffList);
-      //isEmptyの時に「文字登録してください」的な表示できるか
+    // 頭のviewModel(DB取得用)とConsumerのtaskViewModel(更新用)は違うもの
+    //立ち上げと同時にConsumer１回まわる、getTaskListによりDB取得してもう１回Consumer回る、
+    //そしてDBの値の数に応じてFutureBuilderで表示を変える！！！
 
+   //todo 毎回Firebaseへリクエストしない条件追加必須(news_feed参照)
+    Future<void>(viewModel.getFoodStuffListFB);
 
-    Future(() {
-       viewModel.getFoodStuffListRealtime();
-      //立ち上げ時はここのリストは空になるのでprintでList[]でも問題なし
-//      print('取得したfoodStuffのList長さ${viewModel.foodStuffs.length}');
-    });
 
 
     return SafeArea(
@@ -36,28 +35,40 @@ class DataListPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(15.0),
           child: Consumer<DataRegistrationViewModel>(
-              builder: (context,model,child){
-                if(model.isProcessing){
+              builder: (context,model,child) {
+                if (model.isProcessing) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                }else{
-                  //                print('DataListPageのConsumerリスト長さ：${model.foodStuffs.length}');
-                  return ListView.builder(
-                      itemCount: model.foodStuffFBs.length,
-                      itemBuilder: (context, int position) =>
-                      //todo 期限表示は○年○月○日表示
-                      //todo 画像を一定の大きさに揃える(Fit?)
-                      FoodStuffItem(
-                        foodStuff:model.foodStuffFBs[position],
-                        onLongTapped: (foodStuff)=>_onFoodStuffDeleted(foodStuff,context),
-//                          onWordTapped: (foodStuff)=>_upDateWord(foodStuff,context),
-                      )
+                } else {
+                  return FutureBuilder(
+                      future: model.getFoodStuffListRealtime(),
+                      builder: (context,
+                          AsyncSnapshot<List<FoodStuffFB>> snapshot) {
+                        if (snapshot.hasData && snapshot.data.isEmpty) {
+                          print('EmptyView通った');
+                          return Container();
+                        } else {
+                          return ListView.builder(
+                            itemCount: model.foodStuffFBs.length,
+                            itemBuilder: (context, int position) =>
+                            //todo 期限表示は○年○月○日表示
+                            //todo 画像を一定の大きさに揃える(Fit?)
+                            FoodStuffItem(
+                              foodStuff: model.foodStuffFBs[position],
+                              onLongTapped: (foodStuff) =>
+                                  _onFoodStuffDeleted(foodStuff, context),
+                              //                          onWordTapped: (foodStuff)=>_upDateWord(foodStuff,context),
+                            ),
+                          );
+                        }
+
+                      }
                   );
                 }
-
               }
           ),
+
         ),
       ),
     );
@@ -67,7 +78,8 @@ class DataListPage extends StatelessWidget {
     Navigator.push<dynamic>(
         context,
         MaterialPageRoute<dynamic>(
-            builder:(context)=>DataRegistrationScreen() ));
+            builder:(context)=>DataRegistrationScreen() ,
+        fullscreenDialog: true));
   }
 
   Future<void>_onFoodStuffDeleted(foodStuff, BuildContext context) async{

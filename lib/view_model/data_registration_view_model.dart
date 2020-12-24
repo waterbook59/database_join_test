@@ -199,7 +199,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
   }
 
 
-///Firebaseへ登録
+///FoodStuffをFirebaseへ保存
   Future<void> postFoodStuff(RecordStatus recordStatus) async{
     _isProcessing = true;
     notifyListeners();
@@ -218,8 +218,9 @@ class DataRegistrationViewModel extends ChangeNotifier {
           useAmount: 0,
           restAmount:int.parse(_productNumberController.text),
         );
-            _isProcessing = false;
+        _isProcessing = false;
         isImagePicked = false;
+        allClear();
         notifyListeners();
     }
 
@@ -392,9 +393,9 @@ class DataRegistrationViewModel extends ChangeNotifier {
   }
 
 ///CloudFirestoreからデータ読み取り
-  //todo streambuilderでリアルタイムにしたらオフラインでのデータ更新できるか？？
   Future<void> getFoodStuffListFB() async{
     _isProcessing = true;
+    notifyListeners();
     _foodStuffFBs =await _postRepository.getFoodStuffList(currentUser:UserRepository.currentModelUser);
 
   _isProcessing = false;
@@ -402,11 +403,12 @@ class DataRegistrationViewModel extends ChangeNotifier {
   }
 
 ///CloudFirestore Realtimeで読み取り
-  Future<void>getFoodStuffListRealtime() async{
+  Future<List<FoodStuffFB>>getFoodStuffListRealtime() async{
     _isProcessing = true;
     _foodStuffFBs =await _postRepository.getFoodStuffListRealtime(currentUser:UserRepository.currentModelUser);
     _isProcessing = false;
-    notifyListeners();
+//    notifyListeners();
+  return _foodStuffFBs;
   }
 
   Future<void> allClear() async{

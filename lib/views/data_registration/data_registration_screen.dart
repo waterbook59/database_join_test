@@ -245,8 +245,7 @@ class DataRegistrationScreen extends StatelessWidget {
     ///Firebase保存
     await viewModel.postFoodStuff(recordStatus);
     //todo 登録中はボタン押せないようにする
-    //登録が終わったら閉じる
-    //todo Navigator.popだと閉じた時にDataListPageが更新されない
+    //登録が終わったら閉じる、Realtime更新にしておけば Navigator.popで閉じた場合でもDataListPageが更新される
     Navigator.pop(context);
   }
 
