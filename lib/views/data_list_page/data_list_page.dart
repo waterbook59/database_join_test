@@ -12,16 +12,17 @@ class DataListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    ///FutureBuilderで処理するだけで良いので、冒頭の呼び出しはいらない
     final viewModel = Provider.of<DataRegistrationViewModel>(context, listen: false);
     // 頭のviewModel(DB取得用)とConsumerのtaskViewModel(更新用)は違うもの
     //立ち上げと同時にConsumer１回まわる、getTaskListによりDB取得してもう１回Consumer回る、
     //そしてDBの値の数に応じてFutureBuilderで表示を変える！！！
 
-   //todo 毎回Firebaseへリクエストしない条件追加必須(news_feed参照)
-    if(!viewModel.isProcessing&& viewModel.foodStuffFBs.isEmpty){
-      print('ページ開いた時getFoodStuffListFB()');
-      Future(()=>viewModel.getFoodStuffListFB());
-    }
+   // 毎回Firebaseへリクエストしない条件追加必須(news_feed参照)
+//    if(!viewModel.isProcessing&& viewModel.foodStuffFBs.isEmpty){
+//      print('ページ開いた時getFoodStuffListFB()');
+//      Future(()=>viewModel.getFoodStuffListFB());
+//    }
 //    Future<void>(viewModel.getFoodStuffListFB);
 
 
@@ -51,26 +52,35 @@ class DataListPage extends StatelessWidget {
                       future: model.getFoodStuffs(),
                       builder: (context,
                           AsyncSnapshot<List<FoodStuffFB>> snapshot) {
+                        //snapshotがnullの場合を考慮(nullの場合、ListViewの方に行ってしまう)
                                         print('snapshot:${snapshot.data}');
-                        if (snapshot.hasData && snapshot.data.isEmpty) {
-                          print('EmptyView通った');
-                          return Container();
-                        } else {
-                          print('ListView通った');
-                          return
-                          ListView.builder(
-                            itemCount: model.foodStuffFBs.length,
-                            itemBuilder: (context, int position) =>
-                            //todo 期限表示は○年○月○日表示
-                            //todo 画像を一定の大きさに揃える(Fit?)
-                            FoodStuffItem(
-                              foodStuff: model.foodStuffFBs[position],
-                              onLongTapped: (foodStuff) =>
-                                  _onFoodStuffDeleted(foodStuff, context),
-                              //                          onWordTapped: (foodStuff)=>_upDateWord(foodStuff,context),
-                            ),
-                          );
-                        }
+                                        if(snapshot.hasData){
+                                          if (snapshot.data.isEmpty) {
+                                            print('EmptyView通った');
+                                            return Container();
+                                          } else {
+                                            print('ListView通った');
+                                            return
+                                              ListView.builder(
+                                                itemCount: model.foodStuffFBs.length,
+                                                itemBuilder: (context, int position) =>
+                                                //todo 期限表示は○年○月○日表示
+                                                //todo 画像を一定の大きさに揃える(Fit?)
+                                                FoodStuffItem(
+                                                  foodStuff: model.foodStuffFBs[position],
+                                                  onLongTapped: (foodStuff) =>
+                                                      _onFoodStuffDeleted(foodStuff, context),
+                                                  //                          onWordTapped: (foodStuff)=>_upDateWord(foodStuff,context),
+                                                ),
+                                              );
+                                          }
+                                        }else{
+                                          print('snapshotがnull:${snapshot.data}');
+                                          return Center(
+                                              child: CircularProgressIndicator());
+
+                                        }
+
 
                       }
                   );

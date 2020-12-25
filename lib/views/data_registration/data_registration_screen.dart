@@ -33,6 +33,7 @@ class DataRegistrationScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Consumer<DataRegistrationViewModel>(
               builder: (context, model, child) {
+                //todo これいらんかも
                 print('登録中にグリグリ〜');
                 if (model.isProcessing) {
                   return Center(
