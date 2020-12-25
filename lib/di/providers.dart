@@ -83,11 +83,13 @@ List<SingleChildWidget> viewModels =[
     ),
   ),
   ChangeNotifierProvider<DataRegistrationViewModel>(
+
     create: (context)=> DataRegistrationViewModel(
       dataRepository:Provider.of<DataRepository>(context, listen: false),
       userRepository:Provider.of<UserRepository>(context, listen: false),
       postRepository:Provider.of<PostRepository>(context, listen: false),
-    ),
+    )
+//      ..getFoodStuffListRealtime(),
   ),
   ///Firebase_auth匿名ログイン関連
   ChangeNotifierProvider<LoginViewModel>(

@@ -33,6 +33,12 @@ class DataRegistrationScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Consumer<DataRegistrationViewModel>(
               builder: (context, model, child) {
+                print('登録中にグリグリ〜');
+                if (model.isProcessing) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }else{
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -206,6 +212,7 @@ class DataRegistrationScreen extends StatelessWidget {
                     ),
                   ],
                 );
+                }
               }),
         ),
       ),

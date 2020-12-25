@@ -18,7 +18,11 @@ class DataListPage extends StatelessWidget {
     //そしてDBの値の数に応じてFutureBuilderで表示を変える！！！
 
    //todo 毎回Firebaseへリクエストしない条件追加必須(news_feed参照)
-    Future<void>(viewModel.getFoodStuffListFB);
+    if(!viewModel.isProcessing&& viewModel.foodStuffFBs.isEmpty){
+      print('ページ開いた時getFoodStuffListFB()');
+      Future(()=>viewModel.getFoodStuffListFB());
+    }
+//    Future<void>(viewModel.getFoodStuffListFB);
 
 
 
@@ -36,20 +40,25 @@ class DataListPage extends StatelessWidget {
           padding: const EdgeInsets.all(15.0),
           child: Consumer<DataRegistrationViewModel>(
               builder: (context,model,child) {
+//                print();
                 if (model.isProcessing) {
+                  print('DataListPageでグリグリ〜');
                   return Center(
                     child: CircularProgressIndicator(),
                   );
                 } else {
                   return FutureBuilder(
-                      future: model.getFoodStuffListRealtime(),
+                      future: model.getFoodStuffs(),
                       builder: (context,
                           AsyncSnapshot<List<FoodStuffFB>> snapshot) {
+                                        print('snapshot:${snapshot.data}');
                         if (snapshot.hasData && snapshot.data.isEmpty) {
                           print('EmptyView通った');
                           return Container();
                         } else {
-                          return ListView.builder(
+                          print('ListView通った');
+                          return
+                          ListView.builder(
                             itemCount: model.foodStuffFBs.length,
                             itemBuilder: (context, int position) =>
                             //todo 期限表示は○年○月○日表示

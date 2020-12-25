@@ -36,11 +36,11 @@ class DatabaseManager {
 
   ///storageにFileをアップロードしてダウンロードUrl(パス)を返す
   //保存場所
-  Future<String> uploadImageToStorage(File imageFile, String storageId) async{
+  Future<String> uploadImageToStorage(File postImage, String storageId) async{
     //childにstoragePath(storageId)を持ってくる
     final storageRef = FirebaseStorage.instance.ref().child(storageId);
     //Fileを保存場所にアップロード
-    final uploadTask = storageRef.putFile(imageFile);
+    final uploadTask = storageRef.putFile(postImage);
     //アップロードが終わったらファイルのダウンロードurl取得
     //FirebaseStorage5.0以降はonCompleteメソッドなくなった
     return uploadTask.then((TaskSnapshot taskSnapshot) => taskSnapshot.ref.getDownloadURL());

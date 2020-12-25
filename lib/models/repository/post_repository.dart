@@ -11,9 +11,10 @@ class PostRepository {
 
   PostRepository({this.databaseManager});
 
-  Future<void> postFSFromCamera({
+///FoodStuffをFirebaseへ保存
+  Future<void> postFoodStuff({
     AnonymousUser currentUser,
-    File imageFromCamera,
+    File postImage,
     String name,
     String category,
     DateTime validDateTime,
@@ -25,7 +26,7 @@ class PostRepository {
     final storageId = Uuid().v1();
     //画像とidを渡してアップロードした画像のstorage内のurl
     final imageUrl =
-        await databaseManager.uploadImageToStorage(imageFromCamera, storageId);
+        await databaseManager.uploadImageToStorage(postImage, storageId);
     print('storageにアップロードした画像のUrl: $imageUrl');
     final postFoodStuff = FoodStuffFB(
       foodStuffId: Uuid().v1(),
@@ -52,7 +53,7 @@ class PostRepository {
     return databaseManager.getFoodStuffList(currentUser.userId);
   }
 
-  Future<List<FoodStuffFB>>getFoodStuffListRealtime({AnonymousUser currentUser}) {
-    return databaseManager.getFoodStuffListRealtime(currentUser.userId);
+  Future<List<FoodStuffFB>>getFoodStuffListRealtime({AnonymousUser currentUser}) async{
+    return await databaseManager.getFoodStuffListRealtime(currentUser.userId);
   }
 }

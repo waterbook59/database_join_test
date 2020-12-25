@@ -207,9 +207,9 @@ class DataRegistrationViewModel extends ChangeNotifier {
     ///カメラからFBへデータ保存
       case RecordStatus.camera:
         //名前付で渡す
-        await _postRepository.postFSFromCamera(
+        await _postRepository.postFoodStuff(
           currentUser: UserRepository.currentModelUser,
-          imageFromCamera: imageFromCamera,
+          postImage: imageFromCamera,
           name:_productNameController.text,
           category: _productCategoryController.text,
           validDateTime: _validDateTime,
@@ -219,9 +219,28 @@ class DataRegistrationViewModel extends ChangeNotifier {
           restAmount:int.parse(_productNumberController.text),
         );
         _isProcessing = false;
-        isImagePicked = false;
         allClear();
         notifyListeners();
+        break;
+    ///ギャラリーからFBへデータ保存
+      case RecordStatus.gallery:
+        _isProcessing = true;
+        notifyListeners();
+        await _postRepository.postFoodStuff(
+          currentUser: UserRepository.currentModelUser,
+          postImage: imageFromGallery,
+          name:_productNameController.text,
+          category: _productCategoryController.text,
+          validDateTime: _validDateTime,
+          storage: _productStorageController.text,
+          amount: int.parse(_productNumberController.text),
+          useAmount: 0,
+          restAmount:int.parse(_productNumberController.text),
+        );
+        _isProcessing = false;
+        allClear();
+        notifyListeners();
+
     }
 
 
@@ -402,14 +421,25 @@ class DataRegistrationViewModel extends ChangeNotifier {
   notifyListeners();
   }
 
-///CloudFirestore Realtimeで読み取り
+  ///FutureBuilder用
+  Future<List<FoodStuffFB>> getFoodStuffs() async{
+    _foodStuffFBs =await _postRepository.getFoodStuffList(currentUser:UserRepository.currentModelUser);
+    return _foodStuffFBs;
+  }
+
+
+
+  ///CloudFirestore Realtimeで読み取り
   Future<List<FoodStuffFB>>getFoodStuffListRealtime() async{
+    //notifyListeners通知しない場合は、isProcessing系は入れない
     _isProcessing = true;
+    notifyListeners();
     _foodStuffFBs =await _postRepository.getFoodStuffListRealtime(currentUser:UserRepository.currentModelUser);
     _isProcessing = false;
-//    notifyListeners();
-  return _foodStuffFBs;
+    notifyListeners();
+//  return _foodStuffFBs;
   }
+
 
   Future<void> allClear() async{
     //todo それぞれキャッシュ画像はクリアの必要ありか？
@@ -423,6 +453,8 @@ class DataRegistrationViewModel extends ChangeNotifier {
     productStorageClear();
     notifyListeners();//いらんかも
   }
+
+
 
 
 
