@@ -91,8 +91,9 @@ class DataListPage extends StatelessWidget {
         fullscreenDialog: true));
   }
 
-  Future<void>_onFoodStuffDeleted(foodStuff, BuildContext context) async{
-    final viewModel = Provider.of<DataRegistrationViewModel>(context, listen: false);
+  Future<void>_onFoodStuffDeleted(FoodStuffFB foodStuff, BuildContext context) async{
+    //ここにviewModelおくと、contextが重なってエラー
+
 
     showDialog(
       context: context,
@@ -104,10 +105,11 @@ class DataListPage extends StatelessWidget {
             FlatButton(
               onPressed: () async {
                 ///画像についてはDBから画像へのパスとcashとローカルから画像も削除する
-                await viewModel.onFoodStuffDeleted(foodStuff);
+//                await viewModel.onFoodStuffDeleted(foodStuff);
+//                   await viewModel.getFoodStuffList();
+                ///Firebaseからの削除(ここだけviewModelのcontext重なってエラーになるのでメソッド外だし)
+                deletePost(context,foodStuff);
                   Fluttertoast.showToast(msg:"削除完了しました");
-                // ここで最後の１つを削除後取得しようとするとList内が空っぽでエラーが出るがisEmptyで回避
-                await viewModel.getFoodStuffList();
                 Navigator.pop(context);
               },
               child: Text("はい"),
@@ -121,6 +123,11 @@ class DataListPage extends StatelessWidget {
           ],
         ),
     );
+  }
+
+  void deletePost(BuildContext context,FoodStuffFB foodStuff) async{
+    final viewModel = Provider.of<DataRegistrationViewModel>(context, listen: false);
+    await viewModel.onFoodStuffDeletedDB(foodStuff);
   }
 
 

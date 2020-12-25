@@ -56,4 +56,9 @@ class PostRepository {
   Future<List<FoodStuffFB>>getFoodStuffListRealtime({AnonymousUser currentUser}) async{
     return await databaseManager.getFoodStuffListRealtime(currentUser.userId);
   }
+
+  ///FirebaseからFoodstuff削除
+  Future<void> deleteFoodStuff(String foodStuffId, String imageStoragePath) async{
+    await databaseManager.deleteFoodStuff(foodStuffId,imageStoragePath);
+  }
 }

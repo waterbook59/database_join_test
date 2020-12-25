@@ -187,16 +187,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
   }
 
-///ローカルデータ削除
-  Future<void> onFoodStuffDeleted(FoodStuff foodStuff) async{
-    //ローカル画像削除のためFileを渡す
-    //File.pathでString形式にしてDB保存している,foodStuff.localImageはString
-    File deleteFile = File(foodStuff.localImagePath);
-    await _dataRepository.deleteFoodStuff(foodStuff);
-    // 画像についてはDBから画像へのパスとローカルから画像も削除する
-    await FileController.deleteCashedImage(deleteFile);
-    notifyListeners();
-  }
+
 
 
 ///FoodStuffをFirebaseへ保存
@@ -240,45 +231,14 @@ class DataRegistrationViewModel extends ChangeNotifier {
         _isProcessing = false;
         allClear();
         notifyListeners();
-
+        break;
+        //todo network
     }
 
 
 
 
 
-  }
-
-  void productNameClear() {
-    _productNameController.clear();
-    notifyListeners();
-  }
-
-  void productCategoryClear() {
-    _productCategoryController.clear();
-    notifyListeners();
-  }
-
-  void productNumberClear() {
-    _productNumberController.clear();
-    notifyListeners();
-  }
-
-  void dateClear() {
-    _dateEditController.clear();
-    notifyListeners();
-  }
-
-  void productStorageClear() {
-    _productStorageController.clear();
-    notifyListeners();
-  }
-
-  void dateChange(DateTime newDateTime) {
-    _validDateTime = newDateTime;
-    //intlパッケージを使ってpickerで選択した年月日を日本語表示
-    _dateEditController.text =
-        DateFormat.yMMMd('ja').format(newDateTime).toString();
   }
 
 //  @override
@@ -421,7 +381,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
   notifyListeners();
   }
 
-  ///FutureBuilder用
+///FutureBuilder用
   Future<List<FoodStuffFB>> getFoodStuffs() async{
     _foodStuffFBs =await _postRepository.getFoodStuffList(currentUser:UserRepository.currentModelUser);
     return _foodStuffFBs;
@@ -429,7 +389,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
 
 
-  ///CloudFirestore Realtimeで読み取り
+///CloudFirestore Realtimeで読み取り
   Future<List<FoodStuffFB>>getFoodStuffListRealtime() async{
     //notifyListeners通知しない場合は、isProcessing系は入れない
     _isProcessing = true;
@@ -440,6 +400,40 @@ class DataRegistrationViewModel extends ChangeNotifier {
 //  return _foodStuffFBs;
   }
 
+
+
+///登録後のクリア関連
+  void productNameClear() {
+    _productNameController.clear();
+    notifyListeners();
+  }
+
+  void productCategoryClear() {
+    _productCategoryController.clear();
+    notifyListeners();
+  }
+
+  void productNumberClear() {
+    _productNumberController.clear();
+    notifyListeners();
+  }
+
+  void dateClear() {
+    _dateEditController.clear();
+    notifyListeners();
+  }
+
+  void productStorageClear() {
+    _productStorageController.clear();
+    notifyListeners();
+  }
+
+  void dateChange(DateTime newDateTime) {
+    _validDateTime = newDateTime;
+    //intlパッケージを使ってpickerで選択した年月日を日本語表示
+    _dateEditController.text =
+        DateFormat.yMMMd('ja').format(newDateTime).toString();
+  }
 
   Future<void> allClear() async{
     //todo それぞれキャッシュ画像はクリアの必要ありか？
@@ -452,6 +446,28 @@ class DataRegistrationViewModel extends ChangeNotifier {
     productNumberClear();
     productStorageClear();
     notifyListeners();//いらんかも
+  }
+
+  ///ローカルデータ削除
+  Future<void> onFoodStuffDeleted(FoodStuff foodStuff) async{
+    //ローカル画像削除のためFileを渡す
+    //File.pathでString形式にしてDB保存している,foodStuff.localImageはString
+    File deleteFile = File(foodStuff.localImagePath);
+    await _dataRepository.deleteFoodStuff(foodStuff);
+    // 画像についてはDBから画像へのパスとローカルから画像も削除する
+    await FileController.deleteCashedImage(deleteFile);
+    notifyListeners();
+  }
+
+
+
+  Future<void> onFoodStuffDeletedDB(FoodStuffFB foodStuff)  async{
+    _isProcessing = true;
+    notifyListeners();
+    await _postRepository.deleteFoodStuff(foodStuff.foodStuffId,foodStuff.imageStoragePath);
+    await getFoodStuffListFB();
+    _isProcessing =false;
+    notifyListeners();
   }
 
 

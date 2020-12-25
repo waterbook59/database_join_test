@@ -121,6 +121,17 @@ class DatabaseManager {
     return userIds;
   }
 
+  ///FoodStuff削除
+  Future<void> deleteFoodStuff(String foodStuffId, String imageStoragePath) async{
+  //foodStuffsから削除
+    final foodStuffRef = _db.collection('foodStuffs').doc(foodStuffId);
+    await foodStuffRef.delete();
+  //todo menuに紐付ける場合はそのコレクションからも削除
+  //Storageから画像削除
+    final storageRef = FirebaseStorage.instance.ref().child(imageStoragePath);
+    storageRef.delete();
+  }
+
 
 
 }
