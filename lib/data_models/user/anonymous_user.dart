@@ -62,7 +62,7 @@ class AnonymousUser{
 
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String,dynamic>{
       'userId': this.userId,
       'displayName': this.displayName,
       'inAppUserName': this.inAppUserName,

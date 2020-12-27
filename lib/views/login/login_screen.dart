@@ -18,12 +18,12 @@ class LoginScreen extends StatelessWidget {
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text('備蓄＋献立でもしものときを想定！Bichicon'),
-                      SizedBox(
+                     const Text('備蓄＋献立でもしものときを想定！Bichicon'),
+                      const SizedBox(
                         height: 8.0,
                       ),
                       ButtonWithIcon(
-                        icon: FaIcon(FontAwesomeIcons.signInAlt),
+                        icon: const FaIcon(FontAwesomeIcons.signInAlt),
                         label: 'ゲストで始める',
                         onPressed: () => login(context),
                       ),
@@ -35,17 +35,19 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  login(BuildContext context) async {
+  ///Future<void>の戻り値追加、Fluttertoastの前にawait
+  Future<void> login(BuildContext context) async {
     final loginVieModel = Provider.of<LoginViewModel>(context, listen: false);
     await loginVieModel.anonymouslySignIn();
     if (!loginVieModel.isSuccessful) {
-      Fluttertoast.showToast(msg: 'signInFailed');
+     await Fluttertoast.showToast(msg: 'signInFailed');
       return;
     }
     _openHomeScreen(context);
   }
 
+  ///void型追加
   void _openHomeScreen(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => HomeScreen()));
+    Navigator.push(context, MaterialPageRoute<void>(builder: (_) => HomeScreen()));
   }
 }

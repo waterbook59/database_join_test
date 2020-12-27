@@ -52,7 +52,8 @@ class UserRepository{
     }
   }
 
-  _convertToUser(auth.User firebaseUser) {
+  //戻り値型AnonymousUser追加
+  AnonymousUser _convertToUser(auth.User firebaseUser) {
     return AnonymousUser(
       userId: firebaseUser.uid,
       displayName: firebaseUser.displayName,

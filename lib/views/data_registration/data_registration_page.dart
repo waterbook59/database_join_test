@@ -21,9 +21,9 @@ class DataRegistrationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       ///image_pickerでカメラまたはギャラリーキャンセル時にエラーが出るのでWillPopScope(true?)で戻らせない
-      child: WillPopScope(
+//      child: WillPopScope(
 //        onWillPop: _willPopCallback,
-        onWillPop: () => _exitApp(context),
+//        onWillPop: () => _exitApp(context),
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -200,7 +200,7 @@ class DataRegistrationPage extends StatelessWidget {
                 }),
           ),
         ),
-      ),
+//      ),
     );
   }
 
@@ -236,26 +236,26 @@ class DataRegistrationPage extends StatelessWidget {
   }
 
   //ギャラリー選択時のキャンセルには効かない
-  Future<bool> _exitApp(BuildContext context) async {
-    return showDialog(
-      context: context,
-      child: new AlertDialog(
-        title: new Text('Do you want to exit this application?'),
-        content: new Text('We hate to see you leave...'),
-        actions: <Widget>[
-          new FlatButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: new Text('No'),
-          ),
-          new FlatButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: new Text('Yes'),
-          ),
-        ],
-      ),
-    ) ??
-        false;
-  }
+//  Future<bool> _exitApp(BuildContext context)  {
+//    return showDialog(
+//      context: context,
+//      child:  AlertDialog(
+//        title:  Text('Do you want to exit this application?'),
+//        content:  Text('We hate to see you leave...'),
+//        actions: <Widget>[
+//           FlatButton(
+//            onPressed: () => Navigator.of(context).pop(false),
+//            child:  Text('No'),
+//          ),
+//           FlatButton(
+//            onPressed: () => Navigator.of(context).pop(true),
+//            child:  Text('Yes'),
+//          ),
+//        ],
+//      ),
+//    ) ??
+//        false;
+//  }
 }
 
 

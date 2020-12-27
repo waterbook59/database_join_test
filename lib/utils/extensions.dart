@@ -92,7 +92,7 @@ extension ConvertToFoodStuffRecord on FoodStuff{
 extension ConvertToFoodStuff on List<FoodStuffRecord>{
 
   List<FoodStuff> toFoodStuffs(List<FoodStuffRecord> foodStuffRecords){
-    var foodStuffs = List<FoodStuff>();
+    final foodStuffs = <FoodStuff>[];//finalつける
 
     foodStuffRecords.forEach((foodStuffRecord){
       foodStuffs.add(
@@ -103,7 +103,11 @@ extension ConvertToFoodStuff on List<FoodStuffRecord>{
             name: foodStuffRecord.name ?? "",
             category: foodStuffRecord.category ?? "",
             storage: foodStuffRecord.storage ?? "",
-            validDate: foodStuffRecord.validDate ?? "",
+            ///Object=>Datetime変換
+//            validDate: foodStuffRecord.validDate  ?? "",
+            validDate: foodStuffRecord.validDate == null
+                ? null
+                : DateTime.parse(foodStuffRecord.validDate as String),
             amount: foodStuffRecord.amount ?? 0,
             useAmount: foodStuffRecord.useAmount ?? 0,
             restAmount: foodStuffRecord.restAmount ?? 0,

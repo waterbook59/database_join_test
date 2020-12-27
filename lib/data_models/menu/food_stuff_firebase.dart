@@ -124,7 +124,7 @@ class FoodStuffFB {
 
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String,dynamic>{
       'foodStuffId': this.foodStuffId,
       'userId': this.userId,
       'imageUrl': this.imageUrl,

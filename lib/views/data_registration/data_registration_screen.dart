@@ -264,39 +264,40 @@ class DataRegistrationScreen extends StatelessWidget {
   }
 
   //ギャラリー選択時のキャンセルには効かない
-  Future<bool> _exitApp(BuildContext context) async {
-    return showDialog(
-      context: context,
-      child: new AlertDialog(
-        title: new Text('Do you want to exit this application?'),
-        content: new Text('We hate to see you leave...'),
-        actions: <Widget>[
-          new FlatButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: new Text('No'),
-          ),
-          new FlatButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: new Text('Yes'),
-          ),
-        ],
-      ),
-    ) ??
-        false;
-  }
+//  Future<bool> _exitApp(BuildContext context) async {
+//    return showDialog(
+//      context: context,
+//      child:  AlertDialog(
+//        title:  Text('Do you want to exit this application?'),
+//        content:  Text('We hate to see you leave...'),
+//        actions: <Widget>[
+//           FlatButton(
+//            onPressed: () => Navigator.of(context).pop(false),
+//            child:  Text('No'),
+//          ),
+//           FlatButton(
+//            onPressed: () => Navigator.of(context).pop(true),
+//            child:  Text('Yes'),
+//          ),
+//        ],
+//      ),
+//    ) ??
+//        false;
+//  }
 
-  _deleteData(BuildContext context) {
+  //Future<void>戻り値追加
+  Future<void> _deleteData(BuildContext context) {
     return showDialog(
       context: context,
-      child: new AlertDialog(
+      child:  AlertDialog(
         title: new Text('入力内容を破棄してよろしいですか?'),
 //        content: new Text('We hate to see you leave...'),
         actions: <Widget>[
-          new FlatButton(
+           FlatButton(
             onPressed: () => Navigator.of(context).pop(),
             child: new Text('キャンセル'),
           ),
-          new FlatButton(
+           FlatButton(
             onPressed: () async{
               //入力破棄するので、入力したものは全てクリア
               final viewModel =
@@ -305,7 +306,7 @@ class DataRegistrationScreen extends StatelessWidget {
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },
-            child: new Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       ),
