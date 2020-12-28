@@ -253,8 +253,10 @@ class DataRegistrationScreen extends StatelessWidget {
     ///Firebase保存
     await viewModel.postFoodStuff(recordStatus);
     //todo 登録中はボタン押せないようにする
-    //登録が終わったら閉じる、Realtime更新にしておけば Navigator.popで閉じた場合でもDataListPageが更新される
-    Navigator.pop(context);
+    //登録が終わったら閉じる、
+    // Realtime更新でNavigator.pop or oneTimeでpushReplacementで条件分岐
+    Navigator.pop(context,true);
+    //Navigator.pushReplacement(caseを登録)
   }
 
 
@@ -294,23 +296,30 @@ class DataRegistrationScreen extends StatelessWidget {
 //        content: new Text('We hate to see you leave...'),
         actions: <Widget>[
            FlatButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.pop(context),
             child: new Text('キャンセル'),
           ),
            FlatButton(
             onPressed: () async{
               //入力破棄するので、入力したものは全てクリア
-              final viewModel =
-              Provider.of<DataRegistrationViewModel>(context, listen: false);
-              await viewModel.allClear();
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
+              await allClear(context);
+//              final viewModel =
+//              Provider.of<DataRegistrationViewModel>(context, listen: false);
+//              await viewModel.allClear();
+              Navigator.pop(context);
+              Navigator.pop(context,false);
             },
             child: const Text('OK'),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> allClear(BuildContext context) async{
+    final viewModel =
+    Provider.of<DataRegistrationViewModel>(context, listen: false);
+    await viewModel.allClear();
   }
 }
 

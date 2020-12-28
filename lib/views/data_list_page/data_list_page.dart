@@ -10,18 +10,21 @@ import 'components/food_stuff_item.dart';
 class DataListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ///FutureBuilderで処理するだけで良いので、冒頭の呼び出しはいらない
+    ///冒頭呼び出しだけなら更新時にNavigator.popでページ更新がされない,
+    ///dataRegistrationScreenとはpushReplacementにし、条件分岐(入力中断時,登録,更新時に読み込みするか決める)
+    ///FutureBuilderだけなら冒頭呼び出しはいらないが、ページ開くたびにFirebaseから読み込んでしまう
     final viewModel =
         Provider.of<DataRegistrationViewModel>(context, listen: false);
-    // 頭のviewModel(DB取得用)とConsumerのtaskViewModel(更新用)は違うもの
-    //立ち上げと同時にConsumer１回まわる、getTaskListによりDB取得してもう１回Consumer回る、
-    //そしてDBの値の数に応じてFutureBuilderで表示を変える！！！
+    // 毎回Firebaseへリクエストしない条件追加必須
+    //todo 条件分岐で読込かを決める,読込したらConsumer箇所が反応
+    //空の時
+    if(!viewModel.isProcessing&& viewModel.foodStuffFBs.isEmpty){
+      Future(()=>viewModel.getFoodStuffListFB());
+    }
+    //データ登録中断:読み込みしない
+    //データ登録:読み込み
+    //データ更新：読み込み
 
-    // 毎回Firebaseへリクエストしない条件追加必須(news_feed参照)
-//    if(!viewModel.isProcessing&& viewModel.foodStuffFBs.isEmpty){
-//      print('ページ開いた時getFoodStuffListFB()');
-//      Future(()=>viewModel.getFoodStuffListFB());
-//    }
 //    Future<void>(viewModel.getFoodStuffListFB);
 
     return SafeArea(
@@ -40,25 +43,24 @@ class DataListPage extends StatelessWidget {
           child: Consumer<DataRegistrationViewModel>(
               builder: (context, model, child) {
 //                print();
-            if (model.isProcessing) {
-              print('DataListPageでグリグリ〜');
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              return FutureBuilder(
-                  future: model.getFoodStuffs(),
-                  builder:
-                      (context, AsyncSnapshot<List<FoodStuffFB>> snapshot) {
-                    //snapshotがnullの場合を考慮(nullの場合、ListViewの方に行ってしまう)
-                    print('snapshot:${snapshot.data}');
-                    if (snapshot.hasData) {
-                      if (snapshot.data.isEmpty) {
-                        print('EmptyView通った');
-                        return Container();
-                      } else {
-                        print('ListView通った');
-                        return ListView.builder(
+            return model.isProcessing
+              //print('DataListPageでグリグリ〜');
+              ? const Center(child: CircularProgressIndicator())
+              :
+//              FutureBuilder(
+//                  future: model.getFoodStuffs(),
+//                  builder:
+//                      (context, AsyncSnapshot<List<FoodStuffFB>> snapshot) {
+//                    //snapshotがnullの場合を考慮(nullの場合、ListViewの方に行ってしまう)
+//                    print('snapshot:${snapshot.data}');
+//                    if (snapshot.hasData) {
+//                      if (snapshot.data.isEmpty) {
+//                        print('EmptyView通った');
+//                        return Container();
+//                      } else {
+//                        print('ListView通った');
+//                        return
+                          ListView.builder(
                           itemCount: model.foodStuffFBs.length,
                           itemBuilder: (context, int position) =>
                               //todo 期限表示は○年○月○日表示
@@ -70,25 +72,29 @@ class DataListPage extends StatelessWidget {
                             // onWordTapped: (foodStuff)=>_upDateWord(foodStuff,context),
                           ),
                         );
-                      }
-                    } else {
-                      print('snapshotがnull:${snapshot.data}');
-                      return Center(child: CircularProgressIndicator());
-                    }
-                  });
-            }
-          }),
+//                      }
+//                    } else {
+//                      print('snapshotがnull:${snapshot.data}');
+//                      return Center(child: CircularProgressIndicator());
+//                    }
+                  }),
+
+//          }
+          ),
         ),
-      ),
+//      ),
     );
   }
 
-  void _addData(BuildContext context) {
-    Navigator.push<dynamic>(
+  void _addData(BuildContext context) async{
+    final result =await Navigator.push(//resultに再描画するならtrue
         context,
-        MaterialPageRoute<dynamic>(
+        MaterialPageRoute<bool>(
             builder: (context) => DataRegistrationScreen(),
-            fullscreenDialog: true));
+            fullscreenDialog: true),);
+    if(result){
+      print('resultがtrueの時は再描画：$result');
+    }
   }
 
   Future<void> _onFoodStuffDeleted(
