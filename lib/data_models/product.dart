@@ -13,6 +13,7 @@ class Product {
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
 
+  // ignore: sort_constructors_first
   const Product({
     @required this.productId,
     @required this.name,
@@ -39,12 +40,10 @@ class Product {
 
   @override
   String toString() {
-    return 'Product{' +
-        ' productId: $productId,' +
-        ' name: $name,' +
-        ' productImage: $productImage,' +
-        ' description: $description,' +
-        '}';
+    return 'Product{${' productId: $productId,'
+    }${' name: $name,'
+    }${' productImage: $productImage,'
+    }${' description: $description,'}}';
   }
 
   Product copyWith({
@@ -53,7 +52,7 @@ class Product {
     ProductImage productImage,
     String description,
   }) {
-    return new Product(
+    return  Product(
       productId: productId ?? this.productId,
       name: name ?? this.name,
       productImage: productImage ?? this.productImage,
@@ -64,19 +63,20 @@ class Product {
   ///returnの後ろへ<String,dynamic>追加、this.削除(Remove this expression)
   Map<String, dynamic> toMap() {
     return <String,dynamic>{
-      'productId': this.productId,
-      'name': this.name,
-      'productImage': this.productImage,
-      'description': this.description,
+      'productId': productId,
+      'name': name,
+      'productImage': productImage,
+      'description': description,
     };
   }
 
   /// productImage: map['productImage'] as ProductImageのままではNG
-  /// productImage: ProductImage.fromMap(map['image'] as Map<String, dynamic>),へ変更
+/// productImage: ProductImage.fromMap(map['image'] as Map<String, dynamic>),へ変更
   /// 各ProductにUuidでNoをつける
 
+  // ignore: sort_constructors_first
   factory Product.fromMap(Map<String, dynamic> map) {
-    return new Product(
+    return  Product(
       productId: Uuid().v1(),
       name: map['name'] as String,
       productImage: ProductImage.fromMap(map['image'] as Map<String, dynamic>),

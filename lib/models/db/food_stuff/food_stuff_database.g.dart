@@ -18,6 +18,7 @@ class FoodStuffRecord extends DataClass implements Insertable<FoodStuffRecord> {
   final int amount;
   final int useAmount;
   final int restAmount;
+  // ignore: sort_constructors_first
   FoodStuffRecord(
       {@required this.id,
       @required this.foodStuffId,
@@ -29,6 +30,7 @@ class FoodStuffRecord extends DataClass implements Insertable<FoodStuffRecord> {
       @required this.amount,
       @required this.useAmount,
       @required this.restAmount});
+  // ignore: sort_constructors_first
   factory FoodStuffRecord.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -122,6 +124,7 @@ class FoodStuffRecord extends DataClass implements Insertable<FoodStuffRecord> {
     );
   }
 
+  // ignore: sort_constructors_first
   factory FoodStuffRecord.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -241,6 +244,7 @@ class FoodStuffRecordsCompanion extends UpdateCompanion<FoodStuffRecord> {
   final Value<int> amount;
   final Value<int> useAmount;
   final Value<int> restAmount;
+  // ignore: sort_constructors_first
   const FoodStuffRecordsCompanion({
     this.id = const Value.absent(),
     this.foodStuffId = const Value.absent(),
@@ -253,6 +257,7 @@ class FoodStuffRecordsCompanion extends UpdateCompanion<FoodStuffRecord> {
     this.useAmount = const Value.absent(),
     this.restAmount = const Value.absent(),
   });
+  // ignore: sort_constructors_first
   FoodStuffRecordsCompanion.insert({
     this.id = const Value.absent(),
     @required String foodStuffId,
@@ -378,6 +383,7 @@ class $FoodStuffRecordsTable extends FoodStuffRecords
     with TableInfo<$FoodStuffRecordsTable, FoodStuffRecord> {
   final GeneratedDatabase _db;
   final String _alias;
+  // ignore: sort_constructors_first
   $FoodStuffRecordsTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
@@ -601,6 +607,7 @@ class AmountToEatRecord extends DataClass
   final String date;
   final String mealType;
   final int piece;
+  // ignore: sort_constructors_first
   AmountToEatRecord(
       {@required this.id,
       @required this.foodStuffId,
@@ -608,6 +615,7 @@ class AmountToEatRecord extends DataClass
       @required this.date,
       @required this.mealType,
       this.piece});
+  // ignore: sort_constructors_first
   factory AmountToEatRecord.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -668,6 +676,7 @@ class AmountToEatRecord extends DataClass
     );
   }
 
+  // ignore: sort_constructors_first
   factory AmountToEatRecord.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -749,6 +758,7 @@ class AmountToEatRecordsCompanion extends UpdateCompanion<AmountToEatRecord> {
   final Value<String> date;
   final Value<String> mealType;
   final Value<int> piece;
+  // ignore: sort_constructors_first
   const AmountToEatRecordsCompanion({
     this.id = const Value.absent(),
     this.foodStuffId = const Value.absent(),
@@ -757,6 +767,7 @@ class AmountToEatRecordsCompanion extends UpdateCompanion<AmountToEatRecord> {
     this.mealType = const Value.absent(),
     this.piece = const Value.absent(),
   });
+  // ignore: sort_constructors_first
   AmountToEatRecordsCompanion.insert({
     this.id = const Value.absent(),
     @required String foodStuffId,
@@ -845,6 +856,7 @@ class $AmountToEatRecordsTable extends AmountToEatRecords
     with TableInfo<$AmountToEatRecordsTable, AmountToEatRecord> {
   final GeneratedDatabase _db;
   final String _alias;
+  // ignore: sort_constructors_first
   $AmountToEatRecordsTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;

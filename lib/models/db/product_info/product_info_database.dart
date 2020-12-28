@@ -39,6 +39,7 @@ class ProductWithImages extends Table{
 class JoinedProduct{
   final ProductRecord productRecord;
   final ProductRecordImage productRecordImage;
+  // ignore: sort_constructors_first
   JoinedProduct({this.productRecord,this.productRecordImage});
 }
 

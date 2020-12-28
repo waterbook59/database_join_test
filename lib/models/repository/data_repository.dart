@@ -5,9 +5,7 @@ import 'package:datebasejointest/data_models/menu/food_stuff.dart';
 import 'package:datebasejointest/data_models/product.dart';
 import 'package:datebasejointest/models/db/food_stuff/food_stuff_dao.dart';
 import 'package:datebasejointest/models/db/product_info/product_info_database.dart';
-import 'package:datebasejointest/utils/constants.dart';
 import 'package:datebasejointest/utils/extensions.dart';
-import 'package:flutter/src/widgets/editable_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart'; //TypedResult用にインポート
@@ -15,12 +13,11 @@ import 'package:datebasejointest/models/db/product_info/product_info_dao.dart';
 
 class DataRepository {
 //diあり
-  DataRepository({ProductInfoDao productInfoDao, FoodStuffDao foodStuffDao}) :
-        _productInfoDao = productInfoDao,
+  DataRepository({ProductInfoDao productInfoDao, FoodStuffDao foodStuffDao})
+      : _productInfoDao = productInfoDao,
         _foodStuffDao = foodStuffDao;
   final ProductInfoDao _productInfoDao;
   final FoodStuffDao _foodStuffDao;
-
 
   //diなし main.dartに設定
 //    final productInfoDao = myProductInfoDB.productInfoDao;
@@ -32,7 +29,7 @@ class DataRepository {
 
     //List<JoinedProduct>を想定
     var results = <JoinedProduct>[];
-    var joinTable = <TypedResult>[];
+//    final joinTable = <TypedResult>[];
 
     try {
       //2.モデルクラス(List<Product>)をDBのテーブルクラスへ変換
@@ -45,9 +42,11 @@ class DataRepository {
 
       /// 3.2つのテーブルをDBへinsert
       await _productInfoDao.insertDB(productRecords, productRecordImages);
-//      joinTable =await productInfoDao.insertAndTableDB(productRecords, productRecordImages);
+//      joinTable =await productInfoDao
+//      .insertAndTableDB(productRecords, productRecordImages);
 //      print('query.getの結果：${joinTable.toString()}');
-      ///4.テーブル内部結合してJoinedProductへ格納＆読込(transactionの中でやるとエラーなので上のinsertと切り離して実施）
+      ///4.テーブル内部結合してJoinedProductへ格納＆読込
+      ///(transactionの中でやるとエラーなので上のinsertと切り離して実施）
       results = await _productInfoDao.getJoinedProduct();
 //      print('List<JoinedProduct:${results[3].productRecord.description}>');
       ///5.JoinedProductクラスに格納されたデータをProductへ再格納して返す(extensions:)
@@ -83,33 +82,25 @@ class DataRepository {
     }
   }
 
-
   //登録,viewModelでモデルクラスを作る形へ変更
-  Future<void> registerProductData(FoodStuff foodStuff) async{
-
-    try{
+  Future<void> registerProductData(FoodStuff foodStuff) async {
+    try {
       final foodStuffRecord = foodStuff.toFoodStuffRecord(foodStuff);
 //      print('foodStuffRecordへ変換後のid：${foodStuffRecord.id}/${foodStuffRecord.restAmount}');
       await _foodStuffDao.addFoodStuff(foodStuffRecord);
-    }on SqliteException catch(e){
+    } on SqliteException catch (e) {
       print("repositoryでのエラー：${e.toString()}");
     }
-
-
   }
 
-  Future<List<FoodStuff>>getFoodStuffList() async{
+  Future<List<FoodStuff>> getFoodStuffList() async {
     final resultRecords = await _foodStuffDao.allFoodStuffs;
-    var results =resultRecords.toFoodStuffs(resultRecords);
+    var results = resultRecords.toFoodStuffs(resultRecords);
     return results;
   }
 
-
-  Future<void> deleteFoodStuff(FoodStuff foodStuff) async{
-    final foodStuffRecord =foodStuff.toFoodStuffRecord(foodStuff);
+  Future<void> deleteFoodStuff(FoodStuff foodStuff) async {
+    final foodStuffRecord = foodStuff.toFoodStuffRecord(foodStuff);
     await _foodStuffDao.deleteFoodStuff(foodStuffRecord);
   }
-
-
-
 }

@@ -53,11 +53,13 @@ class PostRepository {
     return databaseManager.getFoodStuffList(currentUser.userId);
   }
 
-  Future<List<FoodStuffFB>>getFoodStuffListRealtime({AnonymousUser currentUser}) async{
+  // ignore: lines_longer_than_80_chars
+  Future<List<FoodStuffFB>> getFoodStuffListRealtime({AnonymousUser currentUser}) async{
     return await databaseManager.getFoodStuffListRealtime(currentUser.userId);
   }
 
   ///FirebaseからFoodstuff削除
+  // ignore: lines_longer_than_80_chars
   Future<void> deleteFoodStuff(String foodStuffId, String imageStoragePath) async{
     await databaseManager.deleteFoodStuff(foodStuffId,imageStoragePath);
   }

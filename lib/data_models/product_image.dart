@@ -10,6 +10,7 @@ class ProductImage {
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
 
+  // ignore: sort_constructors_first
   const ProductImage({
     @required this.small,
     @required this.medium,
@@ -28,14 +29,14 @@ class ProductImage {
 
   @override
   String toString() {
-    return 'ProductImage{' + ' small: $small,' + ' medium: $medium,' + '}';
+    return 'ProductImage{${' small: $small,'}${' medium: $medium,'}}';
   }
 
   ProductImage copyWith({
     String small,
     String medium,
   }) {
-    return new ProductImage(
+    return  ProductImage(
       small: small ?? this.small,
       medium: medium ?? this.medium,
     );
@@ -43,13 +44,14 @@ class ProductImage {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'small': this.small,
-      'medium': this.medium,
+      'small': small,
+      'medium': medium,
     };
   }
 
+  // ignore: sort_constructors_first
   factory ProductImage.fromMap(Map<String, dynamic> map) {
-    return new ProductImage(
+    return  ProductImage(
       small: map['small'] as String,
       medium: map['medium'] as String,
     );

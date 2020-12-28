@@ -1,8 +1,9 @@
 import 'package:datebasejointest/utils/constants.dart';
-import 'package:flutter/material.dart';
 
 class FoodStuff {
-  int id;///moorの時は追加
+  int id;
+
+  ///moorの時は追加
   String foodStuffId; //UuidでつけるかautoIncrement
   String localImagePath; //カメラ・ギャラリーのイメージパス_File(localImagePath.path)で呼び出す
 //  String imageUrl;//network経由のproductImage、localImagePathあればいらない
@@ -18,6 +19,7 @@ class FoodStuff {
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
 
+  // ignore: sort_constructors_first
   FoodStuff({
     this.id,
     this.foodStuffId,
@@ -30,8 +32,6 @@ class FoodStuff {
     this.useAmount,
     this.restAmount,
   });
-
-
 }
 
 class AmountToEat {
@@ -41,5 +41,11 @@ class AmountToEat {
   MealType mealType; //朝食、昼食、間食、夕食
   int piece; //食べる個数
 
-  AmountToEat({this.foodStuffId,this.amountToEatId,this.date,this.mealType,this.piece});
+  // ignore: sort_constructors_first
+  AmountToEat(
+      {this.foodStuffId,
+      this.amountToEatId,
+      this.date,
+      this.mealType,
+      this.piece});
 }

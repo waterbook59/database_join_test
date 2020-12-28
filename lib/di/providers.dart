@@ -18,19 +18,19 @@ List<SingleChildWidget> globalProviders = [
   ...viewModels,
 ];
 
-
-List<SingleChildWidget> independentModels =[
+List<SingleChildWidget> independentModels = [
   Provider<MyProductInfoDB>(
-    create: (_)=>MyProductInfoDB(),
-    dispose: (_,db) =>db.close(),
+    create: (_) => MyProductInfoDB(),
+    dispose: (_, db) => db.close(),
   ),
   Provider<FoodStuffDB>(
-    create: (_)=>FoodStuffDB(),
-    dispose: (_,db) =>db.close(),
+    create: (_) => FoodStuffDB(),
+    dispose: (_, db) => db.close(),
   ),
+
   ///fireStore前におく
   Provider<DatabaseManager>(
-    create: (_)=>DatabaseManager(),
+    create: (_) => DatabaseManager(),
   )
 
   //  Provider<ProductApiService>(
@@ -40,19 +40,23 @@ List<SingleChildWidget> independentModels =[
 ];
 
 List<SingleChildWidget> dependentModels = [
-  ProxyProvider<MyProductInfoDB,ProductInfoDao>(
-    update: (_, db, dao)=>ProductInfoDao(db),
+  ProxyProvider<MyProductInfoDB, ProductInfoDao>(
+    update: (_, db, dao) => ProductInfoDao(db),
   ),
-  ProxyProvider<FoodStuffDB,FoodStuffDao>(
-    update: (_, db, dao)=>FoodStuffDao(db),
+  ProxyProvider<FoodStuffDB, FoodStuffDao>(
+    update: (_, db, dao) => FoodStuffDao(db),
   ),
+
   ///Firebase_authログイン関連
-  ProxyProvider<DatabaseManager,UserRepository >(
-    update: (_, dbManager, userRepo)=>UserRepository(databaseManager: dbManager),
+  ProxyProvider<DatabaseManager, UserRepository>(
+    update: (_, dbManager, userRepo) =>
+        UserRepository(databaseManager: dbManager),
   ),
+
   ///Firebaseアップロード関連
-  ProxyProvider<DatabaseManager,PostRepository >(
-    update: (_, dbManager, postRepo)=>PostRepository(databaseManager: dbManager),
+  ProxyProvider<DatabaseManager, PostRepository>(
+    update: (_, dbManager, postRepo) =>
+        PostRepository(databaseManager: dbManager),
   ),
 //  ProxyProvider<ProductInfoDao,MenuRepository>(
 //    update: (_, dao, repository)=>MenuRepository(productInfoDao: dao),
@@ -60,10 +64,10 @@ List<SingleChildWidget> dependentModels = [
 
 //todo Proxyprovider2にしてFoodStuffDao加える,
 //todo Proxyprovider2にしてApiService加える,
-//todo Proxyprovider3にしてApiService,ProductInfoDao,FoodStuffDaoをDataRepositoryにまとめる
-  ProxyProvider2<ProductInfoDao,FoodStuffDao,DataRepository>(
-    update: (_, productDao, foodDao,repository)=>
-        DataRepository(productInfoDao: productDao,foodStuffDao:foodDao),
+//Proxyprovider3にしてApiService,ProductInfoDao,FoodStuffDaoをDataRepositoryにまとめる
+  ProxyProvider2<ProductInfoDao, FoodStuffDao, DataRepository>(
+    update: (_, productDao, foodDao, repository) =>
+        DataRepository(productInfoDao: productDao, foodStuffDao: foodDao),
   ),
 
 //todo menuRepository=>database
@@ -74,28 +78,26 @@ List<SingleChildWidget> dependentModels = [
 ];
 
 //chapter98 RepositoryにChangeNotifierProxyProvider
-List<SingleChildWidget> viewModels =[
-
+List<SingleChildWidget> viewModels = [
   //todo カテゴリや使う商品と登録データを紐づけるので、repositoryはDataRepositoryに集約
   ChangeNotifierProvider<CategorySelectViewModel>(
-    create: (context)=> CategorySelectViewModel(
-      repository:Provider.of<DataRepository>(context, listen: false),
+    create: (context) => CategorySelectViewModel(
+      repository: Provider.of<DataRepository>(context, listen: false),
     ),
   ),
   ChangeNotifierProvider<DataRegistrationViewModel>(
-
-    create: (context)=> DataRegistrationViewModel(
-      dataRepository:Provider.of<DataRepository>(context, listen: false),
-      userRepository:Provider.of<UserRepository>(context, listen: false),
-      postRepository:Provider.of<PostRepository>(context, listen: false),
-    )
+      create: (context) => DataRegistrationViewModel(
+            dataRepository: Provider.of<DataRepository>(context, listen: false),
+            userRepository: Provider.of<UserRepository>(context, listen: false),
+            postRepository: Provider.of<PostRepository>(context, listen: false),
+          )
 //      ..getFoodStuffListRealtime(),
-  ),
+      ),
+
   ///Firebase_auth匿名ログイン関連
   ChangeNotifierProvider<LoginViewModel>(
-    create: (context)=>LoginViewModel(
+    create: (context) => LoginViewModel(
       userRepository: Provider.of<UserRepository>(context, listen: false),
     ),
   )
-
 ];

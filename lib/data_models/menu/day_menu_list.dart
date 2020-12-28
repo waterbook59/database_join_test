@@ -1,6 +1,5 @@
 
 import 'package:datebasejointest/data_models/menu/food_stuff.dart';
-import 'package:datebasejointest/data_models/product.dart';
 import 'category_list.dart';
 
 class DayMenuList {

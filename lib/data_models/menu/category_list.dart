@@ -9,13 +9,13 @@ List<Category> categories = [
     id: 1,
     categoryText: '水・ジュース',
     ///CategorySelectScreenのアイコン
-    categoryIcon: Icon(Icons.local_drink),
+    categoryIcon: const Icon(Icons.local_drink),
     isSelected: false,
   ),
   Category(
     id: 2,
     categoryText: 'ごはん',
-    categoryIcon: Icon(Icons.airplanemode_active),
+    categoryIcon: const Icon(Icons.airplanemode_active),
     //Icon(IconData(59789)),
     isSelected: false,
   ),
@@ -28,20 +28,20 @@ List<Category> categories = [
   Category(
     id: 4,
     categoryText: '汁物・スープ',
-    categoryIcon: Icon(Icons.extension),
+    categoryIcon: const Icon(Icons.extension),
     //const Icon(IconData(59607)),
     isSelected: false,
   ),
   Category(
     id: 5,
     categoryText: 'おかず',
-    categoryIcon: Icon(Icons.assignment_returned),
+    categoryIcon: const Icon(Icons.assignment_returned),
     isSelected: false,
   ),
   Category(
     id: 6,
     categoryText: '缶詰',
-    categoryIcon: Icon(Icons.audiotrack),
+    categoryIcon: const Icon(Icons.audiotrack),
     isSelected: false,
   ),
 
@@ -81,13 +81,13 @@ List<String> categoryText = [
 //上のテキストに対応したアイコン
 ///アコーディオンメニューに出てくるアイコン
 List<Widget> categoryIcon = [
-  Icon(Icons.local_drink),
-  Icon(Icons.airplanemode_active),
+  const Icon(Icons.local_drink),
+  const Icon(Icons.airplanemode_active),
   // Icon(IconData(59789)), //rice_bowl
-  FaIcon(FontAwesomeIcons.breadSlice),
-  Icon(Icons.extension),
-  Icon(Icons.assignment_returned),
-  Icon(Icons.audiotrack),
+  const FaIcon(FontAwesomeIcons.breadSlice),
+  const Icon(Icons.extension),
+  const Icon(Icons.assignment_returned),
+  const Icon(Icons.audiotrack),
 
   // Icon(IconData(59607)), //outdoor_grill)
 ];

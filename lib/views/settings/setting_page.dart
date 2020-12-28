@@ -6,7 +6,7 @@ class SettingPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: const[
           Text('開発タスク一覧'),
           Text('通知関連'),
           Text('ご要望・お問い合わせ'),

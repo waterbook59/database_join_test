@@ -11,10 +11,12 @@ class ProductRecord extends DataClass implements Insertable<ProductRecord> {
   final String productId;
   final String name;
   final String description;
+  // ignore: sort_constructors_first
   ProductRecord(
       {@required this.productId,
       @required this.name,
       @required this.description});
+  // ignore: sort_constructors_first
   factory ProductRecord.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -55,6 +57,7 @@ class ProductRecord extends DataClass implements Insertable<ProductRecord> {
     );
   }
 
+  // ignore: sort_constructors_first
   factory ProductRecord.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -106,11 +109,13 @@ class ProductRecordsCompanion extends UpdateCompanion<ProductRecord> {
   final Value<String> productId;
   final Value<String> name;
   final Value<String> description;
+  // ignore: sort_constructors_first
   const ProductRecordsCompanion({
     this.productId = const Value.absent(),
     this.name = const Value.absent(),
     this.description = const Value.absent(),
   });
+  // ignore: sort_constructors_first
   ProductRecordsCompanion.insert({
     @required String productId,
     @required String name,
@@ -171,6 +176,7 @@ class $ProductRecordsTable extends ProductRecords
     with TableInfo<$ProductRecordsTable, ProductRecord> {
   final GeneratedDatabase _db;
   final String _alias;
+  // ignore: sort_constructors_first
   $ProductRecordsTable(this._db, [this._alias]);
   final VerificationMeta _productIdMeta = const VerificationMeta('productId');
   GeneratedTextColumn _productId;
@@ -266,11 +272,13 @@ class ProductRecordImage extends DataClass
   final String imageId;
   final String small;
   final String medium;
+  // ignore: sort_constructors_first
   ProductRecordImage(
       {@required this.productId,
       @required this.imageId,
       @required this.small,
       @required this.medium});
+  // ignore: sort_constructors_first
   factory ProductRecordImage.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -320,6 +328,7 @@ class ProductRecordImage extends DataClass
     );
   }
 
+  // ignore: sort_constructors_first
   factory ProductRecordImage.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -378,12 +387,14 @@ class ProductRecordImagesCompanion extends UpdateCompanion<ProductRecordImage> {
   final Value<String> imageId;
   final Value<String> small;
   final Value<String> medium;
+  // ignore: sort_constructors_first
   const ProductRecordImagesCompanion({
     this.productId = const Value.absent(),
     this.imageId = const Value.absent(),
     this.small = const Value.absent(),
     this.medium = const Value.absent(),
   });
+  // ignore: sort_constructors_first
   ProductRecordImagesCompanion.insert({
     @required String productId,
     @required String imageId,
@@ -454,6 +465,7 @@ class $ProductRecordImagesTable extends ProductRecordImages
     with TableInfo<$ProductRecordImagesTable, ProductRecordImage> {
   final GeneratedDatabase _db;
   final String _alias;
+  // ignore: sort_constructors_first
   $ProductRecordImagesTable(this._db, [this._alias]);
   final VerificationMeta _productIdMeta = const VerificationMeta('productId');
   GeneratedTextColumn _productId;
@@ -562,10 +574,12 @@ class ProductWithImage extends DataClass
   final int idProductWithImage;
   final String product;
   final String image;
+  // ignore: sort_constructors_first
   ProductWithImage(
       {@required this.idProductWithImage,
       @required this.product,
       @required this.image});
+  // ignore: sort_constructors_first
   factory ProductWithImage.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -609,6 +623,7 @@ class ProductWithImage extends DataClass
     );
   }
 
+  // ignore: sort_constructors_first
   factory ProductWithImage.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -661,11 +676,13 @@ class ProductWithImagesCompanion extends UpdateCompanion<ProductWithImage> {
   final Value<int> idProductWithImage;
   final Value<String> product;
   final Value<String> image;
+  // ignore: sort_constructors_first
   const ProductWithImagesCompanion({
     this.idProductWithImage = const Value.absent(),
     this.product = const Value.absent(),
     this.image = const Value.absent(),
   });
+  // ignore: sort_constructors_first
   ProductWithImagesCompanion.insert({
     this.idProductWithImage = const Value.absent(),
     @required String product,
@@ -726,6 +743,7 @@ class $ProductWithImagesTable extends ProductWithImages
     with TableInfo<$ProductWithImagesTable, ProductWithImage> {
   final GeneratedDatabase _db;
   final String _alias;
+  // ignore: sort_constructors_first
   $ProductWithImagesTable(this._db, [this._alias]);
   final VerificationMeta _idProductWithImageMeta =
       const VerificationMeta('idProductWithImage');

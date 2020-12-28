@@ -83,7 +83,7 @@ class JapaneseCupertinoLocalizations implements CupertinoLocalizations {
   String datePickerHour(int hour) => hour.toString();
 
   @override
-  String datePickerHourSemanticsLabel(int hour) => hour.toString() + "時";
+  String datePickerHourSemanticsLabel(int hour) => hour.toString() + '時';
 
   @override
   String datePickerMinute(int minute) => minute.toString().padLeft(2, '0');
@@ -170,12 +170,12 @@ class JapaneseCupertinoLocalizations implements CupertinoLocalizations {
   _CupertinoLocalizationDelegate();
 
   @override
-  // TODO: implement modalBarrierDismissLabel
+  //todo implement modalBarrierDismissLabel
   String get modalBarrierDismissLabel => throw UnimplementedError();
 
   @override
   String tabSemanticsLabel({int tabIndex, int tabCount}) {
-    // TODO: implement tabSemanticsLabel
+    //todo implement tabSemanticsLabel
     throw UnimplementedError();
   }
 }

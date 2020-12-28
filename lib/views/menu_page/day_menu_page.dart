@@ -1,4 +1,3 @@
-
 import 'package:datebasejointest/data_models/menu/category_list.dart';
 import 'package:datebasejointest/utils/constants.dart';
 import 'package:datebasejointest/view_model/category_select_view_model.dart';
@@ -19,19 +18,20 @@ class DayMenuPage extends StatefulWidget {
   _DayMenuPageState createState() => _DayMenuPageState();
 }
 
-class _DayMenuPageState extends State<DayMenuPage> with TickerProviderStateMixin {
-
+class _DayMenuPageState extends State<DayMenuPage>
+    with TickerProviderStateMixin {
   TabController _tabController;
+
 //  List<String> _titles = [
 //    "1日目",
 //    "2日目",
 //    "3日目",
 //  ];
 
-  final _tab = <Tab> [
-    Tab( text:'1日目', icon: Icon(Icons.directions_car)),
-    Tab( text:'2日目', icon: Icon(Icons.directions_bike)),
-    Tab( text:'3日目', icon: Icon(Icons.directions_boat)),
+  final _tab = <Tab>[
+   const Tab(text: '1日目', icon: Icon(Icons.directions_car)),
+   const Tab(text: '2日目', icon: Icon(Icons.directions_bike)),
+   const Tab(text: '3日目', icon: Icon(Icons.directions_boat)),
   ];
 
   @override
@@ -57,7 +57,7 @@ class _DayMenuPageState extends State<DayMenuPage> with TickerProviderStateMixin
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('DayMenu'),
+        title: const Text('DayMenu'),
         bottom: TabBar(
           controller: _tabController,
           tabs: _tab,
@@ -79,13 +79,13 @@ class _DayMenuPageState extends State<DayMenuPage> with TickerProviderStateMixin
               Padding(
                   padding: const EdgeInsets.all(8),
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.transparent,
                     ),
                     child: RadiusExpansionTile(
                         animatedWidgetFollowingHeader: const Icon(
                           Icons.expand_more,
-                          color: const Color(0xFF707070),
+                          color: Color(0xFF707070),
                         ),
                         headerExpanded: Flexible(
                             child: Container(
@@ -93,7 +93,7 @@ class _DayMenuPageState extends State<DayMenuPage> with TickerProviderStateMixin
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 height: 50,
-                                child: Center(child: Text('メニュー')))),
+                                child: const Center(child: Text('メニュー')))),
                         header: Flexible(
                           child: Container(
                               decoration: BoxDecoration(
@@ -101,114 +101,110 @@ class _DayMenuPageState extends State<DayMenuPage> with TickerProviderStateMixin
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               height: 50,
-                              child: Center(child: Text("１日目"))),
+                              child: const Center(child: Text('１日目'))),
                         ),
                         children: [
                           Column(
                             children: <Widget>[
                               Consumer<CategorySelectViewModel>(
                                   builder: (context, model, child) {
-                                    return Column(
-                                        children: [
-                                          MealTimePart(
-                                            mealTime: '朝',
-                                            backgroundColor: Colors.orangeAccent,
-                                            ///ここでMealType.breakfastを渡す
-                                            onAdd: () {
-                                              mealType = MealType.breakfast;
-                                              print('ソート前breakfastCategory：');
-                                              model.breakfastCategory.forEach((
-                                                  category) {
-                                                print("${category.id}:${category
-                                                    .categoryText}");
-                                              });
-                                              addCategory(context, mealType);
-                                            },
-                                          ),
+                                return Column(children: [
+                                  MealTimePart(
+                                    mealTime: '朝',
+                                    backgroundColor: Colors.orangeAccent,
 
-                                          ///categoryResultがnullじゃないときカテゴリ選択結果表示
-                                          model.breakfastCategory.isEmpty
-                                              ? Container()
-                                          //ここでcategoryResult.mealtype==MealType.breakfast ?SelctCategryPart:Container()
-                                              : SelectCategoryPart(
-                                            //todo ここでbreakfastCategoryの中のisSelectedがtrueだけのカテゴリを表示する
-                                            categoryResults: model
-                                                .breakfastCategory,
-                                          ),
-                                        ]
-                                    );
-                                  }
-                              ),
+                                    ///ここでMealType.breakfastを渡す
+                                    onAdd: () {
+                                      mealType = MealType.breakfast;
+                                      print('ソート前breakfastCategory：');
+                                      model.breakfastCategory
+                                          .forEach((category) {
+                              print('${category.id}:${category.categoryText}');
+                                      });
+                                      addCategory(context, mealType);
+                                    },
+                                  ),
+
+                                  ///categoryResultがnullじゃないときカテゴリ選択結果表示
+                                  model.breakfastCategory.isEmpty
+                                      ? Container()
+//ここでcategoryResult.mealtype==MealType.breakfast ?SelctCategryPart:Container()
+                                      : SelectCategoryPart(
+//todo ここでbreakfastCategoryの中のisSelectedがtrueだけのカテゴリを表示する
+                                          categoryResults:
+                                              model.breakfastCategory,
+                                        ),
+                                ]);
+                              }),
                               const Divider(
                                 height: 10,
                               ),
                               Consumer<CategorySelectViewModel>(
                                   builder: (context, model, child) {
-                                    return Column(
-                                      children: [
-                                        MealTimePart(
-                                          mealTime: '昼',
-                                          backgroundColor: Colors.orangeAccent,
-                                          onAdd: () {
-                                            mealType = MealType.lunch;
-                                            addCategory(context, mealType);
-                                          },
-                                        ),
-                                        //todo MealType.lunchだけ表示するには？
-                                        model.lunchCategory.isEmpty
-                                            ? Container()
-                                            : SelectCategoryPart(
-                                          categoryResults: model.lunchCategory,
-                                        ),
-                                      ],
-                                    );
-                                  }
-                              ),
+                                return Column(
+                                  children: [
+                                    MealTimePart(
+                                      mealTime: '昼',
+                                      backgroundColor: Colors.orangeAccent,
+                                      onAdd: () {
+                                        mealType = MealType.lunch;
+                                        addCategory(context, mealType);
+                                      },
+                                    ),
+                                    //todo MealType.lunchだけ表示するには？
+                                    model.lunchCategory.isEmpty
+                                        ? Container()
+                                        : SelectCategoryPart(
+                                            categoryResults:
+                                                model.lunchCategory,
+                                          ),
+                                  ],
+                                );
+                              }),
                               const Divider(),
                               Consumer<CategorySelectViewModel>(
                                   builder: (context, model, child) {
-                                    return Column(
-                                      children: [
-                                        MealTimePart(
-                                          mealTime: '間食',
-                                          backgroundColor: Colors.orangeAccent,
-                                          onAdd: () {
-                                            mealType = MealType.snack;
-                                            addCategory(context, mealType);
-                                          },
-                                        ),
-                                        model.snackCategory.isEmpty
-                                            ? Container()
-                                            : SelectCategoryPart(
-                                          categoryResults: model.snackCategory,
-                                        ),
-                                      ],
-                                    );
-                                  }
-                              ),
-
+                                return Column(
+                                  children: [
+                                    MealTimePart(
+                                      mealTime: '間食',
+                                      backgroundColor: Colors.orangeAccent,
+                                      onAdd: () {
+                                        mealType = MealType.snack;
+                                        addCategory(context, mealType);
+                                      },
+                                    ),
+                                    model.snackCategory.isEmpty
+                                        ? Container()
+                                        : SelectCategoryPart(
+                                            categoryResults:
+                                                model.snackCategory,
+                                          ),
+                                  ],
+                                );
+                              }),
                               const Divider(),
                               Consumer<CategorySelectViewModel>(
                                   builder: (context, model, child) {
-                                    return Column(
-                                      children: [
-                                        MealTimePart(
-                                          mealTime: '夜',
-                                          backgroundColor: Colors.orangeAccent,
-                                          onAdd: () {
-                                            mealType = MealType.dinner;
-                                            addCategory(context, mealType);
-                                          },
-                                        ),
-                                        model.dinnerCategory.isEmpty
-                                            ? Container()
-                                            : SelectCategoryPart(
-                                          categoryResults: model.dinnerCategory,
-                                        ),
-                                      ],
-                                    );
-                                  }
-                              ),
+                                return Column(
+                                  children: [
+                                    MealTimePart(
+                                      mealTime: '夜',
+                                      backgroundColor: Colors.orangeAccent,
+                                      onAdd: () {
+                                        mealType = MealType.dinner;
+                                        addCategory(context, mealType);
+                                      },
+                                    ),
+                                    model.dinnerCategory.isEmpty
+                                        ? Container()
+                                        : SelectCategoryPart(
+                                            categoryResults:
+                                                model.dinnerCategory,
+                                          ),
+                                  ],
+                                );
+                              }),
                             ],
                           ),
                         ]),
@@ -221,7 +217,7 @@ class _DayMenuPageState extends State<DayMenuPage> with TickerProviderStateMixin
   }
 
   //todo タップするとカテゴリ追加ページに
-  void addCategory(BuildContext context, MealType mealType) async {
+  Future<void> addCategory(BuildContext context, MealType mealType) async {
     await Navigator.push<dynamic>(
       context,
       MaterialPageRoute<dynamic>(

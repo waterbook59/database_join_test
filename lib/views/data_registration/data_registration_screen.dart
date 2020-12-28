@@ -297,7 +297,7 @@ class DataRegistrationScreen extends StatelessWidget {
         actions: <Widget>[
            FlatButton(
             onPressed: () => Navigator.pop(context),
-            child: new Text('キャンセル'),
+            child: const Text('キャンセル'),
           ),
            FlatButton(
             onPressed: () async{

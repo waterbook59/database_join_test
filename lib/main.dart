@@ -6,12 +6,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'localize/japanese_cupertion_localizations.dart' as jcl;
 import 'package:provider/provider.dart';
+import 'localize/japanese_cupertion_localizations.dart' as jcl;
+
 
 //MyProductInfoDB myProductInfoDB;
 
-void main() async{
+Future<void> main() async{
   ///main関数での非同期処理
   WidgetsFlutterBinding.ensureInitialized();
   ///firebase_core 0.5.0以上の時初期化必要
@@ -43,11 +44,11 @@ class MyApp extends StatelessWidget {
         DefaultCupertinoLocalizations.delegate,
         jcl.JapaneseCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
-        const Locale('en', 'US'),
-        const Locale('ja', 'JP'),
+      supportedLocales: const [
+         Locale('en', 'US'),
+         Locale('ja', 'JP'),
       ],
-      locale: Locale('ja', 'JP'),
+      locale: const Locale('ja', 'JP'),
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,

@@ -1,27 +1,32 @@
-
-
 import 'package:flutter/material.dart';
 
 class FoodStuffFB {
   String foodStuffId; //UuidでつけるかautoIncrement
-  String userId;///Firebaseへ投稿したユーザーのID
-  String imageUrl;///Firebase
-  String imageStoragePath;///Firebase storageのパス
-  DateTime postDatetime;///投稿日時
+  String userId;
+
+  ///Firebaseへ投稿したユーザーのID
+  String imageUrl;
+
+  ///Firebase
+  String imageStoragePath;
+
+  ///Firebase storageのパス
+  DateTime postDatetime;
+
+  ///投稿日時
   String name;
   String category;
-  DateTime validDate;//有効期限
+  DateTime validDate; //有効期限
   String storage; //保管場所
   int amount; //総量
   int useAmount; //メニュー内で使う量
-  int restAmount;//メニュー内に登録してない量
+  int restAmount; //メニュー内に登録してない量
 //○日目の朝には○個食べるという量が必要
 //  List<AmountToEat> amountToEatList;
 
-
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
 
-
+  // ignore: sort_constructors_first
   FoodStuffFB({
     @required this.foodStuffId,
     @required this.userId,
@@ -37,25 +42,23 @@ class FoodStuffFB {
     @required this.restAmount,
   });
 
-@override
+  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          (other is FoodStuffFB &&
-              runtimeType == other.runtimeType &&
-              foodStuffId == other.foodStuffId &&
-              userId == other.userId &&
-              imageUrl == other.imageUrl &&
-              imageStoragePath == other.imageStoragePath &&
-              postDatetime == other.postDatetime &&
-              name == other.name &&
-              category == other.category &&
-              validDate == other.validDate &&
-              storage == other.storage &&
-              amount == other.amount &&
-              useAmount == other.useAmount &&
-              restAmount == other.restAmount
-          );
-
+      (other is FoodStuffFB &&
+          runtimeType == other.runtimeType &&
+          foodStuffId == other.foodStuffId &&
+          userId == other.userId &&
+          imageUrl == other.imageUrl &&
+          imageStoragePath == other.imageStoragePath &&
+          postDatetime == other.postDatetime &&
+          name == other.name &&
+          category == other.category &&
+          validDate == other.validDate &&
+          storage == other.storage &&
+          amount == other.amount &&
+          useAmount == other.useAmount &&
+          restAmount == other.restAmount);
 
   @override
   int get hashCode =>
@@ -72,25 +75,20 @@ class FoodStuffFB {
       useAmount.hashCode ^
       restAmount.hashCode;
 
-
   @override
   String toString() {
-    return 'FoodStuffFB{' +
-        ' foodStuffId: $foodStuffId,' +
-        ' userId: $userId,' +
-        ' imageUrl: $imageUrl,' +
-        ' imageStoragePath: $imageStoragePath,' +
-        ' postDatetime: $postDatetime,' +
-        ' name: $name,' +
-        ' category: $category,' +
-        ' validDate: $validDate,' +
-        ' storage: $storage,' +
-        ' amount: $amount,' +
-        ' useAmount: $useAmount,' +
-        ' restAmount: $restAmount,' +
-        '}';
+    return 'FoodStuffFB{${
+        ' foodStuffId: $foodStuffId,'
+    }${' userId: $userId,'
+    }${' imageUrl: $imageUrl,'
+    }${' imageStoragePath: $imageStoragePath,'
+    }${' postDatetime: $postDatetime,'
+    }${' name: $name,'}${' category: $category,'
+    }${' validDate: $validDate,'
+    }${' storage: $storage,'
+    }${' amount: $amount,'
+    }${' useAmount: $useAmount,'}${' restAmount: $restAmount,'}}';
   }
-
 
   FoodStuffFB copyWith({
     String foodStuffId,
@@ -106,7 +104,7 @@ class FoodStuffFB {
     int useAmount,
     int restAmount,
   }) {
-    return new FoodStuffFB(
+    return  FoodStuffFB(
       foodStuffId: foodStuffId ?? this.foodStuffId,
       userId: userId ?? this.userId,
       imageUrl: imageUrl ?? this.imageUrl,
@@ -122,36 +120,36 @@ class FoodStuffFB {
     );
   }
 
-
   Map<String, dynamic> toMap() {
-    return <String,dynamic>{
-      'foodStuffId': this.foodStuffId,
-      'userId': this.userId,
-      'imageUrl': this.imageUrl,
-      'imageStoragePath': this.imageStoragePath,
-      'postDatetime': this.postDatetime.toIso8601String(),
-      'name': this.name,
-      'category': this.category,
-      'validDate': this.validDate.toIso8601String(),
-      'storage': this.storage,
-      'amount': this.amount,
-      'useAmount': this.useAmount,
-      'restAmount': this.restAmount,
+    return <String, dynamic>{
+      'foodStuffId': foodStuffId,
+      'userId': userId,
+      'imageUrl': imageUrl,
+      'imageStoragePath': imageStoragePath,
+      'postDatetime': postDatetime.toIso8601String(),
+      'name': name,
+      'category': category,
+      'validDate': validDate.toIso8601String(),
+      'storage': storage,
+      'amount': amount,
+      'useAmount': useAmount,
+      'restAmount': restAmount,
     };
   }
 
+  // ignore: sort_constructors_first
   factory FoodStuffFB.fromMap(Map<String, dynamic> map) {
-    return new FoodStuffFB(
+    return  FoodStuffFB(
       foodStuffId: map['foodStuffId'] as String,
       userId: map['userId'] as String,
       imageUrl: map['imageUrl'] as String,
       imageStoragePath: map['imageStoragePath'] as String,
-      postDatetime: map['postDatetime'] ==null
+      postDatetime: map['postDatetime'] == null
           ? null
           : DateTime.parse(map['postDatetime'] as String),
       name: map['name'] as String,
       category: map['category'] as String,
-      validDate: map['validDate']==null
+      validDate: map['validDate'] == null
           ? null
           : DateTime.parse(map['validDate'] as String),
       storage: map['storage'] as String,
@@ -161,9 +159,6 @@ class FoodStuffFB {
     );
   }
 
-
-  //</editor-fold>
-
+//</editor-fold>
 
 }
-

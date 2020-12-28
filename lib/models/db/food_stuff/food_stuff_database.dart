@@ -11,7 +11,8 @@ part 'food_stuff_database.g.dart';
 
 //テーブルfood_stuff
 class FoodStuffRecords extends Table{
-//  IntColumn get id => integer().autoIncrement().customConstraint('PRIMARY KEY ON CONFLICT REPLACE')as IntColumn;
+//  IntColumn get id => integer().autoIncrement().
+//  customConstraint('PRIMARY KEY ON CONFLICT REPLACE')as IntColumn;
   IntColumn get id =>integer().autoIncrement()();
   TextColumn get foodStuffId => text()();
   TextColumn get localImagePath => text()();
@@ -20,11 +21,13 @@ class FoodStuffRecords extends Table{
   TextColumn get storage => text().nullable()();
   DateTimeColumn get validDate => dateTime().nullable()();
   IntColumn get amount =>integer()();
-  IntColumn get useAmount=>integer().withDefault(const Constant(0))();// メニュー内で使う量、初期ゼロ
+  IntColumn get useAmount
+  =>integer().withDefault(const Constant(0))();// メニュー内で使う量、初期ゼロ
   //IntColumn get restAmount=>integer().withDefault(amount)();// メニューで使ってない量、初期amountと同じ
   ///初期値に変数設定でエラー
   IntColumn get restAmount=>integer()();
-///idをprimaryKeyから外してコード生成するとTables can't override primaryKey and use autoIncrement()のエラー出ない
+///idをprimaryKeyから外してコード生成すると、
+  ///Tables can't override primaryKey and use autoIncrement()のエラー出ない
   @override
   Set<Column> get primaryKey => {id};
 }

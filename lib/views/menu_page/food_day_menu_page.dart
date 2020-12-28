@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 //import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 
+// ignore: must_be_immutable
 class FoodDayMenuPage extends StatefulWidget {
   FoodDayMenuPage({this.categoryResult});
 
@@ -19,19 +20,21 @@ class FoodDayMenuPage extends StatefulWidget {
   _FoodDayMenuPageState createState() => _FoodDayMenuPageState();
 }
 
-class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderStateMixin {
+class _FoodDayMenuPageState extends State<FoodDayMenuPage>
+    with TickerProviderStateMixin {
 
   TabController _tabController;
+
 //  List<String> _titles = [
 //    "1日目",
 //    "2日目",
 //    "3日目",
 //  ];
 
-  final _tab = <Tab> [
-    Tab( text:'1日目', icon: Icon(Icons.directions_car)),
-    Tab( text:'2日目', icon: Icon(Icons.directions_bike)),
-    Tab( text:'3日目', icon: Icon(Icons.directions_boat)),
+  final _tab = <Tab>[
+    const Tab(text: '1日目', icon: Icon(Icons.directions_car)),
+    const Tab(text: '2日目', icon: Icon(Icons.directions_bike)),
+    const Tab(text: '3日目', icon: Icon(Icons.directions_boat)),
   ];
 
   @override
@@ -57,7 +60,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('DayMenu'),
+        title: const Text('DayMenu'),
         bottom: TabBar(
           controller: _tabController,
           tabs: _tab,
@@ -74,13 +77,13 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
               Padding(
                   padding: const EdgeInsets.all(8),
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.transparent,
                     ),
                     child: RadiusExpansionTile(
                         animatedWidgetFollowingHeader: const Icon(
                           Icons.expand_more,
-                          color: const Color(0xFF707070),
+                          color: Color(0xFF707070),
                         ),
                         headerExpanded: Flexible(
                             child: Container(
@@ -88,7 +91,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 height: 50,
-                                child: Center(child: Text('朝のメニュー')))),
+                                child: const Center(child: Text('朝のメニュー')))),
                         header: Flexible(
                           child: Container(
                               decoration: BoxDecoration(
@@ -96,7 +99,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               height: 50,
-                              child: Center(child: Text("朝"))),
+                              child: const Center(child: Text('朝'))),
                         ),
                         children: [
                           Column(
@@ -107,15 +110,17 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                         children: [
                                           MealTimePart(
                                             mealTime: '朝',
-                                            backgroundColor: Colors.orangeAccent,
+                                            backgroundColor: Colors
+                                                .orangeAccent,
+
                                             ///ここでMealType.breakfastを渡す
                                             onAdd: () {
                                               mealType = MealType.breakfast;
                                               print('ソート前breakfastCategory：');
                                               model.breakfastCategory.forEach((
                                                   category) {
-                                                print("${category.id}:${category
-                                                    .categoryText}");
+                                                print('${category.id}:${category
+                                                    .categoryText}');
                                               });
                                               addCategory(context, mealType);
                                             },
@@ -124,9 +129,9 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                           ///categoryResultがnullじゃないときカテゴリ選択結果表示
                                           model.breakfastCategory.isEmpty
                                               ? Container()
-                                          //ここでcategoryResult.mealtype==MealType.breakfast ?SelctCategryPart:Container()
+//ここでcategoryResult.mealtype==MealType.breakfast ?SelctCategryPart:Container()
                                               : SelectCategoryPart(
-                                            //todo ここでbreakfastCategoryの中のisSelectedがtrueだけのカテゴリを表示する
+//todo ここでbreakfastCategoryの中のisSelectedがtrueだけのカテゴリを表示する
                                             categoryResults: model
                                                 .breakfastCategory,
                                           ),
@@ -144,13 +149,13 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.transparent,
                     ),
                     child: RadiusExpansionTile(
                         animatedWidgetFollowingHeader: const Icon(
                           Icons.expand_more,
-                          color: const Color(0xFF707070),
+                          color: Color(0xFF707070),
                         ),
                         headerExpanded: Flexible(
                             child: Container(
@@ -158,7 +163,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 height: 50,
-                                child: Center(child: Text('昼のメニュー')))),
+                                child: const Center(child: Text('昼のメニュー')))),
                         header: Flexible(
                           child: Container(
                               decoration: BoxDecoration(
@@ -166,7 +171,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               height: 50,
-                              child: Center(child: Text("昼"))),
+                              child: const Center(child: Text('昼'))),
                         ),
                         children: [
                           Column(
@@ -177,15 +182,17 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                         children: [
                                           MealTimePart(
                                             mealTime: '昼',
-                                            backgroundColor: Colors.orangeAccent,
+                                            backgroundColor: Colors
+                                                .orangeAccent,
+
                                             ///ここでMealType.breakfastを渡す
                                             onAdd: () {
                                               mealType = MealType.breakfast;
                                               print('ソート前breakfastCategory：');
                                               model.breakfastCategory.forEach((
                                                   category) {
-                                                print("${category.id}:${category
-                                                    .categoryText}");
+                                                print('${category.id}:${category
+                                                    .categoryText}');
                                               });
                                               addCategory(context, mealType);
                                             },
@@ -194,9 +201,9 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                           ///categoryResultがnullじゃないときカテゴリ選択結果表示
                                           model.breakfastCategory.isEmpty
                                               ? Container()
-                                          //ここでcategoryResult.mealtype==MealType.breakfast ?SelctCategryPart:Container()
+//ここでcategoryResult.mealtype==MealType.breakfast ?SelctCategryPart:Container()
                                               : SelectCategoryPart(
-                                            //todo ここでbreakfastCategoryの中のisSelectedがtrueだけのカテゴリを表示する
+//todo ここでbreakfastCategoryの中のisSelectedがtrueだけのカテゴリを表示する
                                             categoryResults: model
                                                 .breakfastCategory,
                                           ),
@@ -214,13 +221,13 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.transparent,
                     ),
                     child: RadiusExpansionTile(
                         animatedWidgetFollowingHeader: const Icon(
                           Icons.expand_more,
-                          color: const Color(0xFF707070),
+                          color: Color(0xFF707070),
                         ),
                         headerExpanded: Flexible(
                             child: Container(
@@ -228,7 +235,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 height: 50,
-                                child: Center(child: Text('間食メニュー')))),
+                                child: const Center(child: Text('間食メニュー')))),
                         header: Flexible(
                           child: Container(
                               decoration: BoxDecoration(
@@ -236,7 +243,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               height: 50,
-                              child: Center(child: Text("間食"))),
+                              child: const Center(child: Text('間食'))),
                         ),
                         children: [
                           Column(
@@ -247,15 +254,17 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                         children: [
                                           MealTimePart(
                                             mealTime: '朝',
-                                            backgroundColor: Colors.orangeAccent,
+                                            backgroundColor: Colors
+                                                .orangeAccent,
+
                                             ///ここでMealType.breakfastを渡す
                                             onAdd: () {
                                               mealType = MealType.breakfast;
                                               print('ソート前breakfastCategory：');
                                               model.breakfastCategory.forEach((
                                                   category) {
-                                                print("${category.id}:${category
-                                                    .categoryText}");
+                                                print('${category.id}:${category
+                                                    .categoryText}');
                                               });
                                               addCategory(context, mealType);
                                             },
@@ -264,9 +273,9 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                           ///categoryResultがnullじゃないときカテゴリ選択結果表示
                                           model.breakfastCategory.isEmpty
                                               ? Container()
-                                          //ここでcategoryResult.mealtype==MealType.breakfast ?SelctCategryPart:Container()
+//ここでcategoryResult.mealtype==MealType.breakfast ?SelctCategryPart:Container()
                                               : SelectCategoryPart(
-                                            //todo ここでbreakfastCategoryの中のisSelectedがtrueだけのカテゴリを表示する
+//todo ここでbreakfastCategoryの中のisSelectedがtrueだけのカテゴリを表示する
                                             categoryResults: model
                                                 .breakfastCategory,
                                           ),
@@ -284,13 +293,13 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.transparent,
                     ),
                     child: RadiusExpansionTile(
                         animatedWidgetFollowingHeader: const Icon(
                           Icons.expand_more,
-                          color: const Color(0xFF707070),
+                          color: Color(0xFF707070),
                         ),
                         headerExpanded: Flexible(
                             child: Container(
@@ -298,7 +307,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 height: 50,
-                                child: Center(child: Text('夜のメニュー')))),
+                                child: const Center(child: Text('夜のメニュー')))),
                         header: Flexible(
                           child: Container(
                               decoration: BoxDecoration(
@@ -306,7 +315,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               height: 50,
-                              child: Center(child: Text("夜"))),
+                              child: const Center(child: Text('夜'))),
                         ),
                         children: [
                           Column(
@@ -317,15 +326,17 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                         children: [
                                           MealTimePart(
                                             mealTime: '朝',
-                                            backgroundColor: Colors.orangeAccent,
+                                            backgroundColor: Colors
+                                                .orangeAccent,
+
                                             ///ここでMealType.breakfastを渡す
                                             onAdd: () {
                                               mealType = MealType.breakfast;
                                               print('ソート前breakfastCategory：');
                                               model.breakfastCategory.forEach((
                                                   category) {
-                                                print("${category.id}:${category
-                                                    .categoryText}");
+                                                print('${category.id}:${category
+                                                    .categoryText}');
                                               });
                                               addCategory(context, mealType);
                                             },
@@ -334,9 +345,9 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
                                           ///categoryResultがnullじゃないときカテゴリ選択結果表示
                                           model.breakfastCategory.isEmpty
                                               ? Container()
-                                          //ここでcategoryResult.mealtype==MealType.breakfast ?SelctCategryPart:Container()
+//ここでcategoryResult.mealtype==MealType.breakfast ?SelctCategryPart:Container()
                                               : SelectCategoryPart(
-                                            //todo ここでbreakfastCategoryの中のisSelectedがtrueだけのカテゴリを表示する
+//todo ここでbreakfastCategoryの中のisSelectedがtrueだけのカテゴリを表示する
                                             categoryResults: model
                                                 .breakfastCategory,
                                           ),
@@ -360,7 +371,7 @@ class _FoodDayMenuPageState extends State<FoodDayMenuPage> with TickerProviderSt
   }
 
   //todo タップするとカテゴリ追加ページに
-  void addCategory(BuildContext context, MealType mealType) async {
+  Future<void> addCategory(BuildContext context, MealType mealType) async {
     await Navigator.push<dynamic>(
       context,
       MaterialPageRoute<dynamic>(

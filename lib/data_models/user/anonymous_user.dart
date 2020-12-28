@@ -8,6 +8,7 @@ class AnonymousUser{
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
 
+  // ignore: sort_constructors_first
   const AnonymousUser({
     @required this.userId,
     @required this.displayName,
@@ -37,12 +38,9 @@ class AnonymousUser{
 
   @override
   String toString() {
-    return 'AnonymousUser{' +
-        ' userId: $userId,' +
-        ' displayName: $displayName,' +
-        ' inAppUserName: $inAppUserName,' +
-        ' photoUrl: $photoUrl,' +
-        '}';
+    return 'AnonymousUser{${' userId: $userId,'
+    }${' displayName: $displayName,'
+    }${' inAppUserName: $inAppUserName,'}${' photoUrl: $photoUrl,'}}';
   }
 
 
@@ -52,7 +50,7 @@ class AnonymousUser{
     String inAppUserName,
     String photoUrl,
   }) {
-    return new AnonymousUser(
+    return AnonymousUser(
       userId: userId ?? this.userId,
       displayName: displayName ?? this.displayName,
       inAppUserName: inAppUserName ?? this.inAppUserName,
@@ -63,15 +61,16 @@ class AnonymousUser{
 
   Map<String, dynamic> toMap() {
     return <String,dynamic>{
-      'userId': this.userId,
-      'displayName': this.displayName,
-      'inAppUserName': this.inAppUserName,
-      'photoUrl': this.photoUrl,
+      'userId': userId,
+      'displayName': displayName,
+      'inAppUserName': inAppUserName,
+      'photoUrl': photoUrl,
     };
   }
 
+  // ignore: sort_constructors_first
   factory AnonymousUser.fromMap(Map<String, dynamic> map) {
-    return new AnonymousUser(
+    return  AnonymousUser(
       userId: map['userId'] as String,
       displayName: map['displayName'] as String,
       inAppUserName: map['inAppUserName'] as String,

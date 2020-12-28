@@ -14,13 +14,13 @@ class LoginScreen extends StatelessWidget {
         child: Consumer<LoginViewModel>(
           builder: (context, model, child) {
             return model.isLoading
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                      const Text('備蓄＋献立でもしものときを想定！Bichicon'),
                       const SizedBox(
-                        height: 8.0,
+                        height: 8,
                       ),
                       ButtonWithIcon(
                         icon: const FaIcon(FontAwesomeIcons.signInAlt),
