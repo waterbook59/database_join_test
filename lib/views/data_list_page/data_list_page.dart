@@ -92,8 +92,12 @@ class DataListPage extends StatelessWidget {
         MaterialPageRoute<bool>(
             builder: (context) => DataRegistrationScreen(),
             fullscreenDialog: true),);
-    if(result){
+    if(result){//result:trueの時だけデータリストを取りに行く再描画(notifyListenersする)
       print('resultがtrueの時は再描画：$result');
+      final viewModel =
+      Provider.of<DataRegistrationViewModel>(context, listen: false);
+      //todo dataRegistrationでグリグリ、DataListでもグリグリが出るので、こちらのグリグリは外すメソッドに変える
+      await viewModel.getFoodStuffsFB();
     }
   }
 

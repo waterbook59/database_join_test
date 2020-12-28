@@ -210,7 +210,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
           restAmount:int.parse(_productNumberController.text),
         );
         _isProcessing = false;
-        allClear();
+        await allClear();
         notifyListeners();
         break;
     ///ギャラリーからFBへデータ保存
@@ -379,6 +379,11 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
   _isProcessing = false;
   notifyListeners();
+  }
+  ///isProcessing出さない
+  Future<void> getFoodStuffsFB() async{
+    _foodStuffFBs =await _postRepository.getFoodStuffList(currentUser:UserRepository.currentModelUser);
+    notifyListeners();
   }
 
 ///FutureBuilder用
