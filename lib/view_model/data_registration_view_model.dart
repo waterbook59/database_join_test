@@ -20,8 +20,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
     DataRepository dataRepository,
     UserRepository userRepository,
     PostRepository postRepository,
-  })
-      : _dataRepository = dataRepository,
+  })  : _dataRepository = dataRepository,
         _userRepository = userRepository,
         _postRepository = postRepository;
 
@@ -34,51 +33,64 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
   ///登録データ格納 finalにすると変更通知できないのでしょ
   List<FoodStuff> _foodStuffs = <FoodStuff>[];
+
   List<FoodStuff> get foodStuffs => _foodStuffs;
 
   //firebaseデータ格納
   List<FoodStuffFB> _foodStuffFBs = <FoodStuffFB>[];
+
   List<FoodStuffFB> get foodStuffFBs => _foodStuffFBs;
 
   final List<Product> _products = variableProducts;
+
   List<Product> get products => _products;
 
   String _productUrl = '';
+
   String get productUrl => _productUrl;
 
   //商品名
   final TextEditingController _productNameController = TextEditingController();
+
   TextEditingController get productNameController => _productNameController;
 
   //カテゴリ
   final TextEditingController _productCategoryController =
       TextEditingController();
+
   TextEditingController get productCategoryController =>
       _productCategoryController;
 
   //数量
   final TextEditingController _productNumberController =
       TextEditingController();
+
   TextEditingController get productNumberController => _productNumberController;
 
   //期限
   final TextEditingController _dateEditController = TextEditingController();
+
   TextEditingController get dateEditController => _dateEditController;
 
   //保管場所
   final TextEditingController _productStorageController =
       TextEditingController();
+
   TextEditingController get productStorageController =>
       _productStorageController;
 
   DateTime _validDateTime = DateTime.now();
+
   DateTime get validDateTime => _validDateTime;
 
   String _barcodeScanRes = '';
+
   String get barcodeScanRes => _barcodeScanRes;
 
   bool _isProcessing = false;
+
   bool get isProcessing => _isProcessing;
+
   //画像とってくるときのグリグリ
   bool isImagePicked = false;
 
@@ -95,22 +107,20 @@ class DataRegistrationViewModel extends ChangeNotifier {
   bool isImagePickedFromGallery = false;
   bool isImagePickedFromNetwork = false;
 
-
 //  File get imageFromNetwork => null;
 
-///FoodStuffをローカル保存
+  ///FoodStuffをローカル保存
   Future<void> registerProductData(RecordStatus recordStatus) async {
 //viewModel層でモデルクラスに格納してrepositoryへ
-    switch(recordStatus){
+    switch (recordStatus) {
 
-  ///カメラからデータ保存
+      ///カメラからデータ保存
       case RecordStatus.camera:
         //todo imageFromCameraのデータ圧縮
 
         var localImage = await FileController.saveCachedImage(imageFromCamera);
-      FoodStuff foodStuff =
-      FoodStuff(
-        //idはautoIncrementするので、初期登録は何も入れなくて良い
+        FoodStuff foodStuff = FoodStuff(
+          //idはautoIncrementするので、初期登録は何も入れなくて良い
           foodStuffId: Uuid().v1(),
           name: _productNameController.text,
           category: _productCategoryController.text,
@@ -119,53 +129,53 @@ class DataRegistrationViewModel extends ChangeNotifier {
           amount: int.parse(_productNumberController.text),
           //useAmount,restAmountはDBで初期値設定
           // localImage.pathを保存する
-          localImagePath:localImage.path,
-          //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
-      );
-      await _dataRepository.registerProductData(foodStuff);
-        // DB登録と同時にキャッシュ画像の方は削除
-      imageFromCamera.delete();
-        //テキスト関連を全てクリア
-      allClear();
-        notifyListeners();
-        break;
-
-    ///ギャラリーからデータ保存
-      case RecordStatus.gallery:
-        ///cacheの画像データをlocal(app_flutter内)へコピー
-        var localImage = await FileController.saveCachedImage(imageFromGallery);
-        print('viewModelでのlocalImage.pathの値:${localImage.path}');
-        //finalへ変更
-        final foodStuff =
-        FoodStuff(
-          foodStuffId: Uuid().v1(),
-          name: _productNameController.text,
-          category: _productCategoryController.text,
-          validDate: _validDateTime,
-          storage: _productStorageController.text,
-          amount: int.parse(_productNumberController.text),
-          //useAmount,restAmountはDBで初期値設定
-          // localImage.pathを保存する
-          localImagePath:localImage.path,
+          localImagePath: localImage.path,
           //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
         );
         await _dataRepository.registerProductData(foodStuff);
-        /// DB登録と同時にキャッシュ画像の方は削除
-        ///imageFromGarellyはFile: '/data/user/0/com.example.datebasejointest/cache/image_pickerxxxxx.jpg'の形
-        imageFromGallery.delete();
-         // テキスト関連を全てクリア
+        // DB登録と同時にキャッシュ画像の方は削除
+        imageFromCamera.delete();
+        //テキスト関連を全てクリア
         allClear();
         notifyListeners();
         break;
 
-    ///ネットワークからデータ保存
+      ///ギャラリーからデータ保存
+      case RecordStatus.gallery:
+
+        ///cacheの画像データをlocal(app_flutter内)へコピー
+        var localImage = await FileController.saveCachedImage(imageFromGallery);
+        print('viewModelでのlocalImage.pathの値:${localImage.path}');
+        //finalへ変更
+        final foodStuff = FoodStuff(
+          foodStuffId: Uuid().v1(),
+          name: _productNameController.text,
+          category: _productCategoryController.text,
+          validDate: _validDateTime,
+          storage: _productStorageController.text,
+          amount: int.parse(_productNumberController.text),
+          //useAmount,restAmountはDBで初期値設定
+          // localImage.pathを保存する
+          localImagePath: localImage.path,
+          //amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
+        );
+        await _dataRepository.registerProductData(foodStuff);
+
+        /// DB登録と同時にキャッシュ画像の方は削除
+        ///imageFromGarellyはFile: '/data/user/0/com.example.datebasejointest/cache/image_pickerxxxxx.jpg'の形
+        imageFromGallery.delete();
+        // テキスト関連を全てクリア
+        allClear();
+        notifyListeners();
+        break;
+
+      ///ネットワークからデータ保存
       case RecordStatus.networkImage:
         //todo FileController.saveCachedImageに渡したimageFromNetworkがFileになってない
         var localImage = await FileController.saveCachedImage(imageFromNetwork);
         print('imageFromNetwork:$imageFromNetwork');
         //
-        FoodStuff foodStuff =
-        FoodStuff(
+        FoodStuff foodStuff = FoodStuff(
           foodStuffId: Uuid().v1(),
           name: _productNameController.text,
           category: _productCategoryController.text,
@@ -174,7 +184,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
           amount: int.parse(_productNumberController.text),
 //          useAmount,restAmountはDBで初期値設定
 //           localImage.pathを保存する
-          localImagePath:localImage.path,
+          localImagePath: localImage.path,
 //          amountToEatListはid以外はメニュー画面からの登録で設定するので初期値なし(エラー出ない？)
         );
         await _dataRepository.registerProductData(foodStuff);
@@ -184,61 +194,54 @@ class DataRegistrationViewModel extends ChangeNotifier {
         notifyListeners();
         break;
     }
-
   }
 
-
-
-
-///FoodStuffをFirebaseへ保存
-  Future<void> postFoodStuff(RecordStatus recordStatus) async{
+  ///FoodStuffをFirebaseへ保存
+  Future<void> postFoodStuff(RecordStatus recordStatus) async {
     _isProcessing = true;
     notifyListeners();
-    switch(recordStatus){
-    ///カメラからFBへデータ保存
+    switch (recordStatus) {
+
+      ///カメラからFBへデータ保存
       case RecordStatus.camera:
         //名前付で渡す
         await _postRepository.postFoodStuff(
           currentUser: UserRepository.currentModelUser,
           postImage: imageFromCamera,
-          name:_productNameController.text,
+          name: _productNameController.text,
           category: _productCategoryController.text,
           validDateTime: _validDateTime,
           storage: _productStorageController.text,
           amount: int.parse(_productNumberController.text),
           useAmount: 0,
-          restAmount:int.parse(_productNumberController.text),
+          restAmount: int.parse(_productNumberController.text),
         );
         _isProcessing = false;
         await allClear();
         notifyListeners();
         break;
-    ///ギャラリーからFBへデータ保存
+
+      ///ギャラリーからFBへデータ保存
       case RecordStatus.gallery:
         _isProcessing = true;
         notifyListeners();
         await _postRepository.postFoodStuff(
           currentUser: UserRepository.currentModelUser,
           postImage: imageFromGallery,
-          name:_productNameController.text,
+          name: _productNameController.text,
           category: _productCategoryController.text,
           validDateTime: _validDateTime,
           storage: _productStorageController.text,
           amount: int.parse(_productNumberController.text),
           useAmount: 0,
-          restAmount:int.parse(_productNumberController.text),
+          restAmount: int.parse(_productNumberController.text),
         );
         _isProcessing = false;
-        allClear();
+        await allClear();
         notifyListeners();
         break;
-        //todo network
+      //todo network
     }
-
-
-
-
-
   }
 
 //  @override
@@ -253,7 +256,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
     _productUrl = _products[0].productImage.medium;
 
     /// CacheManagerパッケージを使ってurlからFileパスを得てimageFromNetworkに格納
-    if(_productUrl !=null ){
+    if (_productUrl != null) {
       final cache = DefaultCacheManager();
       final file = await cache.getSingleFile(_productUrl);
       imageFromNetwork = file;
@@ -276,37 +279,38 @@ class DataRegistrationViewModel extends ChangeNotifier {
     //imageFromCameraのデータに対してimage_cropper適用
     /// croppedCameraFileにimageFromCameraを代入
     /// croppedFileの大きさ適正化
-    // imageFromCamera =nullの場合の条件付けないとcroppedCameraFile内のimageFromCamera.path=nullでエラー
-    if(imageFromCamera !=null){
-    var croppedCameraFile = await ImageCropper.cropImage(
-        sourcePath: imageFromCamera.path,
-        aspectRatio: CropAspectRatio(
-          ratioX: 1,ratioY: 1),
-        compressQuality: 100,
-///maxHeightのサイズ指定すれば画像縮小は可能
+    // imageFromCamera =nullの場合の条件付けないと
+    // croppedCameraFile内のimageFromCamera.path=nullでエラー
+    if (imageFromCamera != null) {
+      var croppedCameraFile = await ImageCropper.cropImage(
+          sourcePath: imageFromCamera.path,
+          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+          compressQuality: 100,
+
+          ///maxHeightのサイズ指定すれば画像縮小は可能
 //        maxHeight: 200,
 //        maxWidth: 200,
-        compressFormat: ImageCompressFormat.jpg,
-        androidUiSettings: AndroidUiSettings(
-            toolbarTitle: '',
-            toolbarColor: Colors.black12,
+          compressFormat: ImageCompressFormat.jpg,
+          androidUiSettings: AndroidUiSettings(
+              toolbarTitle: '',
+              toolbarColor: Colors.black12,
 //            statusBarColor: ,
 //            backgroundColor: ,
 //            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: true,//trueにすると背景の写真が動く
-            hideBottomControls: true //全部ボトムコントローラー消える
-        ),
-        iosUiSettings: IOSUiSettings(
-          minimumAspectRatio: 1.0,
-          doneButtonTitle: '完了',
-            cancelButtonTitle: '戻る'
-        )
-    );
-    ///croppedCameraFileをimageFromCameraに代入
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: true,
+              //trueにすると背景の写真が動く
+              hideBottomControls: true //全部ボトムコントローラー消える
+              ),
+          iosUiSettings: IOSUiSettings(
+              minimumAspectRatio: 1.0,
+              doneButtonTitle: '完了',
+              cancelButtonTitle: '戻る'));
+
+      ///croppedCameraFileをimageFromCameraに代入
       imageFromCamera = croppedCameraFile;
-    }else{
-      imageFromCamera =null;
+    } else {
+      imageFromCamera = null;
     }
     if (imageFromCamera != null) {
       isImagePickedFromCamera = true;
@@ -320,12 +324,12 @@ class DataRegistrationViewModel extends ChangeNotifier {
 //    isImagePickedFromGallery = false;
 //    notifyListeners();
     imageFromGallery = await _dataRepository.getImageFromGallery();
+
     /// croppedCameraFileにimageFromGalleryを代入
-    if(imageFromGallery !=null){
+    if (imageFromGallery != null) {
       var croppedCameraFile = await ImageCropper.cropImage(
           sourcePath: imageFromGallery.path,
-          aspectRatio: CropAspectRatio(
-              ratioX: 1,ratioY: 1),
+          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
           compressQuality: 100,
           maxHeight: 100,
           maxWidth: 100,
@@ -334,19 +338,19 @@ class DataRegistrationViewModel extends ChangeNotifier {
               toolbarTitle: '',
               toolbarColor: Colors.black12,
               initAspectRatio: CropAspectRatioPreset.original,
-              lockAspectRatio: true,//trueにすると背景の写真が動く
+              lockAspectRatio: true,
+              //trueにすると背景の写真が動く
               hideBottomControls: true //全部ボトムコントローラー消える
-          ),
+              ),
           iosUiSettings: IOSUiSettings(
               minimumAspectRatio: 1.0,
               doneButtonTitle: '完了',
-              cancelButtonTitle: '戻る'
-          )
-      );
+              cancelButtonTitle: '戻る'));
+
       ///croppedCameraFileをimageFromGalleryに代入
       imageFromGallery = croppedCameraFile;
-    }else{
-      imageFromGallery =null;
+    } else {
+      imageFromGallery = null;
     }
     print('ImagePickerのFile(galleryPickedFile.path)の値：$imageFromGallery');
     if (imageFromGallery != null) {
@@ -357,57 +361,62 @@ class DataRegistrationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-///ローカルデータ読み取り
-  Future<void> getFoodStuffList() async{
+  ///ローカルデータ読み取り
+  Future<void> getFoodStuffList() async {
     ///finalにしない！！finalにするとnotifyListenersしてもview層でConsumer更新されない
-     _foodStuffs =await _dataRepository.getFoodStuffList();
+    _foodStuffs = await _dataRepository.getFoodStuffList();
 
-    if(_foodStuffs.isEmpty) {
+    if (_foodStuffs.isEmpty) {
       print("リストが空");
       notifyListeners();
-    }else{
+    } else {
 //      print("DB=>レポジトリ=>vieModelで取得したデータの長さ：${_foodStuffs.length}");
       notifyListeners();
     }
   }
 
-///CloudFirestoreからデータ読み取り
-  Future<void> getFoodStuffListFB() async{
+  ///CloudFirestoreからデータ読み取り
+  Future<void> getFoodStuffListFB() async {
     _isProcessing = true;
     notifyListeners();
-    _foodStuffFBs =await _postRepository.getFoodStuffList(currentUser:UserRepository.currentModelUser);
+    _foodStuffFBs = await _postRepository.getFoodStuffList(
+        currentUser: UserRepository.currentModelUser);
 
-  _isProcessing = false;
-  notifyListeners();
-  }
-  ///isProcessing出さない
-  Future<void> getFoodStuffsFB() async{
-    _foodStuffFBs =await _postRepository.getFoodStuffList(currentUser:UserRepository.currentModelUser);
+    _isProcessing = false;
     notifyListeners();
   }
 
-///FutureBuilder用
-  Future<List<FoodStuffFB>> getFoodStuffs() async{
-    _foodStuffFBs =await _postRepository.getFoodStuffList(currentUser:UserRepository.currentModelUser);
+  ///isProcessing出さない
+  Future<void> getFoodStuffsFB() async {
+    _foodStuffFBs = await _postRepository.getFoodStuffList(
+        currentUser: UserRepository.currentModelUser);
+    notifyListeners();
+  }
+
+  ///FutureBuilder用:Firebaseデータ読み取り
+  Future<List<FoodStuffFB>> getFoodStuffs() async {
+    return _postRepository.getFoodStuffList(
+        currentUser: UserRepository.currentModelUser);
+  }
+  ///FutureBuilder用:リストデータ読み取り
+  Future<List<FoodStuffFB>> isFoodStuffsList() async {
     return _foodStuffFBs;
   }
 
 
-
-///CloudFirestore Realtimeで読み取り
-  Future<List<FoodStuffFB>>getFoodStuffListRealtime() async{
+  ///CloudFirestore Realtimeで読み取り
+  Future<List<FoodStuffFB>> getFoodStuffListRealtime() async {
     //notifyListeners通知しない場合は、isProcessing系は入れない
     _isProcessing = true;
     notifyListeners();
-    _foodStuffFBs =await _postRepository.getFoodStuffListRealtime(currentUser:UserRepository.currentModelUser);
+    _foodStuffFBs = await _postRepository.getFoodStuffListRealtime(
+        currentUser: UserRepository.currentModelUser);
     _isProcessing = false;
     notifyListeners();
 //  return _foodStuffFBs;
   }
 
-
-
-///登録後のクリア関連
+  ///登録後のクリア関連
   void productNameClear() {
     _productNameController.clear();
     notifyListeners();
@@ -440,7 +449,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
         DateFormat.yMMMd('ja').format(newDateTime).toString();
   }
 
-  Future<void> allClear() async{
+  Future<void> allClear() async {
     //todo それぞれキャッシュ画像はクリアの必要ありか？
     isImagePickedFromCamera = false;
     isImagePickedFromGallery = false;
@@ -450,11 +459,11 @@ class DataRegistrationViewModel extends ChangeNotifier {
     dateClear();
     productNumberClear();
     productStorageClear();
-    notifyListeners();//いらんかも
+    notifyListeners(); //いらんかも
   }
 
   ///ローカルデータ削除
-  Future<void> onFoodStuffDeleted(FoodStuff foodStuff) async{
+  Future<void> onFoodStuffDeleted(FoodStuff foodStuff) async {
     //ローカル画像削除のためFileを渡す
     //File.pathでString形式にしてDB保存している,foodStuff.localImageはString
     File deleteFile = File(foodStuff.localImagePath);
@@ -464,21 +473,13 @@ class DataRegistrationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
-  Future<void> onFoodStuffDeletedDB(FoodStuffFB foodStuff)  async{
+  Future<void> onFoodStuffDeletedDB(FoodStuffFB foodStuff) async {
     _isProcessing = true;
     notifyListeners();
-    await _postRepository.deleteFoodStuff(foodStuff.foodStuffId,foodStuff.imageStoragePath);
+    await _postRepository.deleteFoodStuff(
+        foodStuff.foodStuffId, foodStuff.imageStoragePath);
     await getFoodStuffListFB();
-    _isProcessing =false;
+    _isProcessing = false;
     notifyListeners();
   }
-
-
-
-
-
-
-
 }

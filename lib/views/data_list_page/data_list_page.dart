@@ -17,11 +17,11 @@ class DataListPage extends StatelessWidget {
     //③FutureBuilderだけなら冒頭呼び出しはいらないが、ページ開くたびにFirebaseから読み込んでしまう
     //④streamでRealtimeにする
     final viewModel =
-        Provider.of<DataRegistrationViewModel>(context, listen: false);
+    Provider.of<DataRegistrationViewModel>(context, listen: false);
     // 毎回Firebaseへリクエストしない条件追加必須
     //空の時
-    if(!viewModel.isProcessing&& viewModel.foodStuffFBs.isEmpty){
-      Future(()=>viewModel.getFoodStuffListFB());
+    if (!viewModel.isProcessing && viewModel.foodStuffFBs.isEmpty) {
+      Future<void>(viewModel.getFoodStuffListFB);
     }
     //データ登録中断:読み込みしない
     //データ登録:読み込み
@@ -41,60 +41,63 @@ class DataListPage extends StatelessWidget {
           ],
         ),
         body: Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(15),
           child: Consumer<DataRegistrationViewModel>(
               builder: (context, model, child) {
-//                print();
-            return model.isProcessing
-              //print('DataListPageでグリグリ〜');
-              ? const Center(child: CircularProgressIndicator())
-              :
-//              FutureBuilder(
+                return model.isProcessing
+                    ? const Center(child: CircularProgressIndicator())
+//                    : model.foodStuffFBs.isEmpty
+//                    ? Container(
+//                      child: const Center(child: Text('リストが空なので入力してみましょう')))
+              :FutureBuilder(
 //                  future: model.getFoodStuffs(),
-//                  builder:
-//                      (context, AsyncSnapshot<List<FoodStuffFB>> snapshot) {
-//                    //snapshotがnullの場合を考慮(nullの場合、ListViewの方に行ってしまう)
-//                    print('snapshot:${snapshot.data}');
-//                    if (snapshot.hasData) {
-//                      if (snapshot.data.isEmpty) {
-//                        print('EmptyView通った');
-//                        return Container();
-//                      } else {
-//                        print('ListView通った');
-//                        return
-                          ListView.builder(
-                          itemCount: model.foodStuffFBs.length,
-                          itemBuilder: (context, int position) =>
+                ///リストがあるかないかであればFirebase読込発生しない
+                    future:model.isFoodStuffsList(),
+                  builder:
+                      (context, AsyncSnapshot<List<FoodStuffFB>> snapshot) {
+                        print('snapshot:${snapshot.data}');
+                        if (snapshot.hasData && snapshot.data.isEmpty) {
+                          print('EmptyView通った');
+                          return Container(
+                              child: const Center(child: Text(
+                                  'リストが空なので入力してみましょう')));
+                        } else {
+                          print('ListView通った');
+                          return
+                            ListView.builder(
+                              itemCount: model.foodStuffFBs.length,
+                              itemBuilder: (context, int position) =>
                               //todo 期限表示は○年○月○日表示
                               //todo 画像を一定の大きさに揃える(Fit?)
                               FoodStuffItem(
-                            foodStuff: model.foodStuffFBs[position],
-                            onLongTapped: (foodStuff) =>
-                                _onFoodStuffDeleted(foodStuff, context),
-          // onWordTapped: (foodStuff)=>_upDateWord(foodStuff,context),
-                          ),
-                        );
+                                foodStuff: model.foodStuffFBs[position],
+                                onLongTapped: (foodStuff) =>
+                                    _onFoodStuffDeleted(foodStuff, context),
+                                // onWordTapped: (foodStuff)=>_upDateWord(foodStuff,context),
+                              ),
+                            );
 //                      }
 //                    } else {
 //                      print('snapshotがnull:${snapshot.data}');
 //                      return Center(child: CircularProgressIndicator());
 //                    }
-                  }),
+                        }
+                      });
 
-//          }
-          ),
-        ),
-//      ),
+//                }
+    }),
+      ),
+      ),
     );
   }
 
-  Future<void> _addData(BuildContext context) async{
-    final result =await Navigator.push(//resultに再描画するならtrue
-        context,
-        MaterialPageRoute<bool>(
-            builder: (context) => DataRegistrationScreen(),
-            fullscreenDialog: true),);
-    if(result){//result:trueの時だけデータリストを取りに行く再描画(notifyListenersする)
+  Future<void> _addData(BuildContext context) async {
+    final result = await Navigator.push( //resultに再描画するならtrue
+      context,
+      MaterialPageRoute<bool>(
+          builder: (context) => DataRegistrationScreen(),
+          fullscreenDialog: true),);
+    if (result) { //result:trueの時だけデータリストを取りに行く再描画(notifyListenersする)
       print('resultがtrueの時は再描画：$result');
       final viewModel =
       Provider.of<DataRegistrationViewModel>(context, listen: false);
@@ -103,44 +106,45 @@ class DataListPage extends StatelessWidget {
     }
   }
 
-  Future<void> _onFoodStuffDeleted(
-      FoodStuffFB foodStuff, BuildContext context) async {
+  Future<void> _onFoodStuffDeleted(FoodStuffFB foodStuff,
+      BuildContext context) async {
     //ここにviewModelおくと、contextが重なってエラー
 
     //await、showDialog<void>のvoid追加
     await showDialog<void>(
       context: context,
       barrierDismissible: false,
-      builder: (_) => AlertDialog(
-        title: Text('『${foodStuff.name}』の削除'),
-        content: const Text('削除してもいいですか？'),
-        actions: <Widget>[
-          FlatButton(
-            onPressed: () async {
-              ///画像についてはDBから画像へのパスとcashとローカルから画像も削除する
+      builder: (_) =>
+          AlertDialog(
+            title: Text('『${foodStuff.name}』の削除'),
+            content: const Text('削除してもいいですか？'),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () async {
+                  ///画像についてはDBから画像へのパスとcashとローカルから画像も削除する
 //                await viewModel.onFoodStuffDeleted(foodStuff);
 //                   await viewModel.getFoodStuffList();
-              ///Firebaseからの削除(ここだけviewModelのcontext重なってエラーになるのでメソッド外だし)
-              deletePost(context, foodStuff);
-              await Fluttertoast.showToast(msg: '削除完了しました');
-              Navigator.pop(context);
-            },
-            child:const Text('はい'),
+                  ///Firebaseからの削除(ここだけviewModelのcontext重なってエラーになるのでメソッド外だし)
+                  deletePost(context, foodStuff);
+                  await Fluttertoast.showToast(msg: '削除完了しました');
+                  Navigator.pop(context);
+                },
+                child: const Text('はい'),
+              ),
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('いいえ'),
+              ),
+            ],
           ),
-          FlatButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('いいえ'),
-          ),
-        ],
-      ),
     );
   }
 
   Future<void> deletePost(BuildContext context, FoodStuffFB foodStuff) async {
     final viewModel =
-        Provider.of<DataRegistrationViewModel>(context, listen: false);
+    Provider.of<DataRegistrationViewModel>(context, listen: false);
     await viewModel.onFoodStuffDeletedDB(foodStuff);
   }
 }

@@ -292,7 +292,7 @@ class DataRegistrationScreen extends StatelessWidget {
     return showDialog(
       context: context,
       child:  AlertDialog(
-        title: new Text('入力内容を破棄してよろしいですか?'),
+        title: const Text('入力内容を破棄してよろしいですか?'),
 //        content: new Text('We hate to see you leave...'),
         actions: <Widget>[
            FlatButton(
