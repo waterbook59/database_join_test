@@ -4,6 +4,7 @@ import 'package:datebasejointest/views/data_registration/data_registration_scree
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:datebasejointest/utils/constants.dart';
 
 import 'components/food_stuff_item.dart';
 
@@ -49,55 +50,65 @@ class DataListPage extends StatelessWidget {
 //                    : model.foodStuffFBs.isEmpty
 //                    ? Container(
 //                      child: const Center(child: Text('リストが空なので入力してみましょう')))
-              :FutureBuilder(
+                    : FutureBuilder(
 //                  future: model.getFoodStuffs(),
-                ///リストがあるかないかであればFirebase読込発生しない
-                    future:model.isFoodStuffsList(),
-                  builder:
-                      (context, AsyncSnapshot<List<FoodStuffFB>> snapshot) {
-                        print('snapshot:${snapshot.data}');
-                        if (snapshot.hasData && snapshot.data.isEmpty) {
-                          print('EmptyView通った');
-                          return Container(
-                              child: const Center(child: Text(
-                                  'リストが空なので入力してみましょう')));
-                        } else {
-                          print('ListView通った');
-                          return
-                            ListView.builder(
-                              itemCount: model.foodStuffFBs.length,
-                              itemBuilder: (context, int position) =>
-                              //todo 期限表示は○年○月○日表示
-                              //todo 画像を一定の大きさに揃える(Fit?)
-                              FoodStuffItem(
-                                foodStuff: model.foodStuffFBs[position],
-                                onLongTapped: (foodStuff) =>
-                                    _onFoodStuffDeleted(foodStuff, context),
-                                // onWordTapped: (foodStuff)=>_upDateWord(foodStuff,context),
-                              ),
-                            );
+                  ///リストがあるかないかであればFirebase読込発生しない
+                    future: model.isFoodStuffsList(),
+                    builder:
+                        (context, AsyncSnapshot<List<FoodStuffFB>> snapshot) {
+                      print('snapshot:${snapshot.data}');
+                      if (snapshot.hasData && snapshot.data.isEmpty) {
+                        print('EmptyView通った');
+                        return Container(
+                            child:
+                            const Center(child: Text('リストが空なので入力してみましょう')));
+                      } else {
+                        print('ListView通った');
+                        return ListView.builder(
+                          itemCount: model.foodStuffFBs.length,
+                          itemBuilder: (context, int position) =>
+                          //todo 期限表示は○年○月○日表示
+                          //todo 画像を一定の大きさに揃える(Fit?)
+                          FoodStuffItem(
+                              foodStuff: model.foodStuffFBs[position],
+                              onLongTapped: (foodStuff) =>
+                                  _onFoodStuffDeleted(foodStuff, context),
+                              onDataTapped: (foodStuff) =>
+                              _upDateFoodStuff(foodStuff, context),
+                        ),);
 //                      }
 //                    } else {
 //                      print('snapshotがnull:${snapshot.data}');
 //                      return Center(child: CircularProgressIndicator());
 //                    }
-                        }
-                      });
+                    }
+                    });
 
 //                }
-    }),
-      ),
+              }),
+        ),
       ),
     );
   }
 
   Future<void> _addData(BuildContext context) async {
-    final result = await Navigator.push( //resultに再描画するならtrue
+
+    //追加なのでtrueにview側から変更
+    final viewModel =
+    Provider.of<DataRegistrationViewModel>(context, listen: false)
+      ..isAddEdit  = true;
+
+    final result = await Navigator.push(
+      //resultに再描画するならtrue
       context,
       MaterialPageRoute<bool>(
-          builder: (context) => DataRegistrationScreen(),
-          fullscreenDialog: true),);
-    if (result) { //result:trueの時だけデータリストを取りに行く再描画(notifyListenersする)
+          builder: (context) =>
+              DataRegistrationScreen(
+              ),
+          fullscreenDialog: true),
+    );
+    if (result) {
+      //result:trueの時だけデータリストを取りに行く再描画(notifyListenersする)
       print('resultがtrueの時は再描画：$result');
       final viewModel =
       Provider.of<DataRegistrationViewModel>(context, listen: false);
@@ -125,7 +136,7 @@ class DataListPage extends StatelessWidget {
 //                await viewModel.onFoodStuffDeleted(foodStuff);
 //                   await viewModel.getFoodStuffList();
                   ///Firebaseからの削除(ここだけviewModelのcontext重なってエラーになるのでメソッド外だし)
-                  deletePost(context, foodStuff);
+                  await deletePost(context, foodStuff);
                   await Fluttertoast.showToast(msg: '削除完了しました');
                   Navigator.pop(context);
                 },
@@ -146,5 +157,27 @@ class DataListPage extends StatelessWidget {
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);
     await viewModel.onFoodStuffDeletedDB(foodStuff);
+  }
+
+  Future<void> _upDateFoodStuff(FoodStuffFB foodStuff,
+      BuildContext context)  {
+
+    //編集なのでfalseにview側から変更
+    final viewModel =
+    Provider.of<DataRegistrationViewModel>(context, listen: false)
+    ..isAddEdit  = false;
+
+    Navigator.push(
+      //resultに再描画するならtrue
+      context,
+      MaterialPageRoute<void>(
+          builder: (context) =>
+              DataRegistrationScreen(
+              ),
+          fullscreenDialog: true),
+    );
+//    final viewModel =
+//    Provider.of<DataRegistrationViewModel>(context, listen: false);
+//    await viewModel.upDateFoodStuff(foodStuff);
   }
 }

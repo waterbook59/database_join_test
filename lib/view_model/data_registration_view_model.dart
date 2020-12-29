@@ -94,6 +94,9 @@ class DataRegistrationViewModel extends ChangeNotifier {
   //画像とってくるときのグリグリ
   bool isImagePicked = false;
 
+  //FoodStuffの追加(add,true)または編集(edit,false)
+  bool isAddEdit = false;
+
 //  List<Product> _products = <Product>[];
 //  List<Product> get products => _products;
 

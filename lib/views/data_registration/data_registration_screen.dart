@@ -1,3 +1,4 @@
+import 'package:datebasejointest/data_models/menu/food_stuff_firebase.dart';
 import 'package:datebasejointest/utils/constants.dart';
 import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:datebasejointest/views/components/cached_image.dart';
@@ -12,11 +13,19 @@ import 'package:provider/provider.dart';
 
 
 class DataRegistrationScreen extends StatelessWidget {
+  //todo 今後家族共有する場合はUser情報(this.AnonymousUser)いるかも
+  DataRegistrationScreen({this.foodStuff});
+  final FoodStuffFB foodStuff;
 
+ //todo RecordStatusはviewModel側で持つように変更
  RecordStatus recordStatus;
 
   @override
   Widget build(BuildContext context) {
+
+    final viewModel =
+    Provider.of<DataRegistrationViewModel>(context, listen: false);
+
     return SafeArea(
       ///image_pickerでカメラまたはギャラリーキャンセル時にエラーが出るのでWillPopScope(true?)で戻らせない
       child: Scaffold(
@@ -24,10 +33,12 @@ class DataRegistrationScreen extends StatelessWidget {
           //戻るボタンなくなる
           leading: Container(),
           centerTitle: true,
-          title: const Text('商品データを登録',),
+          title: viewModel.isAddEdit
+                ? const Text('商品データを登録',)
+                : const Text('商品データを編集',),
           actions: [
             IconButton(
-              icon: Icon(Icons.cancel),
+              icon:const Icon(Icons.cancel),
               onPressed: ()=>_deleteData(context),)],
         ),
         body: SingleChildScrollView(
@@ -36,7 +47,7 @@ class DataRegistrationScreen extends StatelessWidget {
                 if (model.isProcessing) {
                   //todo グリグリ出さないと何度でも保存ボタン押せる状態に
                   print('登録中にグリグリ〜');
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }else{
