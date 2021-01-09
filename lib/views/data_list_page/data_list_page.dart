@@ -3,6 +3,7 @@ import 'package:datebasejointest/view_model/data_registration_view_model.dart';
 import 'package:datebasejointest/views/data_registration/data_registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:datebasejointest/utils/constants.dart';
 
@@ -164,8 +165,10 @@ class DataListPage extends StatelessWidget {
     //商品名・カテゴリ・期限・数量・保管場所をセット
      viewModel.productNameController.text = foodStuff.name;
      viewModel.productCategoryController.text = foodStuff.category;
-     //todo 期限変換
-// viewModel.dateEditController.text = foodStuff.validDate.toIso8601String();
+     /// 期限変換 モデルクラスに格納したDateTimeをyMMdの形でStringへ変換してdateEditControllerに代入
+// viewModel.validDateTime = foodStuff.validDate;
+    viewModel.dateEditController.text =
+    DateFormat.yMMMd('ja').format(foodStuff.validDate).toString();
     viewModel.productNumberController.text = foodStuff.amount.toString();
     viewModel.productStorageController.text = foodStuff.storage;
 

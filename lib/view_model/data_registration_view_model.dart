@@ -48,45 +48,27 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
   //商品名
   final TextEditingController productNameController = TextEditingController();
-//  TextEditingController get productNameController => _productNameController;
-
   //カテゴリ
   final TextEditingController productCategoryController =
       TextEditingController();
-//  TextEditingController get productCategoryController =>
-//      _productCategoryController;
-
   //期限
   final TextEditingController dateEditController = TextEditingController();
-//  TextEditingController get dateEditController => _dateEditController;
-
   //数量
   final TextEditingController productNumberController =
       TextEditingController();
-//  TextEditingController get productNumberController => _productNumberController;
-
   //保管場所
   final TextEditingController productStorageController =
       TextEditingController();
 
-//  TextEditingController get productStorageController =>
-//      _productStorageController;
-
-  DateTime _validDateTime = DateTime.now();
-
-  DateTime get validDateTime => _validDateTime;
-
+  DateTime validDateTime = DateTime.now();
+//  DateTime get validDateTime => _validDateTime;
   String _barcodeScanRes = '';
-
   String get barcodeScanRes => _barcodeScanRes;
-
   bool _isProcessing = false;
-
   bool get isProcessing => _isProcessing;
 
   //画像とってくるときのグリグリ
   bool isImagePicked = false;
-
   //FoodStuffの追加(add,true)または編集(edit,false)
   bool isAddEdit = false;
 
@@ -120,7 +102,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
           foodStuffId: Uuid().v1(),
           name: productNameController.text,
           category: productCategoryController.text,
-          validDate: _validDateTime,
+          validDate: validDateTime,
           storage: productStorageController.text,
           amount: int.parse(productNumberController.text),
           //useAmount,restAmountはDBで初期値設定
@@ -147,7 +129,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
           foodStuffId: Uuid().v1(),
           name: productNameController.text,
           category: productCategoryController.text,
-          validDate: _validDateTime,
+          validDate: validDateTime,
           storage: productStorageController.text,
           amount: int.parse(productNumberController.text),
           //useAmount,restAmountはDBで初期値設定
@@ -175,7 +157,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
           foodStuffId: Uuid().v1(),
           name: productNameController.text,
           category: productCategoryController.text,
-          validDate: _validDateTime,
+          validDate: validDateTime,
           storage: productStorageController.text,
           amount: int.parse(productNumberController.text),
 //          useAmount,restAmountはDBで初期値設定
@@ -206,7 +188,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
           postImage: imageFromCamera,
           name: productNameController.text,
           category: productCategoryController.text,
-          validDateTime: _validDateTime,
+          validDateTime: validDateTime,
           storage: productStorageController.text,
           amount: int.parse(productNumberController.text),
           useAmount: 0,
@@ -226,7 +208,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
           postImage: imageFromGallery,
           name: productNameController.text,
           category: productCategoryController.text,
-          validDateTime: _validDateTime,
+          validDateTime: validDateTime,
           storage: productStorageController.text,
           amount: int.parse(productNumberController.text),
           useAmount: 0,
@@ -440,7 +422,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
   }
 
   void dateChange(DateTime newDateTime) {
-    _validDateTime = newDateTime;
+    validDateTime = newDateTime;
     //intlパッケージを使ってpickerで選択した年月日を日本語表示
     dateEditController.text =
         DateFormat.yMMMd('ja').format(newDateTime).toString();
