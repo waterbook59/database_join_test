@@ -38,46 +38,39 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
   //firebaseデータ格納
   List<FoodStuffFB> _foodStuffFBs = <FoodStuffFB>[];
-
   List<FoodStuffFB> get foodStuffFBs => _foodStuffFBs;
 
   final List<Product> _products = variableProducts;
-
   List<Product> get products => _products;
 
   String _productUrl = '';
-
   String get productUrl => _productUrl;
 
   //商品名
   final TextEditingController productNameController = TextEditingController();
-
 //  TextEditingController get productNameController => _productNameController;
 
   //カテゴリ
-  final TextEditingController _productCategoryController =
+  final TextEditingController productCategoryController =
       TextEditingController();
-
-  TextEditingController get productCategoryController =>
-      _productCategoryController;
-
-  //数量
-  final TextEditingController _productNumberController =
-      TextEditingController();
-
-  TextEditingController get productNumberController => _productNumberController;
+//  TextEditingController get productCategoryController =>
+//      _productCategoryController;
 
   //期限
-  final TextEditingController _dateEditController = TextEditingController();
+  final TextEditingController dateEditController = TextEditingController();
+//  TextEditingController get dateEditController => _dateEditController;
 
-  TextEditingController get dateEditController => _dateEditController;
+  //数量
+  final TextEditingController productNumberController =
+      TextEditingController();
+//  TextEditingController get productNumberController => _productNumberController;
 
   //保管場所
-  final TextEditingController _productStorageController =
+  final TextEditingController productStorageController =
       TextEditingController();
 
-  TextEditingController get productStorageController =>
-      _productStorageController;
+//  TextEditingController get productStorageController =>
+//      _productStorageController;
 
   DateTime _validDateTime = DateTime.now();
 
@@ -126,10 +119,10 @@ class DataRegistrationViewModel extends ChangeNotifier {
           //idはautoIncrementするので、初期登録は何も入れなくて良い
           foodStuffId: Uuid().v1(),
           name: productNameController.text,
-          category: _productCategoryController.text,
+          category: productCategoryController.text,
           validDate: _validDateTime,
-          storage: _productStorageController.text,
-          amount: int.parse(_productNumberController.text),
+          storage: productStorageController.text,
+          amount: int.parse(productNumberController.text),
           //useAmount,restAmountはDBで初期値設定
           // localImage.pathを保存する
           localImagePath: localImage.path,
@@ -153,10 +146,10 @@ class DataRegistrationViewModel extends ChangeNotifier {
         final foodStuff = FoodStuff(
           foodStuffId: Uuid().v1(),
           name: productNameController.text,
-          category: _productCategoryController.text,
+          category: productCategoryController.text,
           validDate: _validDateTime,
-          storage: _productStorageController.text,
-          amount: int.parse(_productNumberController.text),
+          storage: productStorageController.text,
+          amount: int.parse(productNumberController.text),
           //useAmount,restAmountはDBで初期値設定
           // localImage.pathを保存する
           localImagePath: localImage.path,
@@ -181,10 +174,10 @@ class DataRegistrationViewModel extends ChangeNotifier {
         final foodStuff = FoodStuff(
           foodStuffId: Uuid().v1(),
           name: productNameController.text,
-          category: _productCategoryController.text,
+          category: productCategoryController.text,
           validDate: _validDateTime,
-          storage: _productStorageController.text,
-          amount: int.parse(_productNumberController.text),
+          storage: productStorageController.text,
+          amount: int.parse(productNumberController.text),
 //          useAmount,restAmountはDBで初期値設定
 //           localImage.pathを保存する
           localImagePath: localImage.path,
@@ -212,12 +205,12 @@ class DataRegistrationViewModel extends ChangeNotifier {
           currentUser: UserRepository.currentModelUser,
           postImage: imageFromCamera,
           name: productNameController.text,
-          category: _productCategoryController.text,
+          category: productCategoryController.text,
           validDateTime: _validDateTime,
-          storage: _productStorageController.text,
-          amount: int.parse(_productNumberController.text),
+          storage: productStorageController.text,
+          amount: int.parse(productNumberController.text),
           useAmount: 0,
-          restAmount: int.parse(_productNumberController.text),
+          restAmount: int.parse(productNumberController.text),
         );
         _isProcessing = false;
         await allClear();
@@ -232,12 +225,12 @@ class DataRegistrationViewModel extends ChangeNotifier {
           currentUser: UserRepository.currentModelUser,
           postImage: imageFromGallery,
           name: productNameController.text,
-          category: _productCategoryController.text,
+          category: productCategoryController.text,
           validDateTime: _validDateTime,
-          storage: _productStorageController.text,
-          amount: int.parse(_productNumberController.text),
+          storage: productStorageController.text,
+          amount: int.parse(productNumberController.text),
           useAmount: 0,
-          restAmount: int.parse(_productNumberController.text),
+          restAmount: int.parse(productNumberController.text),
         );
         _isProcessing = false;
         await allClear();
@@ -427,29 +420,29 @@ class DataRegistrationViewModel extends ChangeNotifier {
   }
 
   void productCategoryClear() {
-    _productCategoryController.clear();
+    productCategoryController.clear();
     notifyListeners();
   }
 
   void productNumberClear() {
-    _productNumberController.clear();
+    productNumberController.clear();
     notifyListeners();
   }
 
   void dateClear() {
-    _dateEditController.clear();
+    dateEditController.clear();
     notifyListeners();
   }
 
   void productStorageClear() {
-    _productStorageController.clear();
+    productStorageController.clear();
     notifyListeners();
   }
 
   void dateChange(DateTime newDateTime) {
     _validDateTime = newDateTime;
     //intlパッケージを使ってpickerで選択した年月日を日本語表示
-    _dateEditController.text =
+    dateEditController.text =
         DateFormat.yMMMd('ja').format(newDateTime).toString();
   }
 

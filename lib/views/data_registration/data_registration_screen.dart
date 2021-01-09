@@ -34,12 +34,8 @@ class DataRegistrationScreen extends StatelessWidget {
           leading: Container(),
           centerTitle: true,
           title: viewModel.isAddEdit
-              ? const Text(
-                  '商品データを登録',
-                )
-              : const Text(
-                  '商品データを編集',
-                ),
+              ? const Text('商品データを登録',)
+              : const Text('商品データを編集',),
           actions: [
             IconButton(
               icon: const Icon(Icons.cancel),
@@ -53,16 +49,12 @@ class DataRegistrationScreen extends StatelessWidget {
             if (model.isProcessing) {
               //todo グリグリ出さないと何度でも保存ボタン押せる状態に
               print('登録中にグリグリ〜');
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator(),);
             } else {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  const SizedBox(height: 15,),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: model.isAddEdit

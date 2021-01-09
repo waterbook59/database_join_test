@@ -68,24 +68,17 @@ class DataListPage extends StatelessWidget {
                         return ListView.builder(
                           itemCount: model.foodStuffFBs.length,
                           itemBuilder: (context, int position) =>
-                          //todo 期限表示は○年○月○日表示
+                          ///期限をDateTime=>yyyy/MM/ddに変換
                           //todo 画像を一定の大きさに揃える(Fit?)
                           FoodStuffItem(
-                              foodStuff: model.foodStuffFBs[position],
-                              onLongTapped: (foodStuff) =>
-                                  _onFoodStuffDeleted(foodStuff, context),
-                              onDataTapped: (foodStuff) =>
-                              _upDateFoodStuff(foodStuff, context),
-                        ),);
-//                      }
-//                    } else {
-//                      print('snapshotがnull:${snapshot.data}');
-//                      return Center(child: CircularProgressIndicator());
-//                    }
-                    }
+                            foodStuff: model.foodStuffFBs[position],
+                            onLongTapped: (foodStuff) =>
+                                _onFoodStuffDeleted(foodStuff, context),
+                            onDataTapped: (foodStuff) =>
+                                _upDateFoodStuff(foodStuff, context),
+                          ),);
+                      }
                     });
-
-//                }
               }),
         ),
       ),
@@ -170,6 +163,11 @@ class DataListPage extends StatelessWidget {
      ..isAddEdit  = false;
     //商品名・カテゴリ・期限・数量・保管場所をセット
      viewModel.productNameController.text = foodStuff.name;
+     viewModel.productCategoryController.text = foodStuff.category;
+     //todo 期限変換
+// viewModel.dateEditController.text = foodStuff.validDate.toIso8601String();
+    viewModel.productNumberController.text = foodStuff.amount.toString();
+    viewModel.productStorageController.text = foodStuff.storage;
 
     print('編集ページで使うurl:${foodStuff.imageUrl}');
 

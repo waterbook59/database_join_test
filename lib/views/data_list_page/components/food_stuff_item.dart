@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:datebasejointest/data_models/menu/food_stuff.dart';
 import 'package:datebasejointest/data_models/menu/food_stuff_firebase.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class FoodStuffItem extends StatelessWidget {
   final FoodStuffFB foodStuff;
@@ -48,13 +47,12 @@ class FoodStuffItem extends StatelessWidget {
 //            width: 100,
 //            fit: BoxFit.cover,
 //          ),
-          title: Text(
-            '${foodStuff.name}',
+          title: Text('${foodStuff.name}',
             style: const TextStyle(color: Colors.black87, fontSize: 23),
           ),
-          //todo 期限を○年○月○日表記へ変更
+          ///期限をDateTime=>yyyy/MM/ddに変換
           subtitle: Text(
-            '在庫：${foodStuff.amount}・期限：${foodStuff.validDate}',
+            '在庫：${foodStuff.amount}・期限：${DateFormat('yyyy/MM/dd').format(foodStuff.validDate)}',
             style:
                 const TextStyle(fontFamily: 'Corporate', color: Colors.brown),
           ),
