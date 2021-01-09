@@ -66,55 +66,40 @@ class DataRegistrationScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: model.isAddEdit
-                        ? Wrap(
+                    ? Wrap(
 //                       alignment: WrapAlignment.center
-                            spacing: 10,
-                            children: [
-                              ///商品画像：自分でカメラで撮影
-                              model.isImagePickedFromCamera
-
-                                  ///   画像が取れたらキャッシュの画面を表示
-                                  ? model.imageFromCamera == null
-                                      ? Container()
-                                      : CachedImage(
-                                          onTap: () =>
-                                              getImageFromCamera(context),
-                                          //File型のイメージ.pathはString型、File(Stringのパス)でファイル表示できる
-                                          displayFilePath:
-                                              model.imageFromCamera.path,
-                                        )
-
-                                  ///初期タップでカメラ起動または他で選択済みの時
-                                  : (model.isImagePickedFromGallery ||
+                        spacing: 10,
+                        children: [
+                    ///商品画像：自分でカメラで撮影
+                          model.isImagePickedFromCamera
+                              ///画像が取れたらキャッシュの画面を表示
+                              ? model.imageFromCamera == null
+                                  ? Container()
+                                  : CachedImage(
+                                    onTap: () => getImageFromCamera(context),
+                       //File型のイメージ.pathはString型、File(Stringのパス)でファイル表示できる
+                                    displayFilePath: model.imageFromCamera.path,
+                                    )
+                              ///初期タップでカメラ起動または他で選択済みの時
+                              : AddIconPart(
+                                  onTap: () => getImageFromCamera(context),
+                                  displayImage: const Icon(
+                                    Icons.add_a_photo,
+                                    size: 60,
+                                  ),
+                                  width: (model.isImagePickedFromGallery ||
                                           model.isImagePickedFromNetwork)
+                                      ///ギャラリーまたはnetworkの画像がキャッシュに入った時:60
+                                      ///初期タップでカメラ起動:90
+                                      ? 60
+                                      : 90,
+                                  height: (model.isImagePickedFromGallery ||
+                                          model.isImagePickedFromNetwork)
+                                      ? 60
+                                      : 90,
+                                ), //小さいCameraIconPartへ変更
 
-                                      ///ギャラリーまたはnetworkの画像がキャッシュに入った時
-                                      //完全にカメラアイコンを消すのではなく小さく表示して選択肢として残す
-                                      ? AddIconPart(
-                                          onTap: () =>
-                                              getImageFromCamera(context),
-                                          displayImage: Icon(
-                                            Icons.add_a_photo,
-                                            size: 60,
-                                          ),
-                                          width: 60,
-                                          height: 60,
-                                        ) //小さいCameraIconPartへ変更
-                                      :
-
-                                      ///初期タップでカメラ起動
-                                      AddIconPart(
-                                          onTap: () =>
-                                              getImageFromCamera(context),
-                                          displayImage: Icon(
-                                            Icons.add_a_photo,
-                                            size: 60,
-                                          ),
-                                          width: 90,
-                                          height: 90,
-                                        ),
-
-                              ///商品画像：networkから選択
+                      ///商品画像：networkから選択
                               model.isImagePickedFromNetwork
                                   ? model.isImagePickedFromNetwork == null
                                       ? Container()
@@ -128,29 +113,21 @@ class DataRegistrationScreen extends StatelessWidget {
                                             onTap: () =>
                                                 _getProductInfo(context),
                                           ))
-                                  : (model.isImagePickedFromCamera ||
-                                          model.isImagePickedFromGallery)
-                                      ? AddIconPart(
-                                          onTap: () => _getProductInfo(context),
-                                          displayImage: FaIcon(
-                                            FontAwesomeIcons.barcode,
-                                            size: 60,
+                                  : AddIconPart(
+                                      onTap: () => _getProductInfo(context),
+                                      displayImage:const Center(
+                                      child:FaIcon(
+                                        FontAwesomeIcons.barcode,
+                                        size: 60,),
                                           ),
-                                          width: 60,
-                                          height: 60,
-                                        )
-                                      : AddIconPart(
-                                          onTap: () => _getProductInfo(context),
-                                          displayImage: Center(
-                                              child: FaIcon(
-                                            FontAwesomeIcons.barcode,
-                                            size: 60,
-                                          )),
-                                          width: 90,
-                                          height: 90,
+                                      ///他の２つに画像がある時は60、初期は90
+                                      width: (model.isImagePickedFromCamera ||
+                                          model.isImagePickedFromGallery)?60:90,
+                                      height: (model.isImagePickedFromCamera ||
+                                          model.isImagePickedFromGallery)?60:90,
                                         ),
 
-                              ///商品画像：ギャラリーから選択
+                      ///商品画像：ギャラリーから選択
                               model.isImagePickedFromGallery
                                   ? model.imageFromGallery == null
                                       ? Container()
@@ -160,40 +137,26 @@ class DataRegistrationScreen extends StatelessWidget {
                                           displayFilePath:
                                               model.imageFromGallery.path,
                                         )
-
-                                  ///初期タップでフォルダ選択起動
-                                  : (model.isImagePickedFromCamera ||
-                                          model.isImagePickedFromNetwork)
-                                      ? AddIconPart(
-                                          onTap: () =>
-                                              getImageFromGallery(context),
-                                          displayImage: Icon(
-                                            Icons.add_photo_alternate,
+                                  : AddIconPart(
+                                    onTap: () => getImageFromGallery(context),
+                                    displayImage:
+                                    const Icon(Icons.add_photo_alternate,
                                             size: 60,
                                           ),
-                                          width: 60,
-                                          height: 60,
-                                        )
-                                      : AddIconPart(
-                                          onTap: () =>
-                                              getImageFromGallery(context),
-                                          displayImage: Icon(
-                                            Icons.add_photo_alternate,
-                                            size: 60,
-                                          ),
-                                          width: 90,
-                                          height: 90,
+                                      width:(model.isImagePickedFromCamera ||
+                                          model.isImagePickedFromNetwork)?60:90,
+                                      height:(model.isImagePickedFromCamera ||
+                                          model.isImagePickedFromNetwork)?60:90,
                                         ),
                             ],
                           )
-                        /// 更新時
-                    /// CachedImageやImageFromUrlfileImage._loadAsync(image_provider)でエラー
+                    /// 更新時
+                    ///CachedImageやImageFromUrlは渡すのがFile(String)なので
+                    ///FileImage._loadAsync(image_provider)でエラー
                         :
-
 //                        CachedImage(displayFilePath: foodStuff.imageUrl,),
 //                       ImageFromUrl(displayFilePath: foodStuff.imageUrl,),
                         Image.network(foodStuff.imageUrl),
-
                   ),
 
                   const SizedBox(height: 15),
@@ -240,7 +203,7 @@ class DataRegistrationScreen extends StatelessWidget {
                     hintText: '数量を入力',
 
                     ///TextInputType.numberから変更,decimalのtrueは何か？
-                    textInputType: TextInputType.numberWithOptions(
+                    textInputType: const TextInputType.numberWithOptions(
                         signed: true, decimal: true),
                   ),
 
@@ -260,29 +223,23 @@ class DataRegistrationScreen extends StatelessWidget {
                     height: 20,
                   ),
 
-                  ///保存ボタン
-                  model.isAddEdit
-                      //todo widget分割してすっきり書く
-                      ? RaisedButton(
+                  ///保存・更新ボタン
+                  //todo widget分割してすっきり書く
+                  RaisedButton(
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadiusDirectional.circular(15)),
                           color: Colors.orangeAccent,
-                          child: const Text('保存'),
+                          child: model.isAddEdit
+                            ?const Text('保存')
+                            :const Text('更新'),
                           //ローカル保存：文字=>moor,画像=>imagePathとしてドキュメントへ保存
                           //firebaseに投稿
                           //todo 保存ボタン押した時の登録までの時間はボタン押せないようにする(重複登録防止)
-                          onPressed: () =>
-                              registerProductData(context, recordStatus),
-                        )
-                      : RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadiusDirectional.circular(15)),
-                          color: Colors.orangeAccent,
-                          child: const Text('更新'),
-                          onPressed: () => updateFoodStuff(context),
-                        )
+                          onPressed: model.isAddEdit
+                              ?() => registerProductData(context, recordStatus)
+                              :() => updateFoodStuff(context),
+                        ),
                 ],
               );
             } //else閉じ

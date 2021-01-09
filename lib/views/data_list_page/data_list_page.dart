@@ -168,7 +168,7 @@ class DataListPage extends StatelessWidget {
      Provider.of<DataRegistrationViewModel>(context, listen: false)
      //isAdEdit編集モード
      ..isAddEdit  = false;
-    //商品名をセット
+    //商品名・カテゴリ・期限・数量・保管場所をセット
      viewModel.productNameController.text = foodStuff.name;
 
     print('編集ページで使うurl:${foodStuff.imageUrl}');

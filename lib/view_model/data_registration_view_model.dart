@@ -120,9 +120,9 @@ class DataRegistrationViewModel extends ChangeNotifier {
       ///カメラからデータ保存
       case RecordStatus.camera:
         //todo imageFromCameraのデータ圧縮
-
-        var localImage = await FileController.saveCachedImage(imageFromCamera);
-        FoodStuff foodStuff = FoodStuff(
+        final localImage =
+        await FileController.saveCachedImage(imageFromCamera);
+        final foodStuff = FoodStuff(
           //idはautoIncrementするので、初期登録は何も入れなくて良い
           foodStuffId: Uuid().v1(),
           name: productNameController.text,
@@ -137,17 +137,17 @@ class DataRegistrationViewModel extends ChangeNotifier {
         );
         await _dataRepository.registerProductData(foodStuff);
         // DB登録と同時にキャッシュ画像の方は削除
-        imageFromCamera.delete();
+        await imageFromCamera.delete();
         //テキスト関連を全てクリア
-        allClear();
+        await allClear();
         notifyListeners();
         break;
 
       ///ギャラリーからデータ保存
       case RecordStatus.gallery:
-
         ///cacheの画像データをlocal(app_flutter内)へコピー
-        var localImage = await FileController.saveCachedImage(imageFromGallery);
+        final localImage =
+        await FileController.saveCachedImage(imageFromGallery);
         print('viewModelでのlocalImage.pathの値:${localImage.path}');
         //finalへ変更
         final foodStuff = FoodStuff(
@@ -166,19 +166,19 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
         /// DB登録と同時にキャッシュ画像の方は削除
         ///imageFromGarellyはFile: '/data/user/0/com.example.datebasejointest/cache/image_pickerxxxxx.jpg'の形
-        imageFromGallery.delete();
+        await imageFromGallery.delete();
         // テキスト関連を全てクリア
-        allClear();
+        await allClear();
         notifyListeners();
         break;
 
       ///ネットワークからデータ保存
       case RecordStatus.networkImage:
         //todo FileController.saveCachedImageに渡したimageFromNetworkがFileになってない
-        var localImage = await FileController.saveCachedImage(imageFromNetwork);
+        final localImage =
+        await FileController.saveCachedImage(imageFromNetwork);
         print('imageFromNetwork:$imageFromNetwork');
-        //
-        FoodStuff foodStuff = FoodStuff(
+        final foodStuff = FoodStuff(
           foodStuffId: Uuid().v1(),
           name: productNameController.text,
           category: _productCategoryController.text,
@@ -192,8 +192,8 @@ class DataRegistrationViewModel extends ChangeNotifier {
         );
         await _dataRepository.registerProductData(foodStuff);
         //キャッシュと入力関連全てクリア
-        imageFromNetwork.delete();
-        allClear();
+        await imageFromNetwork.delete();
+        await allClear();
         notifyListeners();
         break;
     }
@@ -243,7 +243,8 @@ class DataRegistrationViewModel extends ChangeNotifier {
         await allClear();
         notifyListeners();
         break;
-      //todo network
+      //todo networkからの取得画像をFBへデータ保存
+
     }
   }
 
@@ -294,7 +295,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
 //        maxHeight: 200,
 //        maxWidth: 200,
           compressFormat: ImageCompressFormat.jpg,
-          androidUiSettings: AndroidUiSettings(
+          androidUiSettings: const AndroidUiSettings(
               toolbarTitle: '',
               toolbarColor: Colors.black12,
 //            statusBarColor: ,
@@ -305,8 +306,8 @@ class DataRegistrationViewModel extends ChangeNotifier {
               //trueにすると背景の写真が動く
               hideBottomControls: true //全部ボトムコントローラー消える
               ),
-          iosUiSettings: IOSUiSettings(
-              minimumAspectRatio: 1.0,
+          iosUiSettings: const IOSUiSettings(
+              minimumAspectRatio: 1,
               doneButtonTitle: '完了',
               cancelButtonTitle: '戻る'));
 
@@ -337,7 +338,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
           maxHeight: 100,
           maxWidth: 100,
           compressFormat: ImageCompressFormat.jpg,
-          androidUiSettings: AndroidUiSettings(
+          androidUiSettings: const AndroidUiSettings(
               toolbarTitle: '',
               toolbarColor: Colors.black12,
               initAspectRatio: CropAspectRatioPreset.original,
@@ -345,7 +346,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
               //trueにすると背景の写真が動く
               hideBottomControls: true //全部ボトムコントローラー消える
               ),
-          iosUiSettings: IOSUiSettings(
+          iosUiSettings: const IOSUiSettings(
               minimumAspectRatio: 1.0,
               doneButtonTitle: '完了',
               cancelButtonTitle: '戻る'));
