@@ -55,7 +55,7 @@ class PostRepository {
 
   // ignore: lines_longer_than_80_chars
   Future<List<FoodStuffFB>> getFoodStuffListRealtime({AnonymousUser currentUser}) async{
-    return await databaseManager.getFoodStuffListRealtime(currentUser.userId);
+    return  databaseManager.getFoodStuffListRealtime(currentUser.userId);
   }
 
   ///FirebaseからFoodstuff削除

@@ -22,6 +22,7 @@ class DataListPage extends StatelessWidget {
     // 毎回Firebaseへリクエストしない条件追加必須
     //空の時
     if (!viewModel.isProcessing && viewModel.foodStuffFBs.isEmpty) {
+      //これが実行されると変更が生じるのでConsumer以下がbuildされる
       Future<void>(viewModel.getFoodStuffListFB);
     }
     //データ登録中断:読み込みしない
@@ -160,24 +161,27 @@ class DataListPage extends StatelessWidget {
   }
 
   Future<void> _upDateFoodStuff(FoodStuffFB foodStuff,
-      BuildContext context)  {
+      BuildContext context)  async{
 
-    //編集なのでfalseにview側から変更
+    //編集なのでisAddEditをfalseにview側から変更
     final viewModel =
-    Provider.of<DataRegistrationViewModel>(context, listen: false)
-    ..isAddEdit  = false;
+     Provider.of<DataRegistrationViewModel>(context, listen: false)
+     //isAdEdit編集モード
+     ..isAddEdit  = false;
+    //商品名をセット
+     viewModel.productNameController.text = foodStuff.name;
 
-    Navigator.push(
+    print('編集ページで使うurl:${foodStuff.imageUrl}');
+
+   await  Navigator.push(
       //resultに再描画するならtrue
       context,
       MaterialPageRoute<void>(
           builder: (context) =>
-              DataRegistrationScreen(
+              DataRegistrationScreen(foodStuff: foodStuff,
               ),
           fullscreenDialog: true),
     );
-//    final viewModel =
-//    Provider.of<DataRegistrationViewModel>(context, listen: false);
-//    await viewModel.upDateFoodStuff(foodStuff);
+
   }
 }

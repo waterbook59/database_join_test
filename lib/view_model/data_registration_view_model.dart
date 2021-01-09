@@ -50,9 +50,9 @@ class DataRegistrationViewModel extends ChangeNotifier {
   String get productUrl => _productUrl;
 
   //商品名
-  final TextEditingController _productNameController = TextEditingController();
+  final TextEditingController productNameController = TextEditingController();
 
-  TextEditingController get productNameController => _productNameController;
+//  TextEditingController get productNameController => _productNameController;
 
   //カテゴリ
   final TextEditingController _productCategoryController =
@@ -125,7 +125,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
         FoodStuff foodStuff = FoodStuff(
           //idはautoIncrementするので、初期登録は何も入れなくて良い
           foodStuffId: Uuid().v1(),
-          name: _productNameController.text,
+          name: productNameController.text,
           category: _productCategoryController.text,
           validDate: _validDateTime,
           storage: _productStorageController.text,
@@ -152,7 +152,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
         //finalへ変更
         final foodStuff = FoodStuff(
           foodStuffId: Uuid().v1(),
-          name: _productNameController.text,
+          name: productNameController.text,
           category: _productCategoryController.text,
           validDate: _validDateTime,
           storage: _productStorageController.text,
@@ -180,7 +180,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
         //
         FoodStuff foodStuff = FoodStuff(
           foodStuffId: Uuid().v1(),
-          name: _productNameController.text,
+          name: productNameController.text,
           category: _productCategoryController.text,
           validDate: _validDateTime,
           storage: _productStorageController.text,
@@ -199,7 +199,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
     }
   }
 
-  ///FoodStuffをFirebaseへ保存
+///FoodStuffをFirebaseへ登録
   Future<void> postFoodStuff(RecordStatus recordStatus) async {
     _isProcessing = true;
     notifyListeners();
@@ -211,7 +211,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
         await _postRepository.postFoodStuff(
           currentUser: UserRepository.currentModelUser,
           postImage: imageFromCamera,
-          name: _productNameController.text,
+          name: productNameController.text,
           category: _productCategoryController.text,
           validDateTime: _validDateTime,
           storage: _productStorageController.text,
@@ -231,7 +231,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
         await _postRepository.postFoodStuff(
           currentUser: UserRepository.currentModelUser,
           postImage: imageFromGallery,
-          name: _productNameController.text,
+          name: productNameController.text,
           category: _productCategoryController.text,
           validDateTime: _validDateTime,
           storage: _productStorageController.text,
@@ -255,7 +255,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
   Future<void> getProductInfo() async {
     await _dataRepository.getProductInfo(_products);
-    _productNameController.text = _products[0].name;
+    productNameController.text = _products[0].name;
     _productUrl = _products[0].productImage.medium;
 
     /// CacheManagerパッケージを使ってurlからFileパスを得てimageFromNetworkに格納
@@ -401,7 +401,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
     return _postRepository.getFoodStuffList(
         currentUser: UserRepository.currentModelUser);
   }
-  ///FutureBuilder用:リストデータ読み取り
+  ///FutureBuilder用:リストデータ読み取り(Firebase読み取り発生しない)
   Future<List<FoodStuffFB>> isFoodStuffsList() async {
     return _foodStuffFBs;
   }
@@ -421,7 +421,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
   ///登録後のクリア関連
   void productNameClear() {
-    _productNameController.clear();
+    productNameController.clear();
     notifyListeners();
   }
 
@@ -476,6 +476,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  ///FoodStuffをFirebaseから削除
   Future<void> onFoodStuffDeletedDB(FoodStuffFB foodStuff) async {
     _isProcessing = true;
     notifyListeners();
@@ -484,5 +485,9 @@ class DataRegistrationViewModel extends ChangeNotifier {
     await getFoodStuffListFB();
     _isProcessing = false;
     notifyListeners();
+  }
+  ///FirebaseのFoodStuffを更新
+  Future<void> upDateFoodStuff() async{
+    print('updateFoodStuff');
   }
 }
