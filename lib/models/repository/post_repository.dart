@@ -63,4 +63,8 @@ class PostRepository {
   Future<void> deleteFoodStuff(String foodStuffId, String imageStoragePath) async{
     await databaseManager.deleteFoodStuff(foodStuffId,imageStoragePath);
   }
+
+  Future<void> updateFoodStuff(FoodStuffFB updateFoodStuff) async{
+    return databaseManager.updateFoodStuff(updateFoodStuff);
+  }
 }

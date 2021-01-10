@@ -24,8 +24,6 @@ class DataRegistrationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel =
         Provider.of<DataRegistrationViewModel>(context, listen: false);
-    print('dataListPageからのfoodStuff.imageUrl:$foodStuff');
-
     return SafeArea(
       ///image_pickerでカメラまたはギャラリーキャンセル時にエラーが出るのでWillPopScope(true?)で戻らせない
       child: Scaffold(
@@ -230,7 +228,7 @@ class DataRegistrationScreen extends StatelessWidget {
                           //todo 保存ボタン押した時の登録までの時間はボタン押せないようにする(重複登録防止)
                           onPressed: model.isAddEdit
                               ?() => registerProductData(context, recordStatus)
-                              :() => updateFoodStuff(context),
+                              :() => updateFoodStuff(context,foodStuff),
                         ),
                 ],
               );
@@ -345,9 +343,10 @@ class DataRegistrationScreen extends StatelessWidget {
   }
 
   ///データ更新
-  Future<void> updateFoodStuff(BuildContext context) async {
+  Future<void> updateFoodStuff(BuildContext context, FoodStuffFB foodStuffFB) async {
     final viewModel =
         Provider.of<DataRegistrationViewModel>(context, listen: false);
-    await viewModel.upDateFoodStuff();
+    await viewModel.updateFoodStuff(foodStuffFB);
+    Navigator.pop(context,true);
   }
 }

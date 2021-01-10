@@ -154,6 +154,7 @@ class DataListPage extends StatelessWidget {
     await viewModel.onFoodStuffDeletedDB(foodStuff);
   }
 
+///更新
   Future<void> _upDateFoodStuff(FoodStuffFB foodStuff,
       BuildContext context)  async{
 
@@ -171,8 +172,6 @@ class DataListPage extends StatelessWidget {
     DateFormat.yMMMd('ja').format(foodStuff.validDate).toString();
     viewModel.productNumberController.text = foodStuff.amount.toString();
     viewModel.productStorageController.text = foodStuff.storage;
-
-    print('編集ページで使うurl:${foodStuff.imageUrl}');
 
    await  Navigator.push(
       //resultに再描画するならtrue

@@ -1,5 +1,5 @@
+import 'dart:core';
 import 'dart:io';
-
 import 'package:datebasejointest/data_models/menu/food_stuff.dart';
 import 'package:datebasejointest/data_models/menu/food_stuff_firebase.dart';
 import 'package:datebasejointest/data_models/product.dart';
@@ -194,6 +194,8 @@ class DataRegistrationViewModel extends ChangeNotifier {
           useAmount: 0,
           restAmount: int.parse(productNumberController.text),
         );
+        //todo 登録後再取得
+        await getFoodStuffListFB();
         _isProcessing = false;
         await allClear();
         notifyListeners();
@@ -214,6 +216,8 @@ class DataRegistrationViewModel extends ChangeNotifier {
           useAmount: 0,
           restAmount: int.parse(productNumberController.text),
         );
+        //todo 登録後再取得
+        await getFoodStuffListFB();
         _isProcessing = false;
         await allClear();
         notifyListeners();
@@ -221,6 +225,40 @@ class DataRegistrationViewModel extends ChangeNotifier {
       //todo networkからの取得画像をFBへデータ保存
 
     }
+  }
+
+  ///FirebaseのFoodStuffを更新
+  //todo 変更前のfoodStuffを渡して画像以外の変更点をcopyWithしてみる
+  Future<void> updateFoodStuff(FoodStuffFB foodStuffFB) async{
+    print('updateFoodStuff');
+    _isProcessing = true;
+    notifyListeners();
+
+    await _postRepository.updateFoodStuff(
+        foodStuffFB.copyWith(
+            name: productNameController.text,
+            category: productCategoryController.text,
+            validDate: validDateTime,
+            amount: int.parse(productNumberController.text),
+            storage:productStorageController.text,
+        )
+    );
+    //todo 登録後再取得
+    await getFoodStuffListFB();
+    _isProcessing = false;
+    notifyListeners();
+
+  }
+
+  ///FoodStuffをFirebaseから削除
+  Future<void> onFoodStuffDeletedDB(FoodStuffFB foodStuff) async {
+    _isProcessing = true;
+    notifyListeners();
+    await _postRepository.deleteFoodStuff(
+        foodStuff.foodStuffId, foodStuff.imageStoragePath);
+    await getFoodStuffListFB();
+    _isProcessing = false;
+    notifyListeners();
   }
 
 //  @override
@@ -340,19 +378,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  ///ローカルデータ読み取り
-  Future<void> getFoodStuffList() async {
-    ///finalにしない！！finalにするとnotifyListenersしてもview層でConsumer更新されない
-    _foodStuffs = await _dataRepository.getFoodStuffList();
 
-    if (_foodStuffs.isEmpty) {
-      print("リストが空");
-      notifyListeners();
-    } else {
-//      print("DB=>レポジトリ=>vieModelで取得したデータの長さ：${_foodStuffs.length}");
-      notifyListeners();
-    }
-  }
 
   ///CloudFirestoreからデータ読み取り
   Future<void> getFoodStuffListFB() async {
@@ -441,6 +467,21 @@ class DataRegistrationViewModel extends ChangeNotifier {
     notifyListeners(); //いらんかも
   }
 
+
+  ///ローカルデータ読み取り
+  Future<void> getFoodStuffList() async {
+    ///finalにしない！！finalにするとnotifyListenersしてもview層でConsumer更新されない
+    _foodStuffs = await _dataRepository.getFoodStuffList();
+
+    if (_foodStuffs.isEmpty) {
+      print("リストが空");
+      notifyListeners();
+    } else {
+//      print("DB=>レポジトリ=>vieModelで取得したデータの長さ：${_foodStuffs.length}");
+      notifyListeners();
+    }
+  }
+
   ///ローカルデータ削除
   Future<void> onFoodStuffDeleted(FoodStuff foodStuff) async {
     //ローカル画像削除のためFileを渡す
@@ -452,18 +493,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  ///FoodStuffをFirebaseから削除
-  Future<void> onFoodStuffDeletedDB(FoodStuffFB foodStuff) async {
-    _isProcessing = true;
-    notifyListeners();
-    await _postRepository.deleteFoodStuff(
-        foodStuff.foodStuffId, foodStuff.imageStoragePath);
-    await getFoodStuffListFB();
-    _isProcessing = false;
-    notifyListeners();
-  }
-  ///FirebaseのFoodStuffを更新
-  Future<void> upDateFoodStuff() async{
-    print('updateFoodStuff');
-  }
+
 }
+
+

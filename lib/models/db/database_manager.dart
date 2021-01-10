@@ -149,4 +149,11 @@ class DatabaseManager {
     final storageRef = FirebaseStorage.instance.ref().child(imageStoragePath);
     await storageRef.delete(); //await 追加
   }
+
+  ///FoodStuff更新
+  Future<void> updateFoodStuff(FoodStuffFB updateFoodStuff) async {
+    final foodStuffRef =
+        _db.collection('foodStuffs').doc(updateFoodStuff.foodStuffId);
+    await foodStuffRef.update(updateFoodStuff.toMap());
+  }
 }
