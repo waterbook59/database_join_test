@@ -50,6 +50,7 @@ class PostRepository {
 
   //Firebaseからデータ取得
   Future<List<FoodStuffFB>>getFoodStuffList({AnonymousUser currentUser}) async{
+    print('CloudFirestoreから読取');
     return databaseManager.getFoodStuffList(currentUser.userId);
   }
 

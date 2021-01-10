@@ -64,8 +64,12 @@ class DataRegistrationViewModel extends ChangeNotifier {
 //  DateTime get validDateTime => _validDateTime;
   String _barcodeScanRes = '';
   String get barcodeScanRes => _barcodeScanRes;
-  bool _isProcessing = false;
-  bool get isProcessing => _isProcessing;
+  ///登録画面のグリグリ
+  bool _isRegistrationProcessing = false;
+  bool get isRegistrationProcessing => _isRegistrationProcessing ;
+  ///リスト画面でのぐりぐり
+  bool _isListLoading = false;
+  bool get isListLoading => _isListLoading ;
 
   //画像とってくるときのグリグリ
   bool isImagePicked = false;
@@ -176,7 +180,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
 ///FoodStuffをFirebaseへ登録
   Future<void> postFoodStuff(RecordStatus recordStatus) async {
-    _isProcessing = true;
+    _isRegistrationProcessing = true;
     notifyListeners();
     switch (recordStatus) {
 
@@ -194,16 +198,16 @@ class DataRegistrationViewModel extends ChangeNotifier {
           useAmount: 0,
           restAmount: int.parse(productNumberController.text),
         );
-        //todo 登録後再取得
+        /// 登録後再取得
         await getFoodStuffListFB();
-        _isProcessing = false;
+        _isRegistrationProcessing = false;
         await allClear();
         notifyListeners();
         break;
 
       ///ギャラリーからFBへデータ保存
       case RecordStatus.gallery:
-        _isProcessing = true;
+        _isRegistrationProcessing = true;
         notifyListeners();
         await _postRepository.postFoodStuff(
           currentUser: UserRepository.currentModelUser,
@@ -218,7 +222,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
         );
         //登録後再取得
         await getFoodStuffListFB();
-        _isProcessing = false;
+        _isRegistrationProcessing = false;
         await allClear();
         notifyListeners();
         break;
@@ -231,7 +235,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
   //todo 変更前のfoodStuffを渡して画像以外の変更点をcopyWithしてみる
   Future<void> updateFoodStuff(FoodStuffFB foodStuffFB) async{
     print('updateFoodStuff');
-    _isProcessing = true;
+    _isRegistrationProcessing = true;
     notifyListeners();
 
     await _postRepository.updateFoodStuff(
@@ -245,20 +249,20 @@ class DataRegistrationViewModel extends ChangeNotifier {
     );
     //登録後再取得
     await getFoodStuffListFB();
-    _isProcessing = false;
+    _isRegistrationProcessing = false;
     await allClear();
     notifyListeners();
 
   }
 
-  ///FoodStuffをFirebaseから削除
+  ///FoodStuffをFirebaseから削除=>一覧取得
   Future<void> onFoodStuffDeletedDB(FoodStuffFB foodStuff) async {
-    _isProcessing = true;
+    _isListLoading = true;
     notifyListeners();
     await _postRepository.deleteFoodStuff(
         foodStuff.foodStuffId, foodStuff.imageStoragePath);
     await getFoodStuffListFB();
-    _isProcessing = false;
+    _isListLoading = false;
     notifyListeners();
   }
 
@@ -383,12 +387,12 @@ class DataRegistrationViewModel extends ChangeNotifier {
 
   ///CloudFirestoreからデータ読み取り
   Future<void> getFoodStuffListFB() async {
-    _isProcessing = true;
+    _isListLoading = true;
     notifyListeners();
     _foodStuffFBs = await _postRepository.getFoodStuffList(
         currentUser: UserRepository.currentModelUser);
 
-    _isProcessing = false;
+    _isListLoading  = false;
     notifyListeners();
   }
 
@@ -413,11 +417,11 @@ class DataRegistrationViewModel extends ChangeNotifier {
   ///CloudFirestore Realtimeで読み取り
   Future<List<FoodStuffFB>> getFoodStuffListRealtime() async {
     //notifyListeners通知しない場合は、isProcessing系は入れない
-    _isProcessing = true;
+    _isListLoading = true;
     notifyListeners();
     _foodStuffFBs = await _postRepository.getFoodStuffListRealtime(
         currentUser: UserRepository.currentModelUser);
-    _isProcessing = false;
+    _isListLoading  = false;
     notifyListeners();
 //  return _foodStuffFBs;
   }

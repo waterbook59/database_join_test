@@ -22,7 +22,7 @@ class DataListPage extends StatelessWidget {
     Provider.of<DataRegistrationViewModel>(context, listen: false);
     // 毎回Firebaseへリクエストしない条件追加必須
     //空の時
-    if (!viewModel.isProcessing && viewModel.foodStuffFBs.isEmpty) {
+    if (!viewModel.isListLoading && viewModel.foodStuffFBs.isEmpty) {
       //これが実行されると変更が生じるのでConsumer以下がbuildされる
       Future<void>(viewModel.getFoodStuffListFB);
     }
@@ -47,7 +47,7 @@ class DataListPage extends StatelessWidget {
           padding: const EdgeInsets.all(15),
           child: Consumer<DataRegistrationViewModel>(
               builder: (context, model, child) {
-                return model.isProcessing
+                return model.isListLoading
                     ? const Center(child: CircularProgressIndicator())
 //                    : model.foodStuffFBs.isEmpty
 //                    ? Container(
@@ -86,6 +86,7 @@ class DataListPage extends StatelessWidget {
     );
   }
 
+//TODO 'resultがtrueの時は再描画'はいらない(登録後にgetFoodStuffsFB()してるので)
   Future<void> _addData(BuildContext context) async {
 
     //追加なのでtrueにview側から変更
@@ -93,7 +94,8 @@ class DataListPage extends StatelessWidget {
     Provider.of<DataRegistrationViewModel>(context, listen: false)
       ..isAddEdit  = true;
 
-    final result = await Navigator.push(
+//    final result =
+    await Navigator.push(
       //resultに再描画するならtrue
       context,
       MaterialPageRoute<bool>(
@@ -102,14 +104,15 @@ class DataListPage extends StatelessWidget {
               ),
           fullscreenDialog: true),
     );
-    if (result) {
-      //result:trueの時だけデータリストを取りに行く再描画(notifyListenersする)
-      print('resultがtrueの時は再描画：$result');
-      final viewModel =
-      Provider.of<DataRegistrationViewModel>(context, listen: false);
-      //todo dataRegistrationでグリグリ、DataListでもグリグリが出るので、こちらのグリグリは外すメソッドに変える
-      await viewModel.getFoodStuffsFB();
-    }
+
+
+//    if (result) {
+//      //result:trueの時だけデータリストを取りに行く再描画(notifyListenersする)
+//      print('resultがtrueの時は再描画：$result');
+//      final viewModel =
+//      Provider.of<DataRegistrationViewModel>(context, listen: false);
+//      await viewModel.getFoodStuffsFB();
+//    }
   }
 
   Future<void> _onFoodStuffDeleted(FoodStuffFB foodStuff,
@@ -127,13 +130,15 @@ class DataListPage extends StatelessWidget {
             actions: <Widget>[
               FlatButton(
                 onPressed: () async {
+                  ///Navigator.pop(context);は非同期より前におかないとエラー
+                  Navigator.pop(context);
                   ///画像についてはDBから画像へのパスとcashとローカルから画像も削除する
 //                await viewModel.onFoodStuffDeleted(foodStuff);
 //                   await viewModel.getFoodStuffList();
                   ///Firebaseからの削除(ここだけviewModelのcontext重なってエラーになるのでメソッド外だし)
                   await deletePost(context, foodStuff);
                   await Fluttertoast.showToast(msg: '削除完了しました');
-                  Navigator.pop(context);
+
                 },
                 child: const Text('はい'),
               ),
@@ -152,6 +157,7 @@ class DataListPage extends StatelessWidget {
     final viewModel =
     Provider.of<DataRegistrationViewModel>(context, listen: false);
     await viewModel.onFoodStuffDeletedDB(foodStuff);
+
   }
 
 ///更新

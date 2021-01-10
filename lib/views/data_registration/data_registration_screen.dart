@@ -43,7 +43,7 @@ class DataRegistrationScreen extends StatelessWidget {
         ),
         body: Consumer<DataRegistrationViewModel>(
             builder: (context, model, child) {
-          if (model.isProcessing) {
+          if (model.isRegistrationProcessing) {
             //todo グリグリ出さないと何度でも保存ボタン押せる状態に
             print('登録中にグリグリ〜');
             return const Center(child: CircularProgressIndicator(),);
@@ -277,7 +277,11 @@ class DataRegistrationScreen extends StatelessWidget {
     //todo 登録中はボタン押せないようにする
     //登録が終わったら閉じる、
     // Realtime更新でNavigator.pop or oneTimeでpushReplacementで条件分岐
-    Navigator.pop(context, true);
+
+    ///viewModelで登録後再取得しているので、Navigator.popでtrueを返して再描画はしない
+//    Navigator.pop(context, true);
+      Navigator.pop(context);
+
     //Navigator.pushReplacement(caseを登録)
   }
 
