@@ -41,15 +41,16 @@ class DataRegistrationScreen extends StatelessWidget {
             )
           ],
         ),
-        body: SingleChildScrollView(
-          child: Consumer<DataRegistrationViewModel>(
-              builder: (context, model, child) {
-            if (model.isProcessing) {
-              //todo グリグリ出さないと何度でも保存ボタン押せる状態に
-              print('登録中にグリグリ〜');
-              return const Center(child: CircularProgressIndicator(),);
-            } else {
-              return Column(
+        body: Consumer<DataRegistrationViewModel>(
+            builder: (context, model, child) {
+          if (model.isProcessing) {
+            //todo グリグリ出さないと何度でも保存ボタン押せる状態に
+            print('登録中にグリグリ〜');
+            return const Center(child: CircularProgressIndicator(),);
+          } else {
+            return
+              SingleChildScrollView(
+                child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const SizedBox(height: 15,),
@@ -231,10 +232,10 @@ class DataRegistrationScreen extends StatelessWidget {
                               :() => updateFoodStuff(context,foodStuff),
                         ),
                 ],
+            ),
               );
-            } //else閉じ
-          }),
-        ),
+          } //else閉じ
+        }),
       ),
     );
   }

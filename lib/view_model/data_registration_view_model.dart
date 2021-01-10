@@ -216,7 +216,7 @@ class DataRegistrationViewModel extends ChangeNotifier {
           useAmount: 0,
           restAmount: int.parse(productNumberController.text),
         );
-        //todo 登録後再取得
+        //登録後再取得
         await getFoodStuffListFB();
         _isProcessing = false;
         await allClear();
@@ -243,9 +243,10 @@ class DataRegistrationViewModel extends ChangeNotifier {
             storage:productStorageController.text,
         )
     );
-    //todo 登録後再取得
+    //登録後再取得
     await getFoodStuffListFB();
     _isProcessing = false;
+    await allClear();
     notifyListeners();
 
   }
