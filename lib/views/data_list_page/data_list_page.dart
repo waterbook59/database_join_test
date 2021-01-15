@@ -64,22 +64,29 @@ class DataListPage extends StatelessWidget {
                         return Container(
                             child:
                             const Center(child: Text('リストが空なので入力してみましょう')));
-                      } else {
-                        print('ListView通った');
-                        return ListView.builder(
-                          itemCount: model.foodStuffFBs.length,
-                          itemBuilder: (context, int position) =>
-                          ///期限をDateTime=>yyyy/MM/ddに変換
-                          //todo 画像を一定の大きさに揃える(Fit?)
-                          FoodStuffItem(
-                            foodStuff: model.foodStuffFBs[position],
-                            onLongTapped: (foodStuff) =>
-                                _onFoodStuffDeleted(foodStuff, context),
-                            onDataTapped: (foodStuff) =>
-                                _upDateFoodStuff(foodStuff, context),
-                          ),);
+                        ///snapshot.hasData=nullの場合、
+                        ///Container記載入れると描画遅くなるので入れない
+//                      }
+//                      else if(!snapshot.hasData){
+//                        print('snapshotがnull');
+//                        return Container();
+                      }else{
+                          print('ListView通った');
+                          return ListView.builder(
+                            itemCount: model.foodStuffFBs.length,
+                            itemBuilder: (context, int position) =>
+                            ///期限をDateTime=>yyyy/MM/ddに変換
+                            //todo 画像を一定の大きさに揃える(Fit?)
+                            FoodStuffItem(
+                              foodStuff: model.foodStuffFBs[position],
+                              onLongTapped: (foodStuff) =>
+                                  _onFoodStuffDeleted(foodStuff, context),
+                              onDataTapped: (foodStuff) =>
+                                  _upDateFoodStuff(foodStuff, context),
+                            ),);
+                        }
                       }
-                    });
+                    );
               }),
         ),
       ),
